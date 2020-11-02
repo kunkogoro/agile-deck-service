@@ -161,7 +161,7 @@ try{
                     sshCommand remote: remote, command:  """docker login aavn-registry.axonactive.vn.local -u ${username} -p ${password}"""
                     sshCommand remote: remote, command:  """docker pull aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")}"""
                     sshCommand remote: remote, command:  """docker run -i -d --rm -p 8091:8080 --name agile-deck-service-staging aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")}"""
-                    sshCommand remote: remote, command:  """docker network connect agile-deck-network agile-deck-service-dev"""
+                    sshCommand remote: remote, command:  """docker network connect agile-deck-network agile-deck-service-staging"""
                 }
             }
         }
