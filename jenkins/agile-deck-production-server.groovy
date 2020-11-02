@@ -1,9 +1,3 @@
-/* variable to get and set failed stage */
-def FAILED_STAGE
-
-/* quality gate status */
-def qg
-
 /* current pom version of project */
 def pomVersion
 
@@ -41,7 +35,6 @@ try {
 
         /* Stage checkout, will get the source code from git server */
         stage('Checkout'){
-            FAILED_STAGE = 'Checkout'
             checkout scm
             sh "git checkout ${RELEASE_BRANCH}"
             sh 'git pull'

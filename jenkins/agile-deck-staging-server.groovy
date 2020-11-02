@@ -89,22 +89,22 @@ try{
         /* Stage build docker image, build the project to image */
         stage('Create image') {
             FAILED_STAGE = 'Create image'
-            sh "docker build -f src/main/docker/Dockerfile.native -t ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")} ."
+            sh "docker build -f src/main/docker/Dockerfile.native -t ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")} ."
         }
 
         /* Stage push image to aavn-registry */
         stage('Push image to docker registry') {
             FAILED_STAGE = 'Push image to docker registry'
             docker.withRegistry('https://aavn-registry.axonactive.vn.local/', 'ccad9d2d-0400-4a36-9238-a49a70cf98c7') {
-                agileDeckImage = docker.image("ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")}")
+                agileDeckImage = docker.image("ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")}")
                 agileDeckImage.push()
             }
         }
 
         stage('Remove unused images') {
-            sh "docker rmi ct-redbull/agiledeckserver:latest || true"
-            sh "docker rmi ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")} || true"
-            sh "docker rmi aavn-registry.axonactive.vn.local/ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")} || true"
+            sh "docker rmi ct-redbull/agile-deck-service:latest || true"
+            sh "docker rmi ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")} || true"
+            sh "docker rmi aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")} || true"
         }
 
 
@@ -153,15 +153,15 @@ try{
 
                 sshCommand remote: remote, command:  """docker network create agile-deck-network || true"""
 
-                sshCommand remote: remote, command:  """docker stop agiledeckserver-staging || true && docker rm agiledeckserver-staging || true"""
+                sshCommand remote: remote, command:  """docker stop agile-deck-service-staging || true && docker rm agile-deck-service-staging || true"""
 
-                sshCommand remote: remote, command:  """docker rmi aavn-registry.axonactive.vn.local/ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")} -f || true"""
+                sshCommand remote: remote, command:  """docker rmi aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")} -f || true"""
 
                 withCredentials([usernamePassword(credentialsId: 'ccad9d2d-0400-4a36-9238-a49a70cf98c7', passwordVariable: 'password', usernameVariable: 'username')]) {
                     sshCommand remote: remote, command:  """docker login aavn-registry.axonactive.vn.local -u ${username} -p ${password}"""
-                    sshCommand remote: remote, command:  """docker pull aavn-registry.axonactive.vn.local/ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")}"""
-                    sshCommand remote: remote, command:  """docker run -i -d --rm -p 8091:8080 --name agiledeckserver-staging aavn-registry.axonactive.vn.local/ct-redbull/agiledeckserver:${currentPomVersion.replace("-SNAPSHOT","")}"""
-                    sshCommand remote: remote, command:  """docker network connect agile-deck-network agiledeckserver-dev"""
+                    sshCommand remote: remote, command:  """docker pull aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")}"""
+                    sshCommand remote: remote, command:  """docker run -i -d --rm -p 8091:8080 --name agile-deck-service-staging aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${currentPomVersion.replace("-SNAPSHOT","")}"""
+                    sshCommand remote: remote, command:  """docker network connect agile-deck-network agile-deck-service-dev"""
                 }
             }
         }
