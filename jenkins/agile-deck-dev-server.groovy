@@ -11,6 +11,8 @@ NETWORK_NAME=agile-deck-network
 
 SERVER_IP=192.168.70.91
 SERVER_CREDENTIAL_ID=redbull-control-server
+
+CORS_ORIGINS=agile-deck-ui-dev
  */
 
 /* quality gate status */
@@ -136,7 +138,9 @@ try {
 				withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIAL_ID}", passwordVariable: 'password', usernameVariable: 'username')]) {
 					sshCommand remote: remote, command:  """docker login ${DOCKER_REGISTRY_URL} -u ${username} -p ${password}"""
 					sshCommand remote: remote, command:  """docker pull ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
-					sshCommand remote: remote, command:  """docker run -i -d --rm -p ${PUBLISH_PORT}:8080 --name ${CONTAINER_NAME} ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
+					sshCommand remote: remote, command:  """docker run -i -d --rm -p ${PUBLISH_PORT}:8080 --name ${CONTAINER_NAME} \
+							-e quarkus.http.cors.origins=${CORS_ORIGINS} \
+							${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
 					sshCommand remote: remote, command:  """docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"""
 				}
 			}
