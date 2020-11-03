@@ -8,17 +8,17 @@ def pomVersion
 
 /* This method will notify when the job run fail at any stage */
 def notifyFailedToSlack() {
-    slackSend (channel: CHECKOUT_BRANCH, color: '#FF0000', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build failed")
+    slackSend (channel: SLACK_CHANNEL, color: '#FF0000', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build failed")
 }
 
 /* This method will notify when the job run sucessfully */
 def notifySuccessToSlack() {
-    slackSend (channel: CHECKOUT_BRANCH, color: '#32CD32', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build successfully")
+    slackSend (channel: SLACK_CHANNEL, color: '#32CD32', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build successfully")
 }
 
 /* This method will notify when the job started */
 def notifyBeginBuildToSlack() {
-    slackSend (channel: CHECKOUT_BRANCH, color: '#0096d6', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' started")
+    slackSend (channel: SLACK_CHANNEL, color: '#0096d6', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' started")
 }
 
 
