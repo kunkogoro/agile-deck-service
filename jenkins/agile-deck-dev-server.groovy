@@ -1,10 +1,17 @@
 /*
-SLACK_CHANNEL
+SLACK_CHANNEL=redbull
+CHECKOUT_BRANCH=develop
 
+DOCKER_REGISTRY_URL=aavn-registry.axonactive.vn.local
+DOCKER_CREDENTIAL_ID=ccad9d2d-0400-4a36-9238-a49a70cf98c7
+PUBLISH_PORT=8090
+IMAGE_NAME=ct-redbull/agile-deck-service
+CONTAINER_NAME=agile-deck-service-dev
+NETWORK_NAME=agile-deck-network
+
+SERVER_IP=192.168.70.91
+SERVER_CREDENTIAL_ID=redbull-control-server
  */
-
-/* variable to get and set failed stage */
-def FAILED_STAGE
 
 /* quality gate status */
 def qg
@@ -16,17 +23,17 @@ def pomVersion
 
 /* This method will notify when the job run fail at any stage */
 def notifyFailedToSlack() {
-	slackSend (channel: 'redbull', color: '#FF0000', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build failed")
+	slackSend (channel: SLACK_CHANNEL, color: '#FF0000', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build failed")
 }
 
 /* This method will notify when the job run sucessfully */
 def notifySuccessToSlack() {
-	slackSend (channel: 'redbull', color: '#32CD32', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build successfully")
+	slackSend (channel: SLACK_CHANNEL, color: '#32CD32', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}) build successfully")
 }
 
 /* This method will notify when the job started */
 def notifyBeginBuildToSlack() {
-	slackSend (channel: 'redbull', color: '#0096d6', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' started")
+	slackSend (channel: SLACK_CHANNEL, color: '#0096d6', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' started")
 }
 
 
@@ -46,9 +53,8 @@ try {
 
 		/* Stage checkout, will get the source code from git server */
 		stage('Checkout'){
-			FAILED_STAGE = 'Checkout'
 			checkout scm
-			sh 'git checkout develop'
+			sh "git checkout ${CHECKOUT_BRANCH}"
 			sh 'git pull'
 			// Get current pom version after checkout the project
 			pomVersion = readMavenPom().getVersion()
@@ -56,17 +62,13 @@ try {
 
 		/* Stage build, build the project to generate war file and wildfly image */
 		stage('Build'){
-			FAILED_STAGE = 'Build'
 			withMaven( maven: 'MAVEN 3.6' ) {
-//				sh "mvn clean package"
 				sh "mvn clean package -Pnative -Dquarkus.native.container-build=true"
 			}
 		}
 
 		/* Stage check sonar, using sonar to scan the project */
 		stage('Check sonar') {
-			FAILED_STAGE = 'Check sonar'
-
 			// Using sonar to scan the proejct to check coverage, bugs...
 			def scannerHome = tool 'SonarQubeScanner'
 			withSonarQubeEnv('SonarQube') {
@@ -93,35 +95,31 @@ try {
 
 		/* Stage build docker image, build the project to image */
 		stage('Create image') {
-			FAILED_STAGE = 'Create image'
-			sh "docker build -f src/main/docker/Dockerfile.native -t ct-redbull/agile-deck-service:${pomVersion} ."
+			sh "docker build -f src/main/docker/Dockerfile.native -t ${IMAGE_NAME}:${pomVersion} ."
 		}
 
 		/* Stage push image to aavn-registry */
 		stage('Push image to docker registry') {
-			FAILED_STAGE = 'Push image to docker registry'
-			docker.withRegistry('https://aavn-registry.axonactive.vn.local/', 'ccad9d2d-0400-4a36-9238-a49a70cf98c7') {
-				agileDeckImage = docker.image("ct-redbull/agile-deck-service:${pomVersion}")
-				agileDeckImage.push()
+			docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${DOCKER_CREDENTIAL_ID}") {
+				image = docker.image("${IMAGE_NAME}:${pomVersion}")
+				image.push()
 			}
 		}
 
 		stage('Remove unused images') {
-			sh "docker rmi ct-redbull/agile-deck-service:latest || true"
-			sh "docker rmi ct-redbull/agile-deck-service:${pomVersion} || true"
-			sh "docker rmi aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${pomVersion} || true"
+			sh "docker rmi ${IMAGE_NAME}:latest || true"
+			sh "docker rmi ${IMAGE_NAME}:${pomVersion} || true"
+			sh "docker rmi ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion} || true"
 		}
 
 		stage('Pull and run image on Dev server') {
-			FAILED_STAGE = 'Pull and run image on Dev server'
-
 			/*ssh to develop server*/
-			withCredentials([usernamePassword(credentialsId: 'redbull-control-server', passwordVariable: 'password', usernameVariable: 'username')]) {
+			withCredentials([usernamePassword(credentialsId: "${SERVER_CREDENTIAL_ID}", passwordVariable: 'password', usernameVariable: 'username')]) {
 				def remote = [:]
 				remote.user = "${username}"
 				remote.password = "${password}"
 				remote.name = "remote-to-agile-deck-server"
-				remote.host = "192.168.70.91"
+				remote.host = "${SERVER_IP}"
 				remote.allowAnyHosts = true
 
 				/*
@@ -129,17 +127,17 @@ try {
 				Before build, must stop and remove container that already run. then remove old image in the dev server
 				After remove container and image, pull new image from dockerland and rerun the container
 				*/
-				sshCommand remote: remote, command:  """docker network create agile-deck-network || true"""
+				sshCommand remote: remote, command:  """docker network create ${NETWORK_NAME} || true"""
 
-				sshCommand remote: remote, command:  """docker stop agile-deck-service-dev || true && docker rm agile-deck-service-dev || true"""
+				sshCommand remote: remote, command:  """docker stop ${CONTAINER_NAME} || true && docker rm ${CONTAINER_NAME} || true"""
 
-				sshCommand remote: remote, command:  """docker rmi aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${pomVersion} -f || true"""
+				sshCommand remote: remote, command:  """docker rmi ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion} -f || true"""
 
-				withCredentials([usernamePassword(credentialsId: 'ccad9d2d-0400-4a36-9238-a49a70cf98c7', passwordVariable: 'password', usernameVariable: 'username')]) {
-					sshCommand remote: remote, command:  """docker login aavn-registry.axonactive.vn.local -u ${username} -p ${password}"""
-					sshCommand remote: remote, command:  """docker pull aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${pomVersion}"""
-					sshCommand remote: remote, command:  """docker run -i -d --rm -p 8090:8080 --name agile-deck-service-dev aavn-registry.axonactive.vn.local/ct-redbull/agile-deck-service:${pomVersion}"""
-					sshCommand remote: remote, command:  """docker network connect agile-deck-network agile-deck-service-dev"""
+				withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIAL_ID}", passwordVariable: 'password', usernameVariable: 'username')]) {
+					sshCommand remote: remote, command:  """docker login ${DOCKER_REGISTRY_URL} -u ${username} -p ${password}"""
+					sshCommand remote: remote, command:  """docker pull ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
+					sshCommand remote: remote, command:  """docker run -i -d --rm -p ${PUBLISH_PORT}:8080 --name ${CONTAINER_NAME} ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
+					sshCommand remote: remote, command:  """docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"""
 				}
 			}
 		}
