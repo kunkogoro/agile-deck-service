@@ -14,7 +14,7 @@ SERVER_CREDENTIAL_ID=redbull-control-server
 
 CORS_ORIGINS=http://dev.agiledeck.axonactive.vn.local
 
-DB_CONTAINER_NAME=agile-deck-db-dev
+DB_HOST=dev.agiledeck.axonactive.vn.local
 DB_NAME=agile-deck-db
 DB_USER=admin
 DB_PASS=Aavn123
@@ -149,7 +149,7 @@ try {
 							-e quarkus.http.cors.origins=${CORS_ORIGINS} \
 							-e quarkus.datasource.username=${DB_USER} \
 							-e quarkus.datasource.password=${DB_PASS} \
-							-e quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_CONTAINER_NAME}:${DB_PORT}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true \
+							-e quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} \
 							-e quarkus.hibernate-orm.database.generation=${DB_GENERATION} \
 							${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
 					sshCommand remote: remote, command:  """docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"""
