@@ -175,7 +175,7 @@ try{
                             -e quarkus.http.cors.origins=${CORS_ORIGINS} \
                             -e quarkus.datasource.username=${DB_USER} \
                             -e quarkus.datasource.password=${DB_PASS} \
-                            -e quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true \
+                            -e quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} \
                             -e quarkus.hibernate-orm.database.generation=${DB_GENERATION} \
                             ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${currentPomVersion.replace("-SNAPSHOT","")}"""
                     sshCommand remote: remote, command:  """docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"""
