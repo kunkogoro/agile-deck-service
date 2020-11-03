@@ -3,15 +3,15 @@
 #
 # Before building the container image run:
 #
-# mvn package
+# mvn clean package
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/agiledeckserver-jvm .
+# docker build -f src/main/docker/Dockerfile.jvm -t ct-redbull/agile-deck-service-dev .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/agiledeckserver-jvm
+# docker run -i --rm -p 8080:8080 ct-redbull/agile-deck-service-dev
 #
 # If you want to include the debug port into your docker image
 # you will have to expose the debug port (default 5005) like this :  EXPOSE 8080 5050
