@@ -6,7 +6,7 @@ RELEASE_BRANCH=release
 DOCKER_REGISTRY_URL=aavn-registry.axonactive.vn.local
 DOCKER_CREDENTIAL_ID=ccad9d2d-0400-4a36-9238-a49a70cf98c7
 PUBLISH_PORT=8091
-IMAGE_NAME=ct-redbull/agile-deck-service
+IMAGE_NAME=agile-tools/agile-deck-service
 CONTAINER_NAME=agile-deck-service-staging
 NETWORK_NAME=agile-deck-network
 
@@ -101,9 +101,9 @@ try{
 
         /* Stage push image to aavn-registry */
         stage('Push image to docker registry') {
-            docker.withRegistry("http://${DOCKER_REGISTRY_URL}", ${DOCKER_CREDENTIAL_ID}) {
-                agileDeckImage = docker.image("${IMAGE_NAME}:${currentPomVersion.replace("-SNAPSHOT","")}")
-                agileDeckImage.push()
+            docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${DOCKER_CREDENTIAL_ID}") {
+                image = docker.image("${IMAGE_NAME}:${currentPomVersion.replace('-SNAPSHOT','')}")
+                image.push()
             }
         }
 

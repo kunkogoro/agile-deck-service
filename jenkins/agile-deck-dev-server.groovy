@@ -5,7 +5,7 @@ CHECKOUT_BRANCH=develop
 DOCKER_REGISTRY_URL=aavn-registry.axonactive.vn.local
 DOCKER_CREDENTIAL_ID=ccad9d2d-0400-4a36-9238-a49a70cf98c7
 PUBLISH_PORT=8090
-IMAGE_NAME=ct-redbull/agile-deck-service
+IMAGE_NAME=agile-tools/agile-deck-service
 CONTAINER_NAME=agile-deck-service-dev
 NETWORK_NAME=agile-deck-network
 
