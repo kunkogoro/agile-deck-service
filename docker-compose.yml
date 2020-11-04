@@ -15,7 +15,7 @@ services:
     image: ct-redbull/agiledeckserver
     container_name: agiledeckdev-server
     ports:
-      - "8080:8080"
+      - "8081:8081"
     networks:
       - agiledeck-net
     depends_on:

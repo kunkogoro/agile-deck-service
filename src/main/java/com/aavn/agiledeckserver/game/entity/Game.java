@@ -1,5 +1,6 @@
 package com.aavn.agiledeckserver.game.entity;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_games")
+@ApplicationScoped
 public class Game {
     
     @Id
