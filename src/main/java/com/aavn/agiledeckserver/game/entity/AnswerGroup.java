@@ -1,12 +1,16 @@
 package com.aavn.agiledeckserver.game.entity;
 
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,7 +22,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_answer_groups")
+@NamedQueries({
+    @NamedQuery(name = AnswerGroup.GET_BY_ID, query = "SELECT ag FROM tbl_answer_groups ag WHERE ag.id = :id"),
+    @NamedQuery(name = AnswerGroup.GET_BY_NAME, query = "SELECT * FROM tbl_answer_groups ag WHERE ag.name = :name"),
+})
 public class AnswerGroup {
+
+    private static final String QUALIFIER = "com.aavn.agiledeck.game.entity.AnswerGroup";
+
+    public static final String GET_BY_ID = QUALIFIER + "getById";
+    public static final String GET_BY_NAME = QUALIFIER + "getByName";
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +52,9 @@ public class AnswerGroup {
     public AnswerGroup(String name) {
         this.name = name;
     }
+
+    public boolean isValid() {
+        return Objects.nonNull(this.game);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.aavn.agiledeckserver.play.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.aavn.agiledeckserver.game.entity.Game;
@@ -25,7 +28,16 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
+@NamedQueries({
+    @NamedQuery(name = GameBoard.GET_BY_CODE, query = "SELECT gb FROM tbl_game_boards gb WHERE gb.code = :code"),
+    @NamedQuery(name = GameBoard.GET_BY_ID, query = "SELECT gb FROM tbl_game_boards gb WHERE gb.id = :id"),
+})
 public class GameBoard {
+
+    private static final String QUALIFIER = "com.aavn.agiledeck.play.entity.GameBoard";
+
+    public static final String GET_BY_CODE = QUALIFIER + "getByCode";
+    public static final String GET_BY_ID = QUALIFIER + "getById";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +62,11 @@ public class GameBoard {
         this.code = code;
         this.game = game;
         this.player = player;
+    }
+
+    public boolean isValid() {
+        return Objects.nonNull(this.code)
+        && Objects.nonNull(this.game);
     }
     
 }
