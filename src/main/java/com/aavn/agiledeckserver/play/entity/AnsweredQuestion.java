@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "tbl_answer_questions")
+@Table(name = "tbl_answered_questions")
 @Entity
 @NoArgsConstructor
 @Getter @Setter
@@ -34,23 +34,25 @@ public class AnsweredQuestion {
     private String image;
     
     @ManyToOne
-    @JoinColumn(name = "game_board")
+    @JoinColumn(name = "game_board_id", nullable = false)
     private GameBoard gameBoard;
 
     @OneToOne
-    @JoinColumn(name = "final_result")
-    private Answer finalResult;
+    @JoinColumn(name = "prefered_answer", nullable = false)
+    private Answer preferedAnswer;
 
     @OneToOne
-    @JoinColumn(nullable = false, name = "answer_group_id")
+    @JoinColumn(name = "answer_group_id", nullable = false)
     private AnswerGroup answerGroup;
 
-    public AnsweredQuestion(String content, String image, GameBoard gameBoard, Answer finalResult,
+    public AnsweredQuestion(String content, String image, GameBoard gameBoard, Answer preferedAnswer,
             AnswerGroup answerGroup) {
         this.content = content;
         this.image = image;
         this.gameBoard = gameBoard;
-        this.finalResult = finalResult;
+        this.preferedAnswer = preferedAnswer;
         this.answerGroup = answerGroup;
     }
+
+
 }

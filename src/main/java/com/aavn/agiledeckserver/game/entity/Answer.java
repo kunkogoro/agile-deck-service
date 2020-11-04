@@ -1,6 +1,5 @@
 package com.aavn.agiledeckserver.game.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,8 +29,8 @@ public class Answer {
     @Column(name = "image")
     private String image;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "answer_group_id")
+    @ManyToOne
+    @JoinColumn(name = "answer_group_id", nullable = false)
     private AnswerGroup answerGroup;
 
     public Answer(String content, String image, AnswerGroup answerGroup) {
@@ -39,4 +38,5 @@ public class Answer {
         this.image = image;
         this.answerGroup = answerGroup;
     }
+
 }

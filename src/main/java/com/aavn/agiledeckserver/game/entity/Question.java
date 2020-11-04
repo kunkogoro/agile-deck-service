@@ -30,12 +30,12 @@ public class Question {
     @Column(name = "image")
     private String image;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(nullable = false, name = "approach_set_id")
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "answer_group_id")
     private AnswerGroup answerGroup;
 
     public Question(String content, String image, Game game, AnswerGroup answerGroup) {
@@ -44,4 +44,11 @@ public class Question {
         this.game = game;
         this.answerGroup = answerGroup;
     }
+
+    public Question(String content, String image, Game game) {
+        this.content = content;
+        this.image = image;
+        this.game = game;
+    }
+
 }

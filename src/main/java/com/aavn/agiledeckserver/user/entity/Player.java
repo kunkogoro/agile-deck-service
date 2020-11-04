@@ -27,10 +27,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column( name = "name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column( name = "image")
+    @Column(name = "image")
     private String image;
 
     @ManyToMany(mappedBy = "player")

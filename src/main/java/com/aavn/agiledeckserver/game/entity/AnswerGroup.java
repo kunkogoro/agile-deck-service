@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_answer_droups")
+@Table(name = "tbl_answer_groups")
 public class AnswerGroup {
     
     @Id
@@ -27,12 +27,16 @@ public class AnswerGroup {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "defaultAnswerGroup")
+    @OneToOne
     @JoinColumn(name = "game_id")
     private Game game;
 
     public AnswerGroup(String name, Game game) {
         this.name = name;
         this.game = game;
+    }
+
+    public AnswerGroup(String name) {
+        this.name = name;
     }
 }

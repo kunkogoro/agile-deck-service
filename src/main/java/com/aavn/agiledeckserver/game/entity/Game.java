@@ -31,7 +31,7 @@ public class Game {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @OneToOne(mappedBy = "game")
     @JoinColumn(nullable = false, name = "default_answer_group")
     private AnswerGroup defaultAnswerGroup;
 
@@ -40,5 +40,15 @@ public class Game {
 		this.description = description;
 		this.defaultAnswerGroup = defaultAnswerGroup;
     }
+
+    public Game(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Game(String name) {
+        this.name = name;
+    }
+
     
 }

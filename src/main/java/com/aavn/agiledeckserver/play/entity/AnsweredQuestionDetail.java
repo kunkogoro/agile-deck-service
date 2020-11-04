@@ -26,17 +26,16 @@ public class AnsweredQuestionDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "player_id")
     private Player player;
-
 
     @ManyToOne
     @JoinColumn(name = "answered_question_id")
     private AnsweredQuestion answeredQuestion;
 
     @ManyToOne
-    @JoinColumn(name = "answer")
+    @JoinColumn(name = "answer_id")
     private Answer answer;
 
     public AnsweredQuestionDetail(Player player, AnsweredQuestion answeredQuestion, Answer answer) {

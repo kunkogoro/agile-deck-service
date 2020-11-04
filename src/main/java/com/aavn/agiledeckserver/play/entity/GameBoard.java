@@ -34,7 +34,7 @@ public class GameBoard {
     @Column(name = "code", nullable = false, unique = true, length = 50)
     private String code;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
