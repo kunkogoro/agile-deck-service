@@ -19,7 +19,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_games")
-@ApplicationScoped
 public class Game {
     
     @Id
