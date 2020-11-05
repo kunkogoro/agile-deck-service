@@ -1,17 +1,20 @@
 package com.aavn.agiletools.agiledeck.play.entity;
 
-import javax.persistence.Column;
+import java.util.List;
+
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.aavn.agiletools.agiledeck.game.entity.Answer;
-import com.aavn.agiletools.agiledeck.game.entity.AnswerGroup;
+import com.aavn.agiletools.agiledeck.game.entity.AnswerContent;
+import com.aavn.agiletools.agiledeck.game.entity.QuestionContent;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,34 +28,25 @@ public class AnsweredQuestion {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "image")
-    private String image;
-    
     @ManyToOne
     @JoinColumn(name = "game_board_id", nullable = false)
     private GameBoard gameBoard;
 
-    @OneToOne
-    @JoinColumn(name = "prefered_answer", nullable = false)
-    private Answer preferedAnswer;
+    @Embedded
+    private QuestionContent content;
+    
+    @Transient
+    private List<Answer> answerOptions;
+  
+    @Embedded
+    private AnswerContent preferedAnswer;
 
-    @OneToOne
-    @JoinColumn(name = "answer_group_id", nullable = false)
-    private AnswerGroup answerGroup;
-
-    public AnsweredQuestion(String content, String image, GameBoard gameBoard, Answer preferedAnswer,
-            AnswerGroup answerGroup) {
-        this.content = content;
-        this.image = image;
-        this.gameBoard = gameBoard;
-        this.preferedAnswer = preferedAnswer;
-        this.answerGroup = answerGroup;
-    }
-
-
+	public static AnsweredQuestion createWithoutQuestion(GameBoard gameBoard, List<Answer> defaultAnswerOptions) {
+        AnsweredQuestion answeredQuestion = new AnsweredQuestion();
+        answeredQuestion.setGameBoard(gameBoard);
+        answeredQuestion.setAnswerOptions(defaultAnswerOptions);
+		return answeredQuestion;
+	}
 }

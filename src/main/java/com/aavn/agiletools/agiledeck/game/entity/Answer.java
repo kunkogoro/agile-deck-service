@@ -2,13 +2,15 @@ package com.aavn.agiletools.agiledeck.game.entity;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -19,31 +21,39 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_answers")
+@NamedQueries({
+    @NamedQuery( name = Answer.FIND_BY_GAME, query = "SELECT ans FROM Answer ans WHERE ans.game.id = :gameId")
+})
+
 public class Answer {
+
+    private static final String QUALIFIER = "com.aavn.agiletools.agiledeck.game.entity.";
+    
+    public static final String FIND_BY_GAME = QUALIFIER + "findByGame";
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "content_as_image")
-    private String contentAsImage;
+    @Embedded
+    private AnswerContent content;
 
     @ManyToOne
     @JoinColumn(name = "answer_group_id", nullable = false)
     private AnswerGroup answerGroup;
 
-    public Answer(String content, String contentAsImage, AnswerGroup answerGroup) {
-        this.content = content;
-        this.contentAsImage = contentAsImage;
-        this.answerGroup = answerGroup;
-    }
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 
 	public boolean isValid() {
         return Objects.nonNull(this.answerGroup)
-        && (Objects.nonNull(this.content) || Objects.nonNull(this.contentAsImage));
+        && Objects.nonNull(this.content) 
+        && this.content.isValid();
 	}
 
 }

@@ -16,7 +16,7 @@ public class GameService {
     @PersistenceContext
     EntityManager em;
 
-    public Game findById(Integer id){
+    public Game findById(Long id){
         return em.find(Game.class, id);
     }
 
