@@ -34,7 +34,7 @@ public class GameBoardResource {
     @PUT
     public Response create(@QueryParam("game") Long gameId) {
         GameBoard gameBoard = gameBoardService.create(gameId);
-        URI location = this.uriInfo.getAbsolutePathBuilder().path(String.valueOf(gameBoard.getId())).build();
+        URI location = this.uriInfo.getAbsolutePathBuilder().path(String.valueOf(gameBoard.getCode())).build();
         return Response.created(location).entity(gameBoard).build(); 
     }
 
