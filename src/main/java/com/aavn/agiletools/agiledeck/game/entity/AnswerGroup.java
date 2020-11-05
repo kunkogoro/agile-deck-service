@@ -1,5 +1,7 @@
-package com.aavn.agiledeckserver.game.entity;
+package com.aavn.agiletools.agiledeck.game.entity;
 
+
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,4 +41,9 @@ public class AnswerGroup {
     public AnswerGroup(String name) {
         this.name = name;
     }
+
+    public boolean isValid() {
+        return Objects.nonNull(this.game);
+    }
+
 }

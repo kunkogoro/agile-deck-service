@@ -1,4 +1,4 @@
-package com.aavn.agiledeckserver.migration;
+package com.aavn.agiletools.agiledeck;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,7 +12,7 @@ public class MigrationService{
     Flyway flyway;
 
     public void checkMigration(){
-        System.out.println("Something to check: " + flyway.info().current().getVersion().toString());
+        flyway.clean(); 
+        flyway.migrate();
     }
-
 }

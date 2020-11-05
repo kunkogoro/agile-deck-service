@@ -1,4 +1,4 @@
-package com.aavn.agiledeckserver.play.entity;
+package com.aavn.agiletools.agiledeck.play.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.aavn.agiledeckserver.game.entity.Answer;
-import com.aavn.agiledeckserver.game.entity.AnswerGroup;
+import com.aavn.agiletools.agiledeck.game.entity.Answer;
+import com.aavn.agiletools.agiledeck.game.entity.AnswerGroup;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

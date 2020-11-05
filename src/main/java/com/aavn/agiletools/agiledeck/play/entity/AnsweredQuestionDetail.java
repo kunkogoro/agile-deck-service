@@ -1,4 +1,4 @@
-package com.aavn.agiledeckserver.play.entity;
+package com.aavn.agiletools.agiledeck.play.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,8 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.aavn.agiledeckserver.game.entity.Answer;
-import com.aavn.agiledeckserver.user.entity.Player;
+import com.aavn.agiletools.agiledeck.game.entity.Answer;
+import com.aavn.agiletools.agiledeck.user.entity.Player;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,3 +43,5 @@ public class AnsweredQuestionDetail {
         this.answer = answer;
     }
 }
+
+

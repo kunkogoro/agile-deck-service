@@ -1,4 +1,6 @@
-package com.aavn.agiledeckserver.game.entity;
+package com.aavn.agiletools.agiledeck.game.entity;
+
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,17 +28,22 @@ public class Answer {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "content_as_image")
+    private String contentAsImage;
 
     @ManyToOne
     @JoinColumn(name = "answer_group_id", nullable = false)
     private AnswerGroup answerGroup;
 
-    public Answer(String content, String image, AnswerGroup answerGroup) {
+    public Answer(String content, String contentAsImage, AnswerGroup answerGroup) {
         this.content = content;
-        this.image = image;
+        this.contentAsImage = contentAsImage;
         this.answerGroup = answerGroup;
     }
+
+	public boolean isValid() {
+        return Objects.nonNull(this.answerGroup)
+        && (Objects.nonNull(this.content) || Objects.nonNull(this.contentAsImage));
+	}
 
 }

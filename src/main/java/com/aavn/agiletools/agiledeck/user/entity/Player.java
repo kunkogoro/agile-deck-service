@@ -1,6 +1,7 @@
-package com.aavn.agiledeckserver.user.entity;
+package com.aavn.agiletools.agiledeck.user.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.aavn.agiledeckserver.play.entity.GameBoard;
+import com.aavn.agiletools.agiledeck.play.entity.GameBoard;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,4 +42,8 @@ public class Player {
         this.image = image;
         this.gameBoard = gameBoard;
     }
+
+	public boolean isValid() {
+		return Objects.nonNull(this.name);
+	}
 }
