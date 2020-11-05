@@ -51,6 +51,9 @@ try {
             sh "git checkout master"
             sh "git branch"
             sh "git merge ${RELEASE_BRANCH} --strategy-option theirs"
+            sh "git add ."
+            sh "git commit -m 'Create tag ${pomVersion}' || true"
+            sh "git push -u origin master"
         }
 
         stage('Create release tag from master branch') {
