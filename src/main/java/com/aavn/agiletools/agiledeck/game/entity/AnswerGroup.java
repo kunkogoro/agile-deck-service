@@ -1,4 +1,4 @@
-package com.aavn.agiledeckserver.game.entity;
+package com.aavn.agiletools.agiledeck.game.entity;
 
 
 import javax.persistence.Column;
@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -18,25 +16,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_answer_groups")
+
 public class AnswerGroup {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
  
     @Column(name = "name")
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "game_id")
-    private Game game;
-
-    public AnswerGroup(String name, Game game) {
-        this.name = name;
-        this.game = game;
-    }
-
-    public AnswerGroup(String name) {
-        this.name = name;
-    }
+//    public AnswerGroup(String name) {
+//        this.name = name;
+//    }
 }
