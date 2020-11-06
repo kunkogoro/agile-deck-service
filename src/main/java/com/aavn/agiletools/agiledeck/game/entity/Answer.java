@@ -48,4 +48,7 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    public Answer(Long id) {
+        this.id = id;
+    }
 }
