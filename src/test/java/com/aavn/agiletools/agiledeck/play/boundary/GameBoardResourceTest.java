@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class GameBoardResourceTest {
+    
     @Test
     @Order(1)
     public void whenCreateNewGameBoard_thenReturnLocationInHeader() {
