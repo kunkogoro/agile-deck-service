@@ -1,11 +1,10 @@
 package com.aavn.agiletools.agiledeck.play.boundary;
 
-import com.aavn.agiletools.agiledeck.play.entity.AnsweredQuestion;
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Test;
+
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
-import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class GameBoardResourceTest {
@@ -26,8 +25,8 @@ class GameBoardResourceTest {
 
     @Test
     public void whenJoinGame_thenReturnAnswerQuestion() {
-        String json = "{\"answerOptions\":[{\"answerGroup\":{\"id\":1,\"name\":\"Approach set\"},\"content\":{\"content\":\"Iterative\",\"contentAsImage\":\"iterative.png\"},\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":1},{\"answerGroup\":{\"id\":1,\"name\":\"Approach set\"},\"content\":{\"content\":\"Incremental\",\"contentAsImage\":\"incremental.png\"},\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":2},{\"answerGroup\":{\"id\":1,\"name\":\"Approach set\"},\"content\":{\"content\":\"Bigbang\",\"contentAsImage\":\"bigbang.png\"},\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":3}],\"gameBoard\":{\"code\":\"fdcb434c-d358-4190-9322-5863e5d8ba75\",\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":2}}";
-        RestAssured.given().pathParam("code", "fdcb434c-d358-4190-9322-5863e5d8ba75")
+        String json = "{\"answerOptions\":[{\"answerGroup\":{\"id\":1,\"name\":\"Approach set\"},\"content\":{\"content\":\"Iterative\",\"contentAsImage\":\"iterative.png\"},\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":1},{\"answerGroup\":{\"id\":1,\"name\":\"Approach set\"},\"content\":{\"content\":\"Incremental\",\"contentAsImage\":\"incremental.png\"},\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":2},{\"answerGroup\":{\"id\":1,\"name\":\"Approach set\"},\"content\":{\"content\":\"Bigbang\",\"contentAsImage\":\"bigbang.png\"},\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":3}],\"gameBoard\":{\"code\":\"4a658613-db88-44be-b2da-a1d90f9f7695\",\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":1}}";
+        RestAssured.given().pathParam("code", "4a658613-db88-44be-b2da-a1d90f9f7695")
                 .when().get("gameboards/{code}")
                 .then().body(CoreMatchers.is(json));
     }
