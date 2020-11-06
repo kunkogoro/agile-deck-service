@@ -41,17 +41,17 @@ public class GameBoardService {
     }
 
     private GameBoard getByCode(String code) {
-        this.validateCode(code);
+//        this.validateCode(code);
         TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
         query.setParameter("code", code);
         return query.getResultStream().findFirst().orElse(null);
     }
 
-    private void validateCode(String code) {
-        if (Objects.isNull(code)) {
-            throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_CODE_NOT_FOUND);
-        }
-    }
+//    private void validateCode(String code) {
+//        if (Objects.isNull(code)) {
+//            throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_CODE_NOT_FOUND);
+//        }
+//    }
 
     private void validate(GameBoard gameBoard){
         if(Objects.isNull(gameBoard)) {

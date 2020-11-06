@@ -20,7 +20,7 @@ public class AnswerContent {
     @Column(name = "answer_content_as_image")
     private String contentAsImage;
 
-	public boolean isValid() {
-		return Objects.nonNull(this.content) || Objects.nonNull(this.contentAsImage);
-	}
+//	public boolean isValid() {
+//		return Objects.nonNull(this.content) || Objects.nonNull(this.contentAsImage);
+//	}
 }

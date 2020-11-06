@@ -44,10 +44,10 @@ public class GameBoard {
     private Game game;
 
 
-    public boolean isValid() {
-        return Objects.nonNull(this.code)
-        && Objects.nonNull(this.game);
-    }
+//    public boolean isValid() {
+//        return Objects.nonNull(this.code)
+//        && Objects.nonNull(this.game);
+//    }
 
     public GameBoard(String code, Game game) {
         this.code = code;

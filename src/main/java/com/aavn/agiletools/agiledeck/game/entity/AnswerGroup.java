@@ -26,7 +26,7 @@ public class AnswerGroup {
     @Column(name = "name")
     private String name;
 
-    public AnswerGroup(String name) {
-        this.name = name;        
-    }
+//    public AnswerGroup(String name) {
+//        this.name = name;
+//    }
 }

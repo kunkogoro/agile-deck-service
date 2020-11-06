@@ -50,10 +50,10 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
-	public boolean isValid() {
-        return Objects.nonNull(this.answerGroup)
-        && Objects.nonNull(this.content) 
-        && this.content.isValid();
-	}
+//	public boolean isValid() {
+//        return Objects.nonNull(this.answerGroup)
+//        && Objects.nonNull(this.content)
+//        && this.content.isValid();
+//	}
 
 }
