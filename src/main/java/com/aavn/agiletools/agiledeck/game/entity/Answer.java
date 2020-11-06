@@ -1,7 +1,5 @@
 package com.aavn.agiletools.agiledeck.game.entity;
 
-import java.util.Objects;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,11 +47,5 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
-
-//	public boolean isValid() {
-//        return Objects.nonNull(this.answerGroup)
-//        && Objects.nonNull(this.content)
-//        && this.content.isValid();
-//	}
 
 }

@@ -1,7 +1,5 @@
 package com.aavn.agiletools.agiledeck.play.entity;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,12 +40,6 @@ public class GameBoard {
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
-
-
-//    public boolean isValid() {
-//        return Objects.nonNull(this.code)
-//        && Objects.nonNull(this.game);
-//    }
 
     public GameBoard(String code, Game game) {
         this.code = code;

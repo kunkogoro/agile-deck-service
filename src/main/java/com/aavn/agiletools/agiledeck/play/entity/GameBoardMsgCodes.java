@@ -9,7 +9,6 @@ public enum GameBoardMsgCodes implements MsgCodes{
 
     @Override
     public String getValue() {
-        
         return this.toString();
     }
     
