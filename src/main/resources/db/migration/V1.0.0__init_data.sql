@@ -11,3 +11,7 @@ INSERT INTO tbl_answers (id, answer_content, answer_content_as_image, answer_gro
 VALUES (1, 'Iterative', 'iterative.png', 1, 1),
     (2, 'Incremental', 'incremental.png', 1, 1),
     (3, 'Bigbang', 'bigbang.png', 1, 1);
+
+INSERT INTO public.tbl_game_boards
+(code, game_id)
+VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1);
