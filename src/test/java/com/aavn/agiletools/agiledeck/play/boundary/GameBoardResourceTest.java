@@ -3,16 +3,20 @@ package com.aavn.agiletools.agiledeck.play.boundary;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
+
 
 @QuarkusTest
 class GameBoardResourceTest {
+
+
     @Test
-    @Order(1)
     public void whenCreateNewGameBoard_thenReturnLocationInHeader() {
         Response response = RestAssured
                 .given().queryParam("game", 1)
@@ -30,7 +34,6 @@ class GameBoardResourceTest {
     }
 
     @Test
-    @Order(2)
     public void whenJoinGame_thenReturnAnswerQuestion() {
         Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
                 .when().get("gameboards/{code}");
