@@ -1,5 +1,6 @@
 package com.aavn.agiletools.agiledeck.game.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,9 +21,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_answers")
 @NamedQueries({
-    @NamedQuery( name = Answer.FIND_BY_GAME, query = "SELECT ans FROM Answer ans WHERE ans.game.id = :gameId")
+    @NamedQuery( name = Answer.FIND_BY_GAME, query = "SELECT ans FROM Answer ans WHERE ans.game.id = :gameId ORDER BY ans.numberOrder")
 })
-
 public class Answer {
 
     private static final String QUALIFIER = "com.aavn.agiletools.agiledeck.game.entity.";
@@ -35,6 +35,9 @@ public class Answer {
 
     @Embedded
     private AnswerContent content;
+
+    @Column(name = "number_order", nullable = false)
+    private Integer numberOrder;
 
     @ManyToOne
     @JoinColumn(name = "answer_group_id", nullable = false)
