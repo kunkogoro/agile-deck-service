@@ -49,6 +49,8 @@ try{
         /* Stage start, will notify to slack channel of team that run job */
         stage('Start'){
             notifyBeginBuildToSlack()
+            sh "rm -r ./* || true"
+            sh "rm -r ./.* || true"
         }
 
         /* Stage checkout, will get the source code from git server */
