@@ -21,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_answers")
 @NamedQueries({
-    @NamedQuery( name = Answer.FIND_BY_GAME, query = "SELECT ans FROM Answer ans WHERE ans.game.id = :gameId")
+    @NamedQuery( name = Answer.FIND_BY_GAME, query = "SELECT ans FROM Answer ans WHERE ans.game.id = :gameId ORDER BY ans.numberOrder")
 })
 public class Answer {
 
