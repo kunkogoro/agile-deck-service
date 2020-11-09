@@ -3,13 +3,9 @@ package com.aavn.agiletools.agiledeck.play.boundary;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-
-import javax.inject.Inject;
 
 
 @QuarkusTest
