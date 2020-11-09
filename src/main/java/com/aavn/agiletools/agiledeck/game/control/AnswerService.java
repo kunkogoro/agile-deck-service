@@ -1,7 +1,6 @@
 package com.aavn.agiletools.agiledeck.game.control;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;

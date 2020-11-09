@@ -123,7 +123,6 @@ try{
         }
 
 
-
         stage('Push release branch to git server') {
             releaseStagingBranchName = "${RELEASE_BRANCH}/" + currentPomVersion.replace("-SNAPSHOT","")
             //increase pom version

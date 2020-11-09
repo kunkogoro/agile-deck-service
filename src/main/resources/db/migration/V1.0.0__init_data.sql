@@ -7,10 +7,10 @@ INSERT INTO tbl_answer_groups (id, name)
 VALUES (1, 'Approach set');
 
 -- table tbl_answers;
-INSERT INTO tbl_answers (id, answer_content, answer_content_as_image, answer_group_id, game_id)
-VALUES (1, 'Iterative', 'iterative.png', 1, 1),
-    (2, 'Incremental', 'incremental.png', 1, 1),
-    (3, 'Bigbang', 'bigbang.png', 1, 1);
+INSERT INTO tbl_answers (id, answer_content, number_order, answer_content_as_image, answer_group_id, game_id)
+VALUES (1, 'Iterative', 1, 'iterative.png', 1, 1),
+    (2, 'Incremental', 2, 'incremental.png', 1, 1),
+    (3, 'Bigbang', 3, 'bigbang.png', 1, 1);
 
 INSERT INTO public.tbl_game_boards
 (code, game_id)
