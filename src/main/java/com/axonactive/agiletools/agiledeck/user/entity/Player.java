@@ -26,9 +26,8 @@ public class Player {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "image")
-    private String image;
-
+    @Column(name = "avatar")
+    private String avatar;
 
 	public boolean isValid() {
 		return Objects.nonNull(this.name);
