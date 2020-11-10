@@ -52,7 +52,7 @@ try {
             sh "git fetch origin master"
             sh "git checkout master"
             sh "git branch"
-            sh "git merge ${RELEASE_BRANCH} --strategy-option theirs"
+            sh "git merge ${RELEASE_BRANCH} --strategy-option theirs --allow-unrelated-histories"
             sh "git add ."
             sh "git commit -m 'Create tag ${pomVersion}' || true"
             sh "git push -u origin master"
