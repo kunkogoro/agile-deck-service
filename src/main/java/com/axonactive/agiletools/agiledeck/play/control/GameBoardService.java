@@ -31,9 +31,12 @@ public class GameBoardService {
     @Inject
     AnswerService answerService;
 
+
+    //TODO: Add condition for return a AnsQues
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
+//        AnsweredQuestion currentAnswerQuestion = AnsweredQuestionService.findCurrenrPLaying(code);
         List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
         return AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
     }

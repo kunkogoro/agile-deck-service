@@ -32,5 +32,7 @@ public class Game {
     private String name;
 
     @Column(name = "description")
-    private String description;    
+    private String description;
+
+    //TODO: Add image attr for the game
 }

@@ -32,4 +32,8 @@ public class Player {
 	public boolean isValid() {
 		return Objects.nonNull(this.name);
 	}
+
+	//TODO: Add relationship between player vs game board (OneGameBoard ManyPlayers)
+    //TODO: Change "play" package to "gameboard" package
+    //TODO: Move Player to "gameboard" package
 }

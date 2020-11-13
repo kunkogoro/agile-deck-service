@@ -16,6 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter @Setter
 @NoArgsConstructor
 @Entity
@@ -51,6 +53,7 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    //TODO remove this constructor because it is used in test only
     public Answer(Long id) {
         this.id = id;
     }
