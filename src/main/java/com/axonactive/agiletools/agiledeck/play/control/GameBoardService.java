@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
@@ -32,7 +31,6 @@ public class GameBoardService {
     @Inject
     AnswerService answerService;
 
-    @Transactional
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
@@ -52,7 +50,6 @@ public class GameBoardService {
         }
     }
 
-    @Transactional
     public GameBoard create(Long gameId) {
         Game game = findGameById(gameId);
         GameBoard gameBoard = init(game);
