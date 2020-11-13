@@ -40,7 +40,6 @@ public class AnsweredQuestion {
     @Transient
     private List<Answer> answerOptions;
 
-    //TODO: Add attr playing
     private boolean playing;
   
     @Embedded

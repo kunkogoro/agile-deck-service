@@ -31,8 +31,10 @@ public class Game {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "game_as_image")
+    private String gameAsImage;
+
     @Column(name = "description")
     private String description;
-
-    //TODO: Add image attr for the game
+    
 }
