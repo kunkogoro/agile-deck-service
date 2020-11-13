@@ -3,6 +3,7 @@ package com.axonactive.agiletools.agiledeck.play.boundary;
 import java.net.URI;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -22,6 +23,7 @@ import com.axonactive.agiletools.agiledeck.play.entity.GameBoard;
 @Path("/gameboards")
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
+@Transactional
 public class GameBoardResource {
     
     @Inject
