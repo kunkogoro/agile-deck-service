@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

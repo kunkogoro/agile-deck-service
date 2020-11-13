@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.axonactive.agiletools.agiledeck.game.entity.AnswerContent;
-import com.axonactive.agiletools.agiledeck.user.entity.Player;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

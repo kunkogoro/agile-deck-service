@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.user.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import java.util.Objects;
 
@@ -34,6 +34,4 @@ public class Player {
 	}
 
 	//TODO: Add relationship between player vs game board (OneGameBoard ManyPlayers)
-    //TODO: Change "play" package to "gameboard" package
-    //TODO: Move Player to "gameboard" package
 }

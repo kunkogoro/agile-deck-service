@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.control;
+package com.axonactive.agiletools.agiledeck.gameboard.control;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,9 +15,9 @@ import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
 import com.axonactive.agiletools.agiledeck.game.control.GameService;
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
-import com.axonactive.agiletools.agiledeck.play.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.play.entity.GameBoard;
-import com.axonactive.agiletools.agiledeck.play.entity.GameBoardMsgCodes;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 
 @RequestScoped
 public class GameBoardService {
