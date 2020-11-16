@@ -41,7 +41,7 @@ public class GameBoardService {
         return AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
     }
 
-    private GameBoard getByCode(String code) {
+    public GameBoard getByCode(String code) {
         TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
         query.setParameter("code", code);
         return query.getResultStream().findFirst().orElse(null);
