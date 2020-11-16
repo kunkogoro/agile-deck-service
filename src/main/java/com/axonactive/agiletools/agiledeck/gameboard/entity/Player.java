@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.user.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import java.util.Objects;
 
@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -23,6 +25,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "game_board_id", nullable = false)
+    private GameBoard gameBoard;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -32,8 +38,4 @@ public class Player {
 	public boolean isValid() {
 		return Objects.nonNull(this.name);
 	}
-
-	//TODO: Add relationship between player vs game board (OneGameBoard ManyPlayers)
-    //TODO: Change "play" package to "gameboard" package
-    //TODO: Move Player to "gameboard" package
 }

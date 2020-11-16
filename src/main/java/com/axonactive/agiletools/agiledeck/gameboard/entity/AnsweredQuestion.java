@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import java.util.List;
 
@@ -40,7 +40,6 @@ public class AnsweredQuestion {
     @Transient
     private List<Answer> answerOptions;
 
-    //TODO: Add attr playing
     private boolean playing;
   
     @Embedded

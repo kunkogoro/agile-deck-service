@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;

@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.boundary;
+package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 import java.net.URI;
 
@@ -16,9 +16,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.axonactive.agiletools.agiledeck.play.control.GameBoardService;
-import com.axonactive.agiletools.agiledeck.play.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.play.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 @Path("/gameboards")
 @Consumes({MediaType.APPLICATION_JSON})

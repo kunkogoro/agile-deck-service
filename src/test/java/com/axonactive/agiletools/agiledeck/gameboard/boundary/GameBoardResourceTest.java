@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.boundary;
+package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
