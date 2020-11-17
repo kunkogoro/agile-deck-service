@@ -14,4 +14,5 @@ VALUES (1, 'Iterative', 1, 'iterative.png', 1, 1),
 
 INSERT INTO public.tbl_game_boards
 (code, game_id)
-VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1);
+VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
+    ('asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
