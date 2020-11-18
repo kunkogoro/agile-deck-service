@@ -7,6 +7,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
@@ -15,6 +16,7 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.github.javafaker.Faker;
 
 @RequestScoped
+@Transactional
 public class PlayerService {
     
     @PersistenceContext

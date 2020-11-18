@@ -4,10 +4,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 
 @RequestScoped
+@Transactional
 public class AnsweredQuestionService {
     
     @PersistenceContext 
