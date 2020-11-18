@@ -48,6 +48,8 @@ public class GameBoardService {
         return currentAnswerQuestion;
     }
 
+    
+
     public GameBoard getByCode(String code) {
         TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
         query.setParameter("code", code);
