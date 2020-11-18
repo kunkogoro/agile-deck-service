@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,8 +26,15 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
+@NamedQueries({
+    @NamedQuery(name = AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_IS_PLAYING, query = "SELECT aq FROM AnsweredQuestion aq WHERE aq.gameBoard.id = :id AND aq.playing = true")
+})
 public class AnsweredQuestion {
+
+    private static final String QUANLIFIER = "com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion";
     
+    public static final String GET_BY_GAME_BOARD_ID_AND_IS_PLAYING = QUANLIFIER + "getByGameBoardIdAndIsPlaying";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

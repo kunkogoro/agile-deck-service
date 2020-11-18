@@ -51,9 +51,9 @@ public class GameBoardSocket {
 
     @OnMessage
     public void onMessage(String message, @PathParam("code") String code) {
-//        Map<String, Object> data = new Gson().fromJson(message, Map.class);
-//        String key = data.get("key").toString();
-//        System.out.println(key);
+       Map<String, Object> data = new Gson().fromJson(message, Map.class);
+       String key = data.get("key").toString();
+       System.out.println(key);
     }
 
     private void broadcast(String message) {

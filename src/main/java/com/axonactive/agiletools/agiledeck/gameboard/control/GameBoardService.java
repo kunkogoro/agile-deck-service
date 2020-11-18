@@ -31,14 +31,20 @@ public class GameBoardService {
     @Inject
     AnswerService answerService;
 
+    @Inject
+    AnsweredQuestionService answeredQuestionService;
 
-    //TODO: Add condition for return a AnsQues
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
-//        AnsweredQuestion currentAnswerQuestion = AnsweredQuestionService.findCurrenrPLaying(code);
-        List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
-        return AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
+        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getGame().getId());
+
+        if(this.validateNullAnsweredQuestion(currentAnswerQuestion)){
+            List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
+            currentAnswerQuestion =  AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
+        }
+        
+        return currentAnswerQuestion;
     }
 
     private GameBoard getByCode(String code) {
@@ -51,6 +57,13 @@ public class GameBoardService {
         if(Objects.isNull(gameBoard)) {
             throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_NOT_FOUND);
         }
+    }
+
+    private boolean validateNullAnsweredQuestion(AnsweredQuestion answeredQuestion){
+        if(Objects.isNull(answeredQuestion)){
+            return true;
+        }
+        return false;
     }
 
     public GameBoard create(Long gameId) {
