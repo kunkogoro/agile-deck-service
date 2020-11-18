@@ -36,7 +36,7 @@ public class GameBoardService {
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
-//        AnsweredQuestion currentAnswerQuestion = AnsweredQuestionService.findCurrenrPLaying(code);
+    //AnsweredQuestion currentAnswerQuestion = AnsweredQuestionService.findCurrenrPLaying(code);
         List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
         return AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
     }

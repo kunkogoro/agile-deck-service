@@ -16,7 +16,6 @@ public class GameBoardSocket {
 
     Map<String, Session> sessions = new ConcurrentHashMap<>();
 
-
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
         Faker faker = new Faker();
