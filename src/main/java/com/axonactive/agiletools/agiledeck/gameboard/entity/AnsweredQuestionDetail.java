@@ -24,13 +24,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NamedQueries({
-    @NamedQuery(name = AnsweredQuestionDetail.GET_BY_ID, query = "SELECT aqd FROM AnsweredQuestionDetail aqd WHERE aqd.id = :id")
+    @NamedQuery(name = AnsweredQuestionDetail.GET_BY_ID, query = "SELECT aqd FROM AnsweredQuestionDetail aqd WHERE aqd.id = :id"),
+    @NamedQuery(name = AnsweredQuestionDetail.GET_ALL_OF_PLAYING_ANSWERED_QUESTION, query = "SELECT aqd FROM AnsweredQuestionDetail aqd WHERE answeredQuestion.id = :id")
 })
 public class AnsweredQuestionDetail {
 
     private static final String QUALIFIER = "com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail";
 
     public static final String GET_BY_ID = QUALIFIER + "getById";
+    public static final String GET_ALL_OF_PLAYING_ANSWERED_QUESTION = QUALIFIER + "getAllOfPlayingAnsweredQuestion";    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

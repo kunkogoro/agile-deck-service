@@ -36,6 +36,7 @@ public class PlayerServiceTest {
     @Test
     public void whenCreatePlayer_thenReturnNonNullPlayer() {
         Player player = playerService.create(this.gameBoard.getCode());
+        System.out.println(player.getName());
         Assertions.assertNotNull(player);
     }
 }
