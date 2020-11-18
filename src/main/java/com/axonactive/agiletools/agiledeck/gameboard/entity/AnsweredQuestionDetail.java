@@ -36,4 +36,11 @@ public class AnsweredQuestionDetail {
 
     @Embedded
     private AnswerContent answer;
+
+    public AnsweredQuestionDetail(AnsweredQuestion answeredQuestion, Player player) {
+        this.answeredQuestion = answeredQuestion;
+        this.player = player;
+    }
+
+    
 }

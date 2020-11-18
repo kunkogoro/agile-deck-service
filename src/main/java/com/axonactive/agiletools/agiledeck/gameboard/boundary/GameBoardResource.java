@@ -16,9 +16,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 
 @Path("/gameboards")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -28,6 +32,12 @@ public class GameBoardResource {
     
     @Inject
     GameBoardService gameBoardService;
+
+    @Inject
+    PlayerService playerService;
+
+    @Inject
+    AnsweredQuestionDetailService answeredQuestionDetailService;
 
     @Context
     UriInfo uriInfo;
@@ -43,6 +53,8 @@ public class GameBoardResource {
     @Path("{code}")
     public Response join(@PathParam("code") String code) {       
         AnsweredQuestion currentQuestion = gameBoardService.join(code);
-        return Response.ok(currentQuestion).build(); 
+        Player player = playerService.create(code);
+        AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
+        return Response.ok(answeredQuestionDetail).build();
     }
 }

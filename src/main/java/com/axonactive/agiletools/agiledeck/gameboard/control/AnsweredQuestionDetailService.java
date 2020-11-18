@@ -6,25 +6,31 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 
-@Transactional
 @RequestScoped
 public class AnsweredQuestionDetailService {
     
-    @PersistenceContext
+    @PersistenceContext 
     EntityManager em;
 
     @Inject
     GameBoardService gameBoardService;
+
+    public AnsweredQuestionDetail create(AnsweredQuestion answeredQuestion, Player player){
+        AnsweredQuestionDetail answeredQuestionDetail = new AnsweredQuestionDetail(answeredQuestion, player);
+        em.persist(answeredQuestionDetail);
+        return answeredQuestionDetail;
+    }
 
     public List<AnsweredQuestionDetail> getAll(GameBoard gameBoard) {
         gameBoardService.validate(gameBoard);
         
         return null;
     }
-
+    
 }

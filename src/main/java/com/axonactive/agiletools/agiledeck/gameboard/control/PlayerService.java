@@ -3,29 +3,27 @@ package com.axonactive.agiletools.agiledeck.gameboard.control;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
+import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.github.javafaker.Faker;
 
-@Transactional
 @RequestScoped
 public class PlayerService {
-
+    
     @PersistenceContext
     EntityManager em;
 
-    @Inject
-    GameBoardService gameBoardService;
-
-    public Player create(GameBoard gameBoard) {
-        System.out.println(em);
-        Player player = init(gameBoard);
+    public Player create(String code){
+        GameBoard gameBoard = this.findGameBoardByCode(code);
+        this.validate(gameBoard);
+        Player player = this.init(gameBoard);
         em.persist(player);
         return player;
     }
@@ -47,4 +45,17 @@ public class PlayerService {
         Player player = query.getResultStream().findFirst().orElse(null);
         return Objects.nonNull(player);
     }
+    
+    private GameBoard findGameBoardByCode(String code) {
+        TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
+        query.setParameter("code", code);
+        return query.getResultStream().findFirst().orElse(null);
+    }
+
+    private void validate(GameBoard gameBoard) {
+        if(Objects.isNull(gameBoard)){
+            throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_NOT_FOUND);
+        }
+    }
+
 }

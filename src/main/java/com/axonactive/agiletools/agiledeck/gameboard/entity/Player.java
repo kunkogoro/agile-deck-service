@@ -45,9 +45,12 @@ public class Player {
     @Column(name = "avatar")
     private String avatar;
 
+	public boolean isValid() {
+		return Objects.nonNull(this.name);
+	}
+
     public Player(GameBoard gameBoard, String name) {
         this.gameBoard = gameBoard;
         this.name = name;
     }
-    
 }
