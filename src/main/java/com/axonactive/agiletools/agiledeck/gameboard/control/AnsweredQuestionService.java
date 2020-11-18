@@ -21,4 +21,5 @@ public class AnsweredQuestionService {
         return query.getResultStream().findFirst().orElse(null);
     }
 
+
 }
