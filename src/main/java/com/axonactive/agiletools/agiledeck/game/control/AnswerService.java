@@ -6,10 +6,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 
 @RequestScoped
+@Transactional
 public class AnswerService {
     
     @PersistenceContext

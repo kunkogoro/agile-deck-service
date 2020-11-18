@@ -59,5 +59,6 @@ public class AnsweredQuestion {
         answeredQuestion.setGameBoard(gameBoard);
         answeredQuestion.setAnswerOptions(defaultAnswerOptions);
 		return answeredQuestion;
-	}
+    }
+    
 }
