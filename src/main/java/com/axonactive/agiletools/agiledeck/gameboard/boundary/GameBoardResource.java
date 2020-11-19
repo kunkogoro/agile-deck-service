@@ -19,6 +19,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.axonactive.agiletools.agiledeck.game.entity.AnswerContent;
 import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
@@ -70,13 +71,6 @@ public class GameBoardResource {
         if (Objects.isNull(answeredQuestionDetail)) {
             answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
         }
-        return Response.ok(answeredQuestionDetail).build();
-    }
-
-    @PUT
-    @Path("{answerQuestionDetailId}")
-    public Response answerQuestionDetailOfPlayer(@PathParam("answerQuestionDetailId") Long answerQuestionDetailId, AnswerContent answerContent){
-        AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.update(answerQuestionDetailId, answerContent);
         return Response.ok(answeredQuestionDetail).build();
     }
 }
