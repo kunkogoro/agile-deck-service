@@ -22,6 +22,7 @@ public class GameBoardSocket {
 
     Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     Map<String, List<PlayerSocket>> players = new ConcurrentHashMap<>();
+    Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -29,10 +30,14 @@ public class GameBoardSocket {
             List<Session> playerSession = new ArrayList<>();
             playerSession.add(session);
             sessions.put(code, playerSession);
+
+            flippedAnswers.put(code, false);
         } else {
             List<Session> playerSession = sessions.get(code);
             playerSession.add(session);
         }
+
+        sendFlipStatus(code);
     }
 
     @OnClose
@@ -60,8 +65,34 @@ public class GameBoardSocket {
             joinGame(jsonObject.get("info").getAsJsonObject(), code);
         } else if (action.equals("selected-card")) {
             playerSelectedCard(jsonObject, code);
+        } else if (action.equals("flip-card")) {
+            flipCard(code);
+        } else if (action.equals("reset-answer")) {
+            resetAnswer(code);
         }
 
+    }
+
+    private void resetAnswer(String code) {
+        players.get(code).forEach(playerSocket -> {
+            playerSocket.setSelected(false);
+            playerSocket.setSelectedCardId(-1);
+        });
+        sendListPlayer(code);
+
+        flippedAnswers.put(code, false);
+        sendFlipStatus(code);
+
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put("action", "reset-answer");
+        broadcast(sessions.get(code), new Gson().toJson(data));
+    }
+
+    private void flipCard(String code) {
+        flippedAnswers.put(code, true);
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put("action", "flip-card");
+        broadcast(sessions.get(code), new Gson().toJson(data));
     }
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
@@ -92,7 +123,16 @@ public class GameBoardSocket {
             List<PlayerSocket> list = players.get(code);
             list.add(player);
         }
+
         sendListPlayer(code);
+    }
+
+    private void sendFlipStatus(String code) {
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put("action", "flip-status");
+        data.put("isFlip", flippedAnswers.get(code));
+
+        broadcast(sessions.get(code), new Gson().toJson(data));
     }
 
     private void sendListPlayer(String code) {
