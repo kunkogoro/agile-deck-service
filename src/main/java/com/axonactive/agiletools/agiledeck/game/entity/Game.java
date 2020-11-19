@@ -36,5 +36,7 @@ public class Game {
 
     @Column(name = "description")
     private String description;
+
+    
     
 }

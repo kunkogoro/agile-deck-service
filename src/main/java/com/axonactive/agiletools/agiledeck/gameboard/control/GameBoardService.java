@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
@@ -23,6 +24,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
 @RequestScoped
+@Transactional
 public class GameBoardService {
 
     @PersistenceContext
@@ -49,7 +51,6 @@ public class GameBoardService {
         }
         return currentAnswerQuestion;
     }
-
     
 
     public GameBoard getByCode(String code) {

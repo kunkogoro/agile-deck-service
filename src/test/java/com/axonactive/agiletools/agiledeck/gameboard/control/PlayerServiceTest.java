@@ -2,6 +2,7 @@ package com.axonactive.agiletools.agiledeck.gameboard.control;
 
 import javax.inject.Inject;
 
+import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
@@ -37,5 +38,12 @@ public class PlayerServiceTest {
     public void whenCreatePlayer_thenReturnNonNullPlayer() {
         Player player = playerService.create(this.gameBoard.getCode());
         Assertions.assertNotNull(player);
+    }
+
+    @Test
+    public void whenCreatePlayer_thenReturnGameBoardNotFound(){
+        Assertions.assertThrows(AgileDeckException.class, () -> {
+            playerService.create("GAME_BOARD_NOT_FOUND");
+        });
     }
 }

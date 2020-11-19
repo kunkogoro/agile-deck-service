@@ -60,5 +60,6 @@ public class AnsweredQuestion {
         answeredQuestion.setAnswerOptions(defaultAnswerOptions);
         answeredQuestion.setPlaying(true);
 		return answeredQuestion;
-	}
+    }
+    
 }

@@ -12,11 +12,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.axonactive.agiletools.agiledeck.game.entity.AnswerContent;
 import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
@@ -69,6 +70,13 @@ public class GameBoardResource {
         if (Objects.isNull(answeredQuestionDetail)) {
             answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
         }
+        return Response.ok(answeredQuestionDetail).build();
+    }
+
+    @PUT
+    @Path("{answerQuestionDetailId}")
+    public Response answerQuestionDetailOfPlayer(@PathParam("answerQuestionDetailId") Long answerQuestionDetailId, AnswerContent answerContent){
+        AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.update(answerQuestionDetailId, answerContent);
         return Response.ok(answeredQuestionDetail).build();
     }
 }
