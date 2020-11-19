@@ -29,8 +29,6 @@ public class PlayerServiceTest {
     public void init() {
         Game game = new Game();
         game.setName("Iterative - Incremental - Big Bang");
-
-        // gameBoard = new GameBoard("b4661d5e-f296-4cf6-887d-cfa0f97d1f36", game);
         gameBoard = gameBoardService.getByCode("b4661d5e-f296-4cf6-887d-cfa0f97d1f36");
     }
 

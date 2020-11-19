@@ -38,7 +38,7 @@ public class PlayerService {
         String name = "";
         do {
             name =  faker.food().fruit();
-        } while(isExisted(gameBoard.getCode(), name));
+        } while(isExisted(gameBoard.getCode(), name) && name.length() <= 15);
         return new Player(gameBoard, name);
     }
 

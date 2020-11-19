@@ -39,7 +39,7 @@ public class AnsweredQuestionDetailResourceTest {
         List<AnsweredQuestionDetail> answeredQuestionDetailList = Arrays.asList(answeredQuestionDetailArray);
 
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertTrue(answeredQuestionDetailList.size() == 0);
+        Assertions.assertEquals(answeredQuestionDetailList.size(), 0);
     }
 
     @Test

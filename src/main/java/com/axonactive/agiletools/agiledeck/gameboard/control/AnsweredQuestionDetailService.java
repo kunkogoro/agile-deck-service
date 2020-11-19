@@ -24,12 +24,6 @@ public class AnsweredQuestionDetailService {
     @PersistenceContext 
     EntityManager em;
 
-    @Inject
-    GameBoardService gameBoardService;
-
-    @Inject
-    AnsweredQuestionService answeredQuestionService;
-
     public AnsweredQuestionDetail create(AnsweredQuestion answeredQuestion, Player player){
         AnsweredQuestionDetail answeredQuestionDetail = new AnsweredQuestionDetail(answeredQuestion, player);
         em.persist(answeredQuestionDetail);
@@ -55,7 +49,7 @@ public class AnsweredQuestionDetailService {
         }
     }
 
-    public List<AnsweredQuestionDetail> getAll(Long id) {
+    public List<AnsweredQuestionDetail> getAllByAnsweredQuestionId(Long id) {
         TypedQuery<AnsweredQuestionDetail> query = em.createNamedQuery(AnsweredQuestionDetail.GET_ALL_OF_PLAYING_ANSWERED_QUESTION, AnsweredQuestionDetail.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -73,5 +67,14 @@ public class AnsweredQuestionDetailService {
         TypedQuery<Player> query = em.createNamedQuery(AnsweredQuestionDetail.GET_ALL_PLAYERS, Player.class);
         query.setParameter("id", id);
         return query.getResultList();
+    }
+    
+    public void resetAnswer(Long ansQuestId) {
+        List<AnsweredQuestionDetail> answeredQuestionDetails = getAllByAnsweredQuestionId(ansQuestId);
+
+        answeredQuestionDetails.forEach(aqd -> {
+            aqd.setAnswer(null);
+            em.merge(aqd);
+        });
     }
 }

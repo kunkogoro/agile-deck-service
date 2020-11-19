@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Setter @Getter
 public class PlayerSocket extends Player{
-    Integer image = 0;
-    Integer selectedCard = 0;
+    boolean selected = false;
+    Integer selectedCardId = -1;
 }
