@@ -49,7 +49,6 @@ public class GameBoardService {
         
         return currentAnswerQuestion;
     }
-
     
 
     public GameBoard getByCode(String code) {
