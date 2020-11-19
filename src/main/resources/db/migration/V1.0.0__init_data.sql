@@ -17,24 +17,21 @@ INSERT INTO public.tbl_game_boards
 VALUES(1, 'b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
     (2, 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
 
-INSERT INTO public.tbl_players
-(id, name, game_board_id)
+INSERT INTO public.tbl_players (id, name, game_board_id)
 VALUES(1,'Strawberries', 1),
     (2,'Banana', 1),
     (3,'Orange', 1),
     (4,'Mango', 1),
     (5,'Durian', 1);
 
-INSERT INTO public.tbl_answered_questions
-(id, game_board_id, question_content, playing)
+INSERT INTO public.tbl_answered_questions (id, game_board_id, question_content, playing)
 VALUES(1,1,'Building a new highway', true),
     (2,1,'Learning to ride a horse', false),
     (3,1,'Sewing a patchwork quilt', false),
     (4,1,'Negotiating the release of a kidnapped person', false);
 
 
-INSERT INTO public.tbl_questions
-(id, question_content, game_id)
+INSERT INTO public.tbl_questions (id, question_content, game_id)
 VALUES(1,'Building a new highway', 1),
     (2,'Learning to ride a horse', 1),
     (3,'Sewing a patchwork quilt', 1),

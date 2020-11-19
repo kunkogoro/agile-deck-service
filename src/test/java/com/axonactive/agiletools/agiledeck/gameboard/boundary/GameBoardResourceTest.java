@@ -29,7 +29,8 @@ class GameBoardResourceTest {
 
     @Test
     public void whenJoinGame_thenReturnAnswerQuestionDetail() {
-        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36").when()
+        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                .when()
                 .get("gameboards/join/{code}");
 
         Assertions.assertEquals(200, response.getStatusCode());
@@ -102,13 +103,13 @@ class GameBoardResourceTest {
                 .header("MSG_CODE", CoreMatchers.is("PLAYER_NOT_FOUND"));
     }
 
-    @Test
-    public void whenPlayerRejoinGame_thenReturnNewAnswerQuestionDetail(){
-        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
-                .queryParam("playerId", 50)
-                .when()
-                .get("gameboards/rejoin/{code}")
-                .then().statusCode(200);
-    }
+    // @Test
+    // public void whenPlayerRejoinGame_thenReturnNewAnswerQuestionDetail(){
+    //     RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+    //             .queryParam("playerId", 50)
+    //             .when()
+    //             .get("gameboards/rejoin/{code}")
+    //             .then().statusCode(200);
+    // }
 
 }
