@@ -1,11 +1,9 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
-import com.github.javafaker.Faker;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.modelmapper.ModelMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.*;

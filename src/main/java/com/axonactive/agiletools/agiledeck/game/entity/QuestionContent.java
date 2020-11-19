@@ -17,4 +17,5 @@ public class QuestionContent {
 
     @Column(name = "question_content_as_image")
     private String image;
+    
 }

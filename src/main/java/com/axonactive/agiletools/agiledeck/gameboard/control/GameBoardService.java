@@ -1,6 +1,5 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -20,8 +19,6 @@ import com.axonactive.agiletools.agiledeck.game.entity.Game;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 
 @RequestScoped
 @Transactional
