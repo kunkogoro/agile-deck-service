@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -12,6 +13,7 @@ import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerMsgCodes;
 import com.github.javafaker.Faker;
 
 @RequestScoped
@@ -20,9 +22,12 @@ public class PlayerService {
     @PersistenceContext
     EntityManager em;
 
+    @Inject
+    GameBoardService gameBoardService;
+
     public Player create(String code){
-        GameBoard gameBoard = this.findGameBoardByCode(code);
-        this.validate(gameBoard);
+        GameBoard gameBoard = gameBoardService.getByCode(code);
+        gameBoardService.validate(gameBoard);
         Player player = this.init(gameBoard);
         em.persist(player);
         return player;
@@ -45,17 +50,18 @@ public class PlayerService {
         Player player = query.getResultStream().findFirst().orElse(null);
         return Objects.nonNull(player);
     }
-    
-    private GameBoard findGameBoardByCode(String code) {
-        TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
-        query.setParameter("code", code);
-        return query.getResultStream().findFirst().orElse(null);
-    }
 
-    private void validate(GameBoard gameBoard) {
-        if(Objects.isNull(gameBoard)){
-            throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_NOT_FOUND);
+    private void validate(Player player) {
+        if(Objects.isNull(player)){
+            throw new AgileDeckException(PlayerMsgCodes.PLAYER_NOT_FOUND);
         }
     }
 
+    public Player findById(Long playerId) {
+        TypedQuery<Player> query = em.createNamedQuery(Player.GET_BY_ID, Player.class);
+        query.setParameter("id", playerId);
+        Player player = query.getResultStream().findFirst().orElse(null);
+        validate(player);
+        return player;
+    }
 }

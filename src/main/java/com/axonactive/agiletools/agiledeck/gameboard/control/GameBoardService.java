@@ -1,5 +1,6 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -18,6 +19,8 @@ import com.axonactive.agiletools.agiledeck.game.entity.Game;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 @RequestScoped
 public class GameBoardService {
@@ -38,13 +41,12 @@ public class GameBoardService {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
 
-        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getGame().getId());
+        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getId());
 
-        if(this.validateNullAnsweredQuestion(currentAnswerQuestion)){
+        if(Objects.isNull(currentAnswerQuestion)){
             List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
             currentAnswerQuestion =  AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
         }
-        
         return currentAnswerQuestion;
     }
 
@@ -60,13 +62,6 @@ public class GameBoardService {
         if(Objects.isNull(gameBoard)) {
             throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_NOT_FOUND);
         }
-    }
-
-    private boolean validateNullAnsweredQuestion(AnsweredQuestion answeredQuestion){
-        if(Objects.isNull(answeredQuestion)){
-            return true;
-        }
-        return false;
     }
 
     public GameBoard create(Long gameId) {

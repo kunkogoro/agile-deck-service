@@ -21,7 +21,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_players")
 @NamedQueries({
-    @NamedQuery(name = Player.GET_BY_GAMEBOARD, query = "SELECT pl FROM Player pl WHERE pl.gameBoard.code = :gameBoardCode AND pl.name = :playerName")
+    @NamedQuery(name = Player.GET_BY_GAMEBOARD, query = "SELECT pl FROM Player pl WHERE pl.gameBoard.code = :gameBoardCode AND pl.name = :playerName"),
+    @NamedQuery(name = Player.GET_BY_ID, query = "SELECT pl FROM Player pl WHERE pl.id = :id")
 })
 @Getter @Setter
 @NoArgsConstructor
@@ -30,7 +31,8 @@ public class Player {
     private static final String QUALIFIER = "com.axonactive.agiletools.agiledeck.play.entity.Player";
 
     public static final String GET_BY_GAMEBOARD = QUALIFIER + "getByGameBoard";    
-    
+    public static final String GET_BY_ID = QUALIFIER + "getById";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

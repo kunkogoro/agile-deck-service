@@ -1,6 +1,7 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 import java.net.URI;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -50,11 +51,24 @@ public class GameBoardResource {
     }
 
     @GET
-    @Path("{code}")
+    @Path("/join/{code}")
     public Response join(@PathParam("code") String code) {       
         AnsweredQuestion currentQuestion = gameBoardService.join(code);
         Player player = playerService.create(code);
         AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
+        return Response.ok(answeredQuestionDetail).build();
+    }
+
+    @GET
+    @Path("/rejoin/{code}")
+    public Response rejoin(@PathParam("code") String code, @QueryParam("playerId") Long playerId) {
+        AnsweredQuestion currentQuestion = gameBoardService.join(code);
+        Player player = playerService.findById(playerId);
+
+        AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.rejoin(currentQuestion, player);
+        if (Objects.isNull(answeredQuestionDetail)) {
+            answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
+        }
         return Response.ok(answeredQuestionDetail).build();
     }
 }

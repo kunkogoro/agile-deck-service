@@ -58,6 +58,7 @@ public class AnsweredQuestion {
         AnsweredQuestion answeredQuestion = new AnsweredQuestion();
         answeredQuestion.setGameBoard(gameBoard);
         answeredQuestion.setAnswerOptions(defaultAnswerOptions);
+        answeredQuestion.setPlaying(true);
 		return answeredQuestion;
 	}
 }

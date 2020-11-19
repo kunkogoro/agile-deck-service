@@ -6,6 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
@@ -32,5 +33,12 @@ public class AnsweredQuestionDetailService {
         
         return null;
     }
-    
+
+    public AnsweredQuestionDetail rejoin(AnsweredQuestion currentQuestion, Player player) {
+        TypedQuery<AnsweredQuestionDetail> query = em.createNamedQuery(
+                AnsweredQuestionDetail.GET_BY_ANSWER_QUESTION_AND_PLAYER, AnsweredQuestionDetail.class);
+        query.setParameter("answeredQuestionId", currentQuestion.getId());
+        query.setParameter("playerId", player.getId());
+        return query.getResultStream().findFirst().orElse(null);
+    }
 }
