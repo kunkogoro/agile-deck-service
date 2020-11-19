@@ -68,4 +68,10 @@ public class AnsweredQuestionDetailService {
         query.setParameter("playerId", player.getId());
         return query.getResultStream().findFirst().orElse(null);
     }
+
+    public List<Player> getAllPlayers (Long id){
+        TypedQuery<Player> query = em.createNamedQuery(AnsweredQuestionDetail.GET_ALL_PLAYERS, Player.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 }

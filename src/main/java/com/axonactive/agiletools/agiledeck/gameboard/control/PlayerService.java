@@ -3,7 +3,6 @@ package com.axonactive.agiletools.agiledeck.gameboard.control;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,7 +11,6 @@ import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerMsgCodes;
 import com.github.javafaker.Faker;

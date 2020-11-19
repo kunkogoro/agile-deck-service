@@ -51,7 +51,6 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    //TODO remove this constructor because it is used in test only
     public Answer(Long id) {
         this.id = id;
     }

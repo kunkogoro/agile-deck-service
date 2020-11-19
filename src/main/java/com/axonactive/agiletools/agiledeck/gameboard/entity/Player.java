@@ -1,7 +1,5 @@
 package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
-import java.util.Objects;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,10 +44,6 @@ public class Player {
 
     @Column(name = "avatar")
     private String avatar;
-
-	// public boolean isValid() {
-	// 	return Objects.nonNull(this.name);
-	// }
 
     public Player(GameBoard gameBoard, String name) {
         this.gameBoard = gameBoard;

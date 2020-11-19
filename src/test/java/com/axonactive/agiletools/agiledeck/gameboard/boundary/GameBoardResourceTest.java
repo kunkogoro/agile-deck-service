@@ -30,21 +30,14 @@ class GameBoardResourceTest {
     @Test
     public void whenJoinGame_thenReturnAnswerQuestionDetail() {
         Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36").when()
-                .get("gameboards/{code}");
+                .get("gameboards/join/{code}");
 
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
     @Test
-    public void whenJoinGameBusAnswerQuestionNotFound_thenReturnDefaultAnswerQuestionDetail(){
-        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
-                            .when()
-                            .get("gameboards/{code}");
-    }
-
-    @Test
     public void whenJoinGame_thenReturnAnswer() {
-        RestAssured.given().pathParam("code", "code-not-found").when().get("gameboards/{code}").then().statusCode(400)
+        RestAssured.given().pathParam("code", "code-not-found").when().get("gameboards/join/{code}").then().statusCode(400)
                 .header("MSG_CODE", CoreMatchers.is("GAME_BOARD_NOT_FOUND"));
     }
 
@@ -80,4 +73,42 @@ class GameBoardResourceTest {
                 .statusCode(400)
                 .header("MSG_CODE", CoreMatchers.is("ANSWER_QUESTION_DETAIL_NOT_FOUND"));
     }
+
+    @Test
+    public void whenPlayerRejoinGame_thenReturnReturnAnswerQuetionDetail(){
+        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                .queryParam("playerId", 5).when().get("gameboards/rejoin/{code}");
+
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void whenPlayerRejoinGame_thenReturnGameBoardNotFound(){
+        RestAssured.given().pathParam("code", "code-not-found")
+                .queryParam("playerId", 5)
+                .when()
+                .get("gameboards/rejoin/{code}")
+                .then().statusCode(400)
+                .header("MSG_CODE", CoreMatchers.is("GAME_BOARD_NOT_FOUND"));
+    }
+
+    @Test
+    public void whenPlayerRejoinGame_thenReturnPlayerNotFound(){
+        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                .queryParam("playerId", -1)
+                .when()
+                .get("gameboards/rejoin/{code}")
+                .then().statusCode(400)
+                .header("MSG_CODE", CoreMatchers.is("PLAYER_NOT_FOUND"));
+    }
+
+    @Test
+    public void whenPlayerRejoinGame_thenReturnNewAnswerQuestionDetail(){
+        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                .queryParam("playerId", 50)
+                .when()
+                .get("gameboards/rejoin/{code}")
+                .then().statusCode(200);
+    }
+
 }

@@ -26,10 +26,9 @@ import lombok.Setter;
 @NamedQueries({
         @NamedQuery(name = AnsweredQuestionDetail.GET_BY_ID, query = "SELECT aqd FROM AnsweredQuestionDetail aqd WHERE aqd.id = :id"),
         @NamedQuery(name = AnsweredQuestionDetail.GET_ALL_OF_PLAYING_ANSWERED_QUESTION, query = "SELECT aqd FROM AnsweredQuestionDetail aqd WHERE answeredQuestion.id = :id"),
-        @NamedQuery(name = AnsweredQuestionDetail.GET_BY_ANSWER_QUESTION_AND_PLAYER,
-                query = "SELECT aqd FROM AnsweredQuestionDetail aqd " +
-                        "WHERE aqd.player.id = :playerId AND aqd.answeredQuestion.id = :answeredQuestionId")
-})
+        @NamedQuery(name = AnsweredQuestionDetail.GET_BY_ANSWER_QUESTION_AND_PLAYER, query = "SELECT aqd FROM AnsweredQuestionDetail aqd "
+                + "WHERE aqd.player.id = :playerId AND aqd.answeredQuestion.id = :answeredQuestionId"),
+        @NamedQuery(name = AnsweredQuestionDetail.GET_ALL_PLAYERS, query = "SELECT player FROM AnsweredQuestionDetail aqd WHERE aqd.answeredQuestion.id = :id") })
 public class AnsweredQuestionDetail {
 
     private static final String QUALIFIER = "com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail";
@@ -37,6 +36,7 @@ public class AnsweredQuestionDetail {
     public static final String GET_BY_ID = QUALIFIER + "getById";
     public static final String GET_ALL_OF_PLAYING_ANSWERED_QUESTION = QUALIFIER + "getAllOfPlayingAnsweredQuestion";
     public static final String GET_BY_ANSWER_QUESTION_AND_PLAYER = QUALIFIER + "getByAnswerQuestionAndPlayer";
+    public static final String GET_ALL_PLAYERS = QUALIFIER + "getAllPlayers";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +57,5 @@ public class AnsweredQuestionDetail {
         this.answeredQuestion = answeredQuestion;
         this.player = player;
     }
-
 
 }

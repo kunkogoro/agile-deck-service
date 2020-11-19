@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 
 @Path("/answeredquestiondetails")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -28,5 +29,12 @@ public class AnsweredQuestionDetailResource {
     public Response getAll(@PathParam("id") Long id) {
         List<AnsweredQuestionDetail> listAnsweredQuestionDetail = answeredQuestionDetailService.getAll(id);
         return Response.ok(listAnsweredQuestionDetail).build();
+    }
+
+    @GET
+    @Path("/players/{id}")
+    public Response getAllPlayers(@PathParam("id") Long id){
+        List<Player> listPlayers = answeredQuestionDetailService.getAllPlayers(id);
+        return Response.ok(listPlayers).build(); 
     }
 }

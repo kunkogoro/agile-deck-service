@@ -1,20 +1,23 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
-import com.github.javafaker.Faker;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.modelmapper.ModelMapper;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.websocket.*;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
+
+import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")

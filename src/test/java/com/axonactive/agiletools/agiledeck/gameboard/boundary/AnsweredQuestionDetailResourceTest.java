@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,32 @@ public class AnsweredQuestionDetailResourceTest {
 
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertTrue(answeredQuestionDetailList.size() == 0);
+    }
+
+    @Test
+    public void whenGetAllPlayers_thenReturnListPlayers() {
+        Response response = RestAssured.given().pathParam("id", 1).when().get("answeredquestiondetails/players/{id}")
+                .then().assertThat().statusCode(200).extract().response();
+
+        Player[] playerArray = response.as(Player[].class);
+        List<Player> playerList = Arrays.asList(playerArray);
+
+        Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertTrue(playerList.size() > 0);
+
+    }
+
+    @Test
+    public void whenGetAllPlayersWithoutAnsweredQuestion_thenReturnEmptyList(){
+        Response response = RestAssured.given().pathParam("id", 0).when().get("answeredquestiondetails/players/{id}")
+        .then().assertThat().statusCode(200).extract().response();
+
+        Player[] playerArray = response.as(Player[].class);
+        List<Player> playerList = Arrays.asList(playerArray);
+
+        Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertTrue(playerList.size() == 0);
+
     }
 
 }
