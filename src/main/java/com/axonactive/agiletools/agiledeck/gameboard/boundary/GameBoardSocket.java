@@ -70,8 +70,8 @@ public class GameBoardSocket {
 
         players.get(code).forEach(playerSocket -> {
             if (playerId.equals(playerSocket.getId())) {
-                playerSocket.setImage(1);
-                playerSocket.setSelectedCard(selectedCardId);
+                playerSocket.setSelected(true);
+                playerSocket.setSelectedCardId(selectedCardId);
 
                 Map<String, Object> data = new ConcurrentHashMap<>();
                 data.put("action", "selected-card");
