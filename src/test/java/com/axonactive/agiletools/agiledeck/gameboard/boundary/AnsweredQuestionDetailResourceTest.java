@@ -15,13 +15,12 @@ import io.restassured.response.Response;
 
 @QuarkusTest
 public class AnsweredQuestionDetailResourceTest {
-    
+
     @Test
     public void whenGetAll_thenReturnListOfAnsweredQuestionOfPlayers() {
-        Response response = RestAssured.given().pathParam("id", 1).when().get("answeredquestiondetails/{id}")
-                .then().assertThat().statusCode(200)
-                .extract().response(); 
-                
+        Response response = RestAssured.given().pathParam("id", 1).when().get("answeredquestiondetails/{id}").then()
+                .assertThat().statusCode(200).extract().response();
+
         AnsweredQuestionDetail[] answeredQuestionDetailArray = response.as(AnsweredQuestionDetail[].class);
         List<AnsweredQuestionDetail> answeredQuestionDetailList = Arrays.asList(answeredQuestionDetailArray);
 
@@ -31,10 +30,9 @@ public class AnsweredQuestionDetailResourceTest {
 
     @Test
     public void whenGetAllWithAnsweredQuestionHasNoAnsweredQuestionDetails_thenReturnEmptyList() {
-        Response response = RestAssured.given().pathParam("id", 0).when().get("answeredquestiondetails/{id}")
-                .then().assertThat().statusCode(200)
-                .extract().response(); 
-                
+        Response response = RestAssured.given().pathParam("id", 0).when().get("answeredquestiondetails/{id}").then()
+                .assertThat().statusCode(200).extract().response();
+
         AnsweredQuestionDetail[] answeredQuestionDetailArray = response.as(AnsweredQuestionDetail[].class);
         List<AnsweredQuestionDetail> answeredQuestionDetailList = Arrays.asList(answeredQuestionDetailArray);
 
@@ -56,9 +54,9 @@ public class AnsweredQuestionDetailResourceTest {
     }
 
     @Test
-    public void whenGetAllPlayersWithoutAnsweredQuestion_thenReturnEmptyList(){
+    public void whenGetAllPlayersWithoutAnsweredQuestion_thenReturnEmptyList() {
         Response response = RestAssured.given().pathParam("id", 0).when().get("answeredquestiondetails/players/{id}")
-        .then().assertThat().statusCode(200).extract().response();
+                .then().assertThat().statusCode(200).extract().response();
 
         Player[] playerArray = response.as(Player[].class);
         List<Player> playerList = Arrays.asList(playerArray);
@@ -66,6 +64,12 @@ public class AnsweredQuestionDetailResourceTest {
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertTrue(playerList.size() == 0);
 
+    }
+
+    @Test
+    public void whenResetAnswerQuetion_thenReturnStatus() {
+        RestAssured.given().pathParam("currentQuestId", 1).when().put("answeredquestiondetails/reset/{currentQuestId}")
+                .then().statusCode(200);
     }
 
 }
