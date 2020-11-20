@@ -1,6 +1,7 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,16 +66,32 @@ public class GameBoardSocket {
 
         String action = jsonObject.get("action").getAsString();
 
-        if(action.equals("join-game")) {
-            joinGame(jsonObject.get("info").getAsJsonObject(), code);
-        } else if (action.equals("selected-card")) {
-            playerSelectedCard(jsonObject, code);
-        } else if (action.equals("flip-card")) {
-            flipCard(code);
-        } else if (action.equals("reset-answer")) {
-            resetAnswer(code);
+        switch (action) {
+            case "join-game":
+                joinGame(jsonObject.get("info").getAsJsonObject(), code);
+                break;
+            case "selected-card":
+                playerSelectedCard(jsonObject, code);
+                break;
+            case "flip-card":
+                flipCard(code);
+                break;
+            case "reset-answer":
+                resetAnswer(code);
+                break;
         }
 
+    }
+
+    private List<PlayerSocket> filterPlayers(String code) {
+        List<PlayerSocket> playerSockets = new ArrayList<>();
+        players.get(code).forEach(playerSocket -> {
+            if(!playerSockets.contains(playerSocket)) {
+                playerSockets.add(playerSocket);
+            }
+        });
+
+        return playerSockets;
     }
 
     private void resetAnswer(String code) {
@@ -115,6 +132,9 @@ public class GameBoardSocket {
                 broadcast(sessions.get(code), new Gson().toJson(data));
             }
         });
+
+
+
     }
 
     private void joinGame(JsonObject info, String code) {
@@ -142,7 +162,7 @@ public class GameBoardSocket {
     private void sendListPlayer(String code) {
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put("action", "join-game");
-        data.put("data", players.get(code));
+        data.put("data", filterPlayers(code));
 
         broadcast(sessions.get(code), new Gson().toJson(data));
     }

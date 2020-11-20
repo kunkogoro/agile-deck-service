@@ -30,8 +30,8 @@ INSERT INTO public.tbl_answered_questions
 (game_board_id, question_content, playing)
 VALUES(1, 'Building a new highway', true),
     (1, 'Learning to ride a horse', false),
-    (1, 'Sewing a patchwork quilt', false),
-    (1, 'Negotiating the release of a kidnapped person', false);
+    (2, 'Sewing a patchwork quilt', false),
+    (2, 'Negotiating the release of a kidnapped person', true);
 
 
 INSERT INTO public.tbl_questions
