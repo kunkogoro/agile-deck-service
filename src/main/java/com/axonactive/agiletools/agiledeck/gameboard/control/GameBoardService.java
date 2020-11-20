@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
@@ -20,6 +21,7 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 
 @RequestScoped
+@Transactional
 public class GameBoardService {
 
     @PersistenceContext
@@ -31,15 +33,22 @@ public class GameBoardService {
     @Inject
     AnswerService answerService;
 
+    @Inject
+    AnsweredQuestionService answeredQuestionService;
 
-    //TODO: Add condition for return a AnsQues
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
-//        AnsweredQuestion currentAnswerQuestion = AnsweredQuestionService.findCurrenrPLaying(code);
-        List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
-        return AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
+
+        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getId());
+
+        if(Objects.isNull(currentAnswerQuestion)){
+            List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
+            currentAnswerQuestion =  AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
+        }
+        return currentAnswerQuestion;
     }
+    
 
     public GameBoard getByCode(String code) {
         TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
@@ -47,7 +56,7 @@ public class GameBoardService {
         return query.getResultStream().findFirst().orElse(null);
     }
 
-    private void validate(GameBoard gameBoard){
+    public void validate(GameBoard gameBoard){
         if(Objects.isNull(gameBoard)) {
             throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_NOT_FOUND);
         }

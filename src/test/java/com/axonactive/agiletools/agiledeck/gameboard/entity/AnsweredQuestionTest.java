@@ -33,4 +33,5 @@ class AnsweredQuestionTest {
 
         Assertions.assertNotNull(answeredQuestion);
     }
+
 }
