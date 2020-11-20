@@ -38,12 +38,11 @@ public class PlayerService {
         String name = "";
         do {
             name =  faker.food().fruit();
-        } while(isExisted(gameBoard.getCode(), name) && name.length() <= 15);
+        } while(isExisted(gameBoard.getCode(), name) || name.length() > 15);
         return new Player(gameBoard, name);
     }
 
     private boolean isExisted(String code, String name) {
-        System.out.println(em);
         TypedQuery<Player> query = em.createNamedQuery(Player.GET_BY_GAMEBOARD, Player.class);
         query.setParameter("gameBoardCode", code);
         query.setParameter("playerName", name);
