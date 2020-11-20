@@ -18,6 +18,8 @@
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
         <quarkus.platform.version>1.9.0.Final</quarkus.platform.version>
         <surefire-plugin.version>2.22.1</surefire-plugin.version>
+        <sonar.exclusions>com/axonactive/agiletools/agiledeck/gameboard/boundary/*Socket.class</sonar.exclusions>
+        <sonar.exclusions>com/axonactive/agiletools/agiledeck/gameboard/entity/*Socket.class</sonar.exclusions>
     </properties>
     <dependencyManagement>
         <dependencies>
