@@ -43,7 +43,6 @@ public class PlayerService {
     }
 
     private boolean isExisted(String code, String name) {
-        System.out.println(em);
         TypedQuery<Player> query = em.createNamedQuery(Player.GET_BY_GAMEBOARD, Player.class);
         query.setParameter("gameBoardCode", code);
         query.setParameter("playerName", name);

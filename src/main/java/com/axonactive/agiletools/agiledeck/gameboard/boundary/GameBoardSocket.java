@@ -55,11 +55,6 @@ public class GameBoardSocket {
         }
     }
 
-    @OnError
-    public void onError(Session session, @PathParam("code") String code, Throwable throwable) {
-
-    }
-
     @OnMessage
     public void onMessage(String message, @PathParam("code") String code) {
         JsonObject jsonObject = JsonParser.parseString(message).getAsJsonObject();
@@ -168,11 +163,7 @@ public class GameBoardSocket {
     }
 
     private void broadcast(List<Session> sessions, String message) {
-        sessions.forEach(s -> s.getAsyncRemote().sendObject(message, result ->  {
-            if (result.getException() != null) {
-                System.out.println("Unable to send message: " + result.getException());
-            }
-        }));
+        sessions.forEach(s -> s.getAsyncRemote().sendObject(message));
     }
 
 }

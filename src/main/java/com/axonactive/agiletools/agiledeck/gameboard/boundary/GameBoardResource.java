@@ -17,9 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.axonactive.agiletools.agiledeck.game.entity.AnswerContent;
 import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
-import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
