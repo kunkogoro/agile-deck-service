@@ -10,10 +10,10 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
+import com.axonactive.agiletools.agiledeck.Faker;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerMsgCodes;
-import io.github.serpro69.kfaker.Faker;
 
 @RequestScoped
 @Transactional
@@ -36,7 +36,7 @@ public class PlayerService {
     private Player init(GameBoard gameBoard) {
         String name = "";
         do {
-            name = new Faker().getFood().fruits();
+            name = new Faker().fruit();
         } while(isExisted(gameBoard.getCode(), name) && name.length() <= 15);
         return new Player(gameBoard, name);
     }
