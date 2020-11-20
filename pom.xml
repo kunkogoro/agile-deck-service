@@ -65,6 +65,12 @@
             <artifactId>quarkus-flyway</artifactId>
         </dependency>
 
+      <dependency>
+          <groupId>io.github.serpro69</groupId>
+          <artifactId>kotlin-faker</artifactId>
+          <version>1.4.1</version>
+      </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-jsonb</artifactId>
@@ -87,11 +93,6 @@
             <artifactId>quarkus-undertow-websockets</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
