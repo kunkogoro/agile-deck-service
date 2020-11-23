@@ -133,6 +133,8 @@ public class GameBoardSocket {
     private void joinGame(JsonObject info, String code) {
         Player player = jsonb.fromJson(info.toString(), Player.class);
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
+
+        System.out.println(jsonb.toJson(playerSelectedCard));
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
             list.add(playerSelectedCard);
