@@ -1,7 +1,6 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.OnClose;
-import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -17,7 +15,9 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocketInstanceCreator;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -25,9 +25,14 @@ import com.google.gson.JsonParser;
 @ServerEndpoint("/ws/{code}")
 public class GameBoardSocket {
 
-    Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
-    Map<String, List<PlayerSocket>> players = new ConcurrentHashMap<>();
-    Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
+    private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
+    private final Map<String, List<PlayerSocket>> players = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
+
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(
+            PlayerSocket.class,
+            new PlayerSocketInstanceCreator()
+    ).create();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -101,14 +106,14 @@ public class GameBoardSocket {
 
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put("action", "reset-answer");
-        broadcast(sessions.get(code), new Gson().toJson(data));
+        broadcast(sessions.get(code), gson.toJson(data));
     }
 
     private void flipCard(String code) {
         flippedAnswers.put(code, true);
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put("action", "flip-card");
-        broadcast(sessions.get(code), new Gson().toJson(data));
+        broadcast(sessions.get(code), gson.toJson(data));
     }
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
@@ -124,7 +129,7 @@ public class GameBoardSocket {
                 data.put("action", "selected-card");
                 data.put("data", playerSocket);
 
-                broadcast(sessions.get(code), new Gson().toJson(data));
+                broadcast(sessions.get(code), gson.toJson(data));
             }
         });
 
@@ -134,7 +139,7 @@ public class GameBoardSocket {
 
     private void joinGame(JsonObject info, String code) {
         System.out.println(info.toString());
-        PlayerSocket player = new Gson().fromJson(info.toString(), PlayerSocket.class);
+        PlayerSocket player = gson.fromJson(info.toString(), PlayerSocket.class);
         if(!players.containsKey(code)) {
             List<PlayerSocket> list = new ArrayList<>();
             list.add(player);
@@ -152,7 +157,7 @@ public class GameBoardSocket {
         data.put("action", "flip-status");
         data.put("isFlip", flippedAnswers.get(code));
 
-        broadcast(sessions.get(code), new Gson().toJson(data));
+        broadcast(sessions.get(code), gson.toJson(data));
     }
 
     private void sendListPlayer(String code) {
@@ -160,7 +165,7 @@ public class GameBoardSocket {
         data.put("action", "join-game");
         data.put("data", filterPlayers(code));
 
-        broadcast(sessions.get(code), new Gson().toJson(data));
+        broadcast(sessions.get(code), gson.toJson(data));
     }
 
     private void broadcast(List<Session> sessions, String message) {
