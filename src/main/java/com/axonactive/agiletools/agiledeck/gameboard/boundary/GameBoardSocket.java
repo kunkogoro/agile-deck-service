@@ -138,7 +138,6 @@ public class GameBoardSocket {
     }
 
     private void joinGame(JsonObject info, String code) {
-        System.out.println(info.toString());
         PlayerSocket player = gson.fromJson(info.toString(), PlayerSocket.class);
         if(!players.containsKey(code)) {
             List<PlayerSocket> list = new ArrayList<>();

@@ -1,69 +1,64 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import java.net.URI;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.websocket.ClientEndpoint;
+import javax.websocket.ContainerProvider;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
-import com.axonactive.agiletools.agiledeck.game.entity.Game;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
-
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-// import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-// import org.powermock.modules.junit4.PowerMockRunner;
 
+import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-//@RunWith(PowerMockRunner.class)
 public class GameBoardSocketTest {
-    
-    @Mock
-    GameBoardSocket gameBoardSocket;
 
-    Game game;
+    private static final LinkedBlockingDeque<String> MESSAGES = new LinkedBlockingDeque<>();
 
-    GameBoard gameBoard;
-
-    @BeforeEach
-    public void init(){
-        game.setName("Agile Deck");
-        gameBoard = new GameBoard("b4661d5e-f296-4cf6-887d-cfa0f97d1f36", game);
-    }
+    @TestHTTPResource("/ws/b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+    URI uri;
 
     @Test
-    public void whenOnOpenSocket(){
-        Session session = Mockito.mock(Session.class);
-        gameBoardSocket = mock(GameBoardSocket.class);
-        gameBoardSocket.onOpen(session, this.gameBoard.getCode());
+    public void testGameBoardSocket() throws Exception {
 
-        // when(this.gameBoardSocket).thenReturn(null);
-
-        verify(gameBoardSocket).onOpen(Mockito.any(), Mockito.anyString());
-        verify(gameBoardSocket, times(1));
-
-        // when(gameBoardSocket.onOpen(Mockito.any(), Mockito.anyString()));
-        // verify(this.gameBoardSocket, times(1)).save(Mockito.any());
-
-        //when(this.gameBoardSocket.onOpen(session, gameBoard.getCode())).thenReturn(null);
-
-        // doReturn(null).when(gameBoardSocket).onOpen(Mockito.any(), Mockito.anyString());
-        //gameBoardSocket.onOpen(Mockito.any(), Mockito.anyString());
-        // Mockito.verify(this.gameBoardSocket, times(1));
+        String joinGameData = "{\"action\":\"join-game\",\"info\":{\"gameBoard\":{\"code\":\"b4661d5e-f296-4cf6-887d-cfa0f97d1f36\",\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":1},\"id\":11,\"name\":\"Soursop\"}}";
+        
+        String selectCartData = "";
+        
+        try(Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)){
+            Assertions.assertEquals("CONNECT", MESSAGES.poll(10, TimeUnit.SECONDS));
+            session.getAsyncRemote().sendText(joinGameData);
+            Assertions.assertEquals("{\"isFlip\":false,\"action\":\"flip-status\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+            session.getAsyncRemote().sendText("selected-card");
+            Assertions.assertEquals(null, MESSAGES.poll(10, TimeUnit.SECONDS));
+        }
     }
 
-    @Test
-    public void whenFilterPlayer(){
-        
-        List<PlayerSocket> player = new ArrayList<>();
-        
+    @ClientEndpoint
+    public static class Client{
+
+        @OnOpen
+        public void open(Session session){
+            MESSAGES.add("CONNECT");
+            session.getAsyncRemote().sendText("_ready_");
+        }
+
+        @OnClose
+        public void close(Session session){
+            MESSAGES.add("");
+        }
+
+        @OnMessage
+        public void message(String message){
+            MESSAGES.add(message);
+        }
     }
+
 }
