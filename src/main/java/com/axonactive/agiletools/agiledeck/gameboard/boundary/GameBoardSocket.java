@@ -157,6 +157,7 @@ public class GameBoardSocket {
         data.put("action", "join-game");
         data.put("data", filterPlayers(code));
 
+        System.out.println(jsonb.toJson(data));
         broadcast(sessions.get(code), jsonb.toJson(data));
     }
 
