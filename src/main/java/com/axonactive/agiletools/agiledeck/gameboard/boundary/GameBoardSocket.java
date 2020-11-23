@@ -15,7 +15,8 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocketInstanceCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -30,6 +31,7 @@ public class GameBoardSocket {
     private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
 
     private final Gson gson = new Gson();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -58,7 +60,7 @@ public class GameBoardSocket {
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("code") String code) {
+    public void onMessage(String message, @PathParam("code") String code) throws JsonProcessingException {
         JsonObject jsonObject = JsonParser.parseString(message).getAsJsonObject();
 
         String action = jsonObject.get("action").getAsString();
@@ -134,11 +136,8 @@ public class GameBoardSocket {
 
     }
 
-    private void joinGame(JsonObject info, String code) {
-        System.out.println(info.toString());
-        PlayerSocket player = gson.fromJson(info.toString(), PlayerSocket.class);
-        player.setSelectedCardId(-1);
-        player.setSelected(false);
+    private void joinGame(JsonObject info, String code) throws JsonProcessingException {
+        PlayerSocket player = objectMapper.readValue(info.toString(), PlayerSocket.class);
         if(!players.containsKey(code)) {
             List<PlayerSocket> list = new ArrayList<>();
             list.add(player);

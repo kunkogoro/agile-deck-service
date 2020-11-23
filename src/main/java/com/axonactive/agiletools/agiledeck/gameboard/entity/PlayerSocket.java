@@ -2,18 +2,15 @@ package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PlayerSocket extends Player{
-    Boolean selected;
-    Integer selectedCardId;
-
-    public PlayerSocket() {
-        this.selected = false;
-        this.selectedCardId = -1;
-    }
+    Boolean selected = false;
+    Integer selectedCardId = -1;
 
     @Override
     public boolean equals(Object o) {
