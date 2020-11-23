@@ -29,10 +29,7 @@ public class GameBoardSocket {
     private final Map<String, List<PlayerSocket>> players = new ConcurrentHashMap<>();
     private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
 
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(
-            PlayerSocket.class,
-            new PlayerSocketInstanceCreator()
-    ).create();
+    private final Gson gson = new Gson();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
