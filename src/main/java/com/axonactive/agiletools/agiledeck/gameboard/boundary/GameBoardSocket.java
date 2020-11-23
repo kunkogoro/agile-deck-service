@@ -14,15 +14,12 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.modelmapper.ModelMapper;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")
@@ -62,7 +59,7 @@ public class GameBoardSocket {
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("code") String code) throws JsonProcessingException {
+    public void onMessage(String message, @PathParam("code") String code) {
         JsonObject jsonObject = JsonParser.parseString(message).getAsJsonObject();
 
         String action = jsonObject.get("action").getAsString();
@@ -133,16 +130,12 @@ public class GameBoardSocket {
                 broadcast(sessions.get(code), gson.toJson(data));
             }
         });
-
-
-
     }
 
-    private void joinGame(JsonObject info, String code) throws JsonProcessingException {
-        Player p = objectMapper.readValue(info.toString(), Player.class);
-        System.out.println(p.toString());
-        PlayerSocket player = new ModelMapper().map(p, PlayerSocket.class);
-        System.out.println(player.toString());
+    private void joinGame(JsonObject info, String code) {
+        PlayerSocket player = gson.fromJson(info.toString(), PlayerSocket.class);
+        player.setSelectedCardId(-1);
+        player.setSelected(false);
         if(!players.containsKey(code)) {
             List<PlayerSocket> list = new ArrayList<>();
             list.add(player);
@@ -168,6 +161,7 @@ public class GameBoardSocket {
         data.put("action", "join-game");
         data.put("data", filterPlayers(code));
 
+        System.out.println(gson.toJson(data));
         broadcast(sessions.get(code), gson.toJson(data));
     }
 
