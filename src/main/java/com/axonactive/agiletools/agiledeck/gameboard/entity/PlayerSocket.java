@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayerSocket extends Player{
+public class PlayerSocket{
     private Long id;
     private GameBoard gameBoard;
     private String name;
