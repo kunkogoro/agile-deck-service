@@ -135,6 +135,7 @@ public class GameBoardSocket {
     }
 
     private void joinGame(JsonObject info, String code) {
+        System.out.println(info.toString());
         PlayerSocket player = gson.fromJson(info.toString(), PlayerSocket.class);
         player.setSelectedCardId(-1);
         player.setSelected(false);
