@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerSocket extends Player{
-    Boolean selected = false;
-    Integer selectedCardId = -1;
+public class PlayerSelectedCard {
+    private Player player;
+    private Long selectedCardId;
 
     @Override
     public boolean equals(Object o) {
@@ -18,12 +18,12 @@ public class PlayerSocket extends Player{
             return true;
         }
 
-        if (!(o instanceof PlayerSocket)) {
+        if (!(o instanceof PlayerSelectedCard)) {
             return false;
         }
 
-        PlayerSocket playerSocket = (PlayerSocket) o;
+        PlayerSelectedCard playerSelectedCard = (PlayerSelectedCard) o;
 
-        return this.getId().equals(playerSocket.getId());
+        return this.player.getId().equals(playerSelectedCard.player.getId());
     }
 }
