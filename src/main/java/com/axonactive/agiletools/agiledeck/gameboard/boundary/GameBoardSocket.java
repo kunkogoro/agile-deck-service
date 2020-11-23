@@ -2,10 +2,7 @@ package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -134,7 +131,13 @@ public class GameBoardSocket {
         Player player = jsonb.fromJson(info.toString(), Player.class);
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
 
-        System.out.println(jsonb.toJson(playerSelectedCard));
+        System.out.println("Json: " + jsonb.toJson(playerSelectedCard));
+        System.out.println("Player json object: " + info.toString());
+        if(Objects.nonNull(player)) {
+            System.out.println("Player ID: " + player.getId());
+            System.out.println("Player name: " + player.getName());
+        }
+
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
             list.add(playerSelectedCard);
@@ -161,6 +164,7 @@ public class GameBoardSocket {
         Map<String, Object> data = new HashMap<>();
         data.put("action", "join-game");
         data.put("data", playerSelectedCards);
+
 
         broadcast(sessions.get(code), jsonb.toJson(data));
     }
