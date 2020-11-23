@@ -10,7 +10,7 @@
         <sonar.exclusions>
             **/GameBoardSocket.java,
             **/PlayerSocket.java,
-            **/PlayerSocketInstanceCreator
+            **/PlayerSocketInstanceCreator.java
         </sonar.exclusions>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <maven.compiler.parameters>true</maven.compiler.parameters>
