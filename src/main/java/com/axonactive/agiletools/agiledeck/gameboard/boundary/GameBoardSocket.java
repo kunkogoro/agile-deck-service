@@ -14,6 +14,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSocket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.modelmapper.ModelMapper;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")
@@ -137,7 +139,10 @@ public class GameBoardSocket {
     }
 
     private void joinGame(JsonObject info, String code) throws JsonProcessingException {
-        PlayerSocket player = objectMapper.readValue(info.toString(), PlayerSocket.class);
+        Player p = objectMapper.readValue(info.toString(), Player.class);
+        System.out.println(p.toString());
+        PlayerSocket player = new ModelMapper().map(p, PlayerSocket.class);
+        System.out.println(player.toString());
         if(!players.containsKey(code)) {
             List<PlayerSocket> list = new ArrayList<>();
             list.add(player);
