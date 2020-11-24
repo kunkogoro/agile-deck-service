@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Setter @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +27,10 @@ public class PlayerSelectedCard {
         PlayerSelectedCard playerSelectedCard = (PlayerSelectedCard) o;
 
         return this.player.getId().equals(playerSelectedCard.player.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player.getId(), selectedCardId);
     }
 }
