@@ -29,13 +29,15 @@ public class PlayerServiceTest {
     public void init() {
         Game game = new Game();
         game.setName("Iterative - Incremental - Big Bang");
-        gameBoard = gameBoardService.getByCode("b4661d5e-f296-4cf6-887d-cfa0f97d1f36");
+        gameBoard = gameBoardService.getByCode("asd6gfga-f296-sdf3-0fn2-asf86gc1crt2");
     }
 
     @Test
     public void whenCreatePlayer_thenReturnNonNullPlayer() {
         Player player = playerService.create(this.gameBoard.getCode());
         Assertions.assertNotNull(player);
+        Assertions.assertFalse(player.getName().length() == 0);
+        Assertions.assertTrue(player.getName().length() <= 15);
     }
 
     @Test

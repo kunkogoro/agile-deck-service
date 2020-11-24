@@ -23,7 +23,7 @@ class GameBoardResourceTest {
 
     @Test
     public void whenJoinGame_thenReturnAnswerQuestionDetail() {
-        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36").when()
+        Response response = RestAssured.given().pathParam("code", "asd6gfga-f296-sdf3-0fn2-asf86gc1crt2").when()
                 .get("gameboards/join/{code}");
 
         Assertions.assertEquals(200, response.getStatusCode());
