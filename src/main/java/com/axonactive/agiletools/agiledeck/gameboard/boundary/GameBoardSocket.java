@@ -128,8 +128,12 @@ public class GameBoardSocket {
     private void joinGame(JsonObject info, String code) {
         Player player = fromJson(info.toString());
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
-        System.out.println("playerSelectedCard = " + playerSelectedCard.toString());
-        System.out.println("playerSelectedCard (json) = " + JsonbBuilder.create().toJson(playerSelectedCard));
+
+
+        System.out.println("1 = " + playerSelectedCard.toString());
+        System.out.println("2 (json) = " + JsonbBuilder.create());
+        System.out.println("3 (json) = " + JsonbBuilder.create().toJson(playerSelectedCard.getPlayer()));
+        System.out.println("4 (json) = " + JsonbBuilder.create().toJson(playerSelectedCard));
         if(Objects.nonNull(playerSelectedCard.getPlayer())) {
             System.out.println("playerSelectedCard not null");
             System.out.println("player not null with   ID: " + playerSelectedCard.getPlayer().getId());
