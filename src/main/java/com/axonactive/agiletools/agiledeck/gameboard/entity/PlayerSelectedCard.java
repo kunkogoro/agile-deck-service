@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.json.bind.annotation.JsonbProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,8 +12,10 @@ import java.util.Objects;
 @NoArgsConstructor
 public class PlayerSelectedCard implements Serializable {
 
+    @JsonbProperty("player")
     private Player player;
 
+    @JsonbProperty("selectedCardId")
     private Long selectedCardId;
 
     public PlayerSelectedCard(Player player, Long selectedCardId) {
