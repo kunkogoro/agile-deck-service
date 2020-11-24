@@ -181,12 +181,11 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                 <execution>
-                    <phase>package</phase>
+                    <phase>com.axonactive.agiletools.agiledeck</phase>
                     <goals>
                     <goal>single</goal>
                     </goals>
@@ -198,7 +197,6 @@
                 </descriptorRefs>
                 </configuration>
             </plugin>
-            
         </plugins>
     </build>
     <profiles>
