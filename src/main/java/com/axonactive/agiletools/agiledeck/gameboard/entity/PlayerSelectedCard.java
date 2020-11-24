@@ -1,13 +1,13 @@
 package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
+import java.util.Objects;
+
+import javax.json.bind.JsonbBuilder;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import java.util.Objects;
 
 @Setter @Getter
 @AllArgsConstructor
