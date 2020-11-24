@@ -80,7 +80,7 @@ public class GameBoardSocket {
                 resetAnswer(code);
                 break;
             default:
-                LOGGER.debug("No action selected!");
+                System.out.println("No action selected!");
         }
 
     }
@@ -137,12 +137,12 @@ public class GameBoardSocket {
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
 
         
-        LOGGER.debug("Object to json with Jsonb: " + jsonb.toJson(playerSelectedCard));
-        LOGGER.debug("toString of PlayerSocket: " + playerSelectedCard.toString());
+        System.out.println("Object to json with Jsonb: " + jsonb.toJson(playerSelectedCard));
+        System.out.println("toString of PlayerSocket: " + playerSelectedCard.toString());
         if(Objects.nonNull(playerSelectedCard.getPlayer())) {
-            LOGGER.debug("playerSelectedCard not null");
-            LOGGER.debug("player not null with   ID: " + playerSelectedCard.getPlayer().getId());
-            LOGGER.debug("player not null with Name: " + playerSelectedCard.getPlayer().getName());
+            System.out.println("playerSelectedCard not null");
+            System.out.println("player not null with   ID: " + playerSelectedCard.getPlayer().getId());
+            System.out.println("player not null with Name: " + playerSelectedCard.getPlayer().getName());
         }
 
         if(!players.containsKey(code)) {
