@@ -182,7 +182,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                 <execution>
-                    <phase>com.axonactive.agiletools.agiledeck</phase>
+                    <phase>package</phase>
                     <goals>
                     <goal>single</goal>
                     </goals>
