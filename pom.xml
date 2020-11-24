@@ -177,10 +177,6 @@
                         <configuration>
                             <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
-                            <!-- <excludes>
-                                <exclude>com/axonactive/agiletools/agiledeck/gameboard/boundary/*Socket.class</exclude>
-                                <exclude>com/axonactive/agiletools/agiledeck/gameboard/entity/*Socket.class</exclude>
-                            </excludes> -->
                         </configuration>
                     </execution>
                 </executions>
