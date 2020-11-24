@@ -129,7 +129,6 @@ public class GameBoardSocket {
         Player player = fromJson(info.toString());
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
 
-
         System.out.println("1 = " + playerSelectedCard.toString());
         System.out.println("2 (json) = " + JsonbBuilder.create());
         System.out.println("3 (json) = " + JsonbBuilder.create().toJson(playerSelectedCard.getPlayer()));
