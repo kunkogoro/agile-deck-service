@@ -43,12 +43,4 @@ public class PlayerSelectedCard implements Serializable {
         return Objects.hash(player.getId(), selectedCardId);
     }
 
-
-    @Override
-    public String toString() {
-        return "PlayerSelectedCard{" +
-                "player=" + player +
-                ", selectedCardId=" + selectedCardId +
-                '}';
-    }
 }

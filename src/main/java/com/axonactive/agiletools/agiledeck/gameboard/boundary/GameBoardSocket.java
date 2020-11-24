@@ -118,7 +118,7 @@ public class GameBoardSocket {
 
                 Map<String, Object> data = new ConcurrentHashMap<>();
                 data.put(ACTION, "selected-card");
-                data.put("data", playerSelectedCard);
+                data.put("data", toJson(playerSelectedCard));
 
                 broadcast(sessions.get(code), toJson(data));
             }
@@ -164,7 +164,7 @@ public class GameBoardSocket {
 
         Map<String, Object> data = new HashMap<>();
         data.put(ACTION, "join-game");
-        data.put("data", playerSelectedCards);
+        data.put("data", toJson(playerSelectedCards));
 
 
         broadcast(sessions.get(code), toJson(data));
@@ -180,5 +180,18 @@ public class GameBoardSocket {
 
     private Player fromJson(String stringifiedJson) {
         return JsonbBuilder.create().fromJson(stringifiedJson, Player.class);
+    }
+
+    private String toJson(PlayerSelectedCard playerSelectedCard) {
+        String player = JsonbBuilder.create().toJson(playerSelectedCard.getPlayer());
+        String selectedCardId = JsonbBuilder.create().toJson(playerSelectedCard.getSelectedCardId());
+
+        return "{\"player\":" + player + ",\"selectedCardId\":" + selectedCardId + "}";
+    }
+
+    private List<String> toJson(List<PlayerSelectedCard> playerSelectedCards) {
+        List<String> list = new ArrayList<>();
+        playerSelectedCards.forEach(p -> list.add(toJson(p)));
+        return list;
     }
 }
