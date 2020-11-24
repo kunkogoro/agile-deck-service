@@ -38,10 +38,10 @@ public class GameBoardSocketTest {
             Assertions.assertEquals("{\"isFlip\":false,\"action\":\"flip-status\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
 
             session.getAsyncRemote().sendText(selectCartData);
-            Assertions.assertEquals("{\"data\":[{\"player\":{\"gameBoard\":{\"code\":\"b4661d5e-f296-4cf6-887d-cfa0f97d1f36\",\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":1},\"id\":11,\"name\":\"Soursop\"}}],\"action\":\"join-game\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+            Assertions.assertEquals("{\"data\":[\"{\\\"player\\\":{\\\"gameBoard\\\":{\\\"code\\\":\\\"b4661d5e-f296-4cf6-887d-cfa0f97d1f36\\\",\\\"game\\\":{\\\"description\\\":\\\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\\\",\\\"id\\\":1,\\\"name\\\":\\\"Iterative - Incremental - Big Bang\\\"},\\\"id\\\":1},\\\"id\\\":11,\\\"name\\\":\\\"Soursop\\\"},\\\"selectedCardId\\\":null}\"],\"action\":\"join-game\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
             
             session.getAsyncRemote().sendText("{\"action\":\"flip-card\"}");
-            Assertions.assertEquals("{\"data\":{\"player\":{\"gameBoard\":{\"code\":\"b4661d5e-f296-4cf6-887d-cfa0f97d1f36\",\"game\":{\"description\":\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\",\"id\":1,\"name\":\"Iterative - Incremental - Big Bang\"},\"id\":1},\"id\":11,\"name\":\"Soursop\"},\"selectedCardId\":2},\"action\":\"selected-card\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+            Assertions.assertEquals("{\"data\":\"{\\\"player\\\":{\\\"gameBoard\\\":{\\\"code\\\":\\\"b4661d5e-f296-4cf6-887d-cfa0f97d1f36\\\",\\\"game\\\":{\\\"description\\\":\\\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\\\",\\\"id\\\":1,\\\"name\\\":\\\"Iterative - Incremental - Big Bang\\\"},\\\"id\\\":1},\\\"id\\\":11,\\\"name\\\":\\\"Soursop\\\"},\\\"selectedCardId\\\":2}\",\"action\":\"selected-card\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
         
             session.getAsyncRemote().sendText("{\"action\":\"reset-answer\"}");
             Assertions.assertEquals("{\"action\":\"flip-card\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
