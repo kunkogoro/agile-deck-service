@@ -141,7 +141,7 @@ public class GameBoardSocket {
         LOGGER.debug("toString of PlayerSocket: " + playerSelectedCard.toString());
         if(Objects.nonNull(playerSelectedCard.getPlayer())) {
             LOGGER.debug("playerSelectedCard not null");
-            LOGGER.debug("player not null with ID: " + playerSelectedCard.getPlayer().getId());
+            LOGGER.debug("player not null with   ID: " + playerSelectedCard.getPlayer().getId());
             LOGGER.debug("player not null with Name: " + playerSelectedCard.getPlayer().getName());
         }
 
