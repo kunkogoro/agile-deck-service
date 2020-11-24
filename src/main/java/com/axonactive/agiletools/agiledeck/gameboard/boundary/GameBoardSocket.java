@@ -73,8 +73,6 @@ public class GameBoardSocket {
             case "reset-answer":
                 resetAnswer(code);
                 break;
-            default:
-                System.out.println("No action selected!");
         }
     }
 
@@ -128,16 +126,6 @@ public class GameBoardSocket {
     private void joinGame(JsonObject info, String code) {
         Player player = fromJson(info.toString());
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
-
-        System.out.println("1 = " + playerSelectedCard.toString());
-        System.out.println("2 (json) = " + JsonbBuilder.create());
-        System.out.println("3 (json) = " + JsonbBuilder.create().toJson(playerSelectedCard.getPlayer()));
-        System.out.println("4 (json) = " + JsonbBuilder.create().toJson(playerSelectedCard));
-        if(Objects.nonNull(playerSelectedCard.getPlayer())) {
-            System.out.println("playerSelectedCard not null");
-            System.out.println("player not null with   ID: " + playerSelectedCard.getPlayer().getId());
-            System.out.println("player not null with Name: " + playerSelectedCard.getPlayer().getName());
-        }
 
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
