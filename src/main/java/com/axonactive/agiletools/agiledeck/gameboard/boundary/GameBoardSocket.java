@@ -19,16 +19,21 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")
 public class GameBoardSocket {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameBoardSocket.class);
 
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     private final Map<String, List<PlayerSelectedCard>> players = new ConcurrentHashMap<>();
     private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
 
     private final Jsonb jsonb = JsonbBuilder.create();
+    
+    private final String action = "action";
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -59,7 +64,7 @@ public class GameBoardSocket {
     @OnMessage
     public void onMessage(String message, @PathParam("code") String code) {
         JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
-        String action = jsonObject.getString("action");
+        String action = jsonObject.getString(this.action);
 
         switch (action) {
             case "join-game":
@@ -74,6 +79,8 @@ public class GameBoardSocket {
             case "reset-answer":
                 resetAnswer(code);
                 break;
+            default:
+                LOGGER.debug("No action selected!");
         }
 
     }
@@ -90,23 +97,21 @@ public class GameBoardSocket {
     }
 
     private void resetAnswer(String code) {
-        players.get(code).forEach(playerSelectedCard -> {
-            playerSelectedCard.setSelectedCardId(null);
-        });
+        players.get(code).forEach(playerSelectedCard -> playerSelectedCard.setSelectedCardId(null));
         sendListPlayer(code);
 
         flippedAnswers.put(code, false);
         sendFlipStatus(code);
 
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put("action", "reset-answer");
+        data.put(this.action, "reset-answer");
         broadcast(sessions.get(code), jsonb.toJson(data));
     }
 
     private void flipCard(String code) {
         flippedAnswers.put(code, true);
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put("action", "flip-card");
+        data.put(this.action, "flip-card");
         broadcast(sessions.get(code), jsonb.toJson(data));
     }
 
@@ -119,7 +124,7 @@ public class GameBoardSocket {
                 playerSelectedCard.setSelectedCardId(selectedCardId);
 
                 Map<String, Object> data = new ConcurrentHashMap<>();
-                data.put("action", "selected-card");
+                data.put(this.action, "selected-card");
                 data.put("data", playerSelectedCard);
 
                 broadcast(sessions.get(code), jsonb.toJson(data));
@@ -131,11 +136,13 @@ public class GameBoardSocket {
         Player player = jsonb.fromJson(info.toString(), Player.class);
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
 
-        System.out.println("Json: " + jsonb.toJson(playerSelectedCard));
-        System.out.println("Player json object: " + info.toString());
+        
+        LOGGER.debug("Object to json with Jsonb: " + jsonb.toJson(playerSelectedCard));
+        LOGGER.debug("toString of PlayerSocket: " + playerSelectedCard.toString());
         if(Objects.nonNull(playerSelectedCard.getPlayer())) {
-            System.out.println("Player ID: " + playerSelectedCard.getPlayer().getId());
-            System.out.println("Player name: " + playerSelectedCard.getPlayer().getName());
+            LOGGER.debug("playerSelectedCard not null");
+            LOGGER.debug("player not null with ID: " + playerSelectedCard.getPlayer().getId());
+            LOGGER.debug("player not null with Name: " + playerSelectedCard.getPlayer().getName());
         }
 
         if(!players.containsKey(code)) {
@@ -152,7 +159,7 @@ public class GameBoardSocket {
 
     private void sendFlipStatus(String code) {
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put("action", "flip-status");
+        data.put(this.action, "flip-status");
         data.put("isFlip", flippedAnswers.get(code));
 
         broadcast(sessions.get(code), jsonb.toJson(data));
@@ -162,7 +169,7 @@ public class GameBoardSocket {
         List<PlayerSelectedCard> playerSelectedCards = filterPlayers(code);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("action", "join-game");
+        data.put(this.action, "join-game");
         data.put("data", playerSelectedCards);
 
 
