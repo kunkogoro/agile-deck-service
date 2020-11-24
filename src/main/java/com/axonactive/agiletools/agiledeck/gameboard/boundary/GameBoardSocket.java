@@ -133,9 +133,9 @@ public class GameBoardSocket {
 
         System.out.println("Json: " + jsonb.toJson(playerSelectedCard));
         System.out.println("Player json object: " + info.toString());
-        if(Objects.nonNull(player)) {
-            System.out.println("Player ID: " + player.getId());
-            System.out.println("Player name: " + player.getName());
+        if(Objects.nonNull(playerSelectedCard.getPlayer())) {
+            System.out.println("Player ID: " + playerSelectedCard.getPlayer().getId());
+            System.out.println("Player name: " + playerSelectedCard.getPlayer().getName());
         }
 
         if(!players.containsKey(code)) {
