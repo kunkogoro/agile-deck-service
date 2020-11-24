@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.util.Objects;
 
