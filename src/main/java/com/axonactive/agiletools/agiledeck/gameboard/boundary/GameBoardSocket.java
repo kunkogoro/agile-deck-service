@@ -16,7 +16,6 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
 
@@ -182,21 +181,5 @@ public class GameBoardSocket {
 
     private Player fromJson(String stringifiedJson) {
         return JsonbBuilder.create().fromJson(stringifiedJson, Player.class);
-    }
-
-    public static void main(String[] args) {
-        Player player = new Player();
-        player.setName("test");
-
-        GameBoard gameBoard = new GameBoard();
-        gameBoard.setCode("sdsdsd");
-
-        player.setGameBoard(gameBoard);
-
-        PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard();
-        playerSelectedCard.setPlayer(player);
-
-        String json = JsonbBuilder.create().toJson(playerSelectedCard);
-        System.out.println(json);
     }
 }
