@@ -190,7 +190,7 @@
                 </goals>
                 <configuration>
                     <descriptors>
-                    <descriptor>dependencies</descriptor>
+                    <descriptor>jar-with-dependencies</descriptor>
                     </descriptors>
                 </configuration>
                 </execution>
