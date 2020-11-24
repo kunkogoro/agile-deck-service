@@ -47,7 +47,6 @@ public class PlayerService {
         query.setParameter("gameBoardCode", code);
         query.setParameter("playerName", name);
         Player player = query.getResultStream().findFirst().orElse(null);
-        System.out.println(player);
         return Objects.nonNull(player);
     }
 
