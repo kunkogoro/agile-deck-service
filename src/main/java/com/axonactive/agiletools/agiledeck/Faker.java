@@ -1,5 +1,7 @@
 package com.axonactive.agiletools.agiledeck;
 
+import java.util.Random;
+
 public class Faker {
     String[] fruits = {"Abiu","Ackee","Apple","Apricot","Avocado","Banana","Bilberry","Blackberry","Blackcurrant",
             "Black sapote","Blueberry","Boysenberry","Breadfruit","Cactus pear","Cempedak","Crab apple","Currant",
@@ -16,7 +18,7 @@ public class Faker {
 
 
     public String fruit() {
-        int i = (int) (Math.random() * fruits.length);
+        int i = new Random().nextInt(fruits.length);
         return fruits[i];
     }
 }
