@@ -75,8 +75,8 @@ try {
 		/* Stage build, build the project to generate war file and wildfly image */
 		stage('Build'){
 			withMaven( maven: 'MAVEN 3.6' ) {
-//				sh "mvn clean package -Pnative -Dquarkus.native.container-build=true"
-				sh "mvn clean package"
+				sh "mvn clean package -Pnative -Dquarkus.native.container-build=true"
+//				sh "mvn clean package"
 			}
 		}
 
@@ -108,8 +108,8 @@ try {
 
 		/* Stage build docker image, build the project to image */
 		stage('Create image') {
-//			sh "docker build -f src/main/docker/Dockerfile.native -t ${IMAGE_NAME}:${pomVersion} ."
-			sh "docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGE_NAME}:${pomVersion} ."
+			sh "docker build -f src/main/docker/Dockerfile.native -t ${IMAGE_NAME}:${pomVersion} ."
+//			sh "docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGE_NAME}:${pomVersion} ."
 		}
 
 		/* Stage push image to aavn-registry */

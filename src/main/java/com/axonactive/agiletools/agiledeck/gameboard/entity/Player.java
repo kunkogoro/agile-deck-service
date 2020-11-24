@@ -49,14 +49,4 @@ public class Player {
         this.gameBoard = gameBoard;
         this.name = name;
     }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", gameBoard=" + gameBoard +
-                ", name='" + name + '\'' +
-                ", avatar='" + avatar + '\'' +
-                '}';
-    }
 }
