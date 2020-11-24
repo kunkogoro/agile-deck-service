@@ -106,6 +106,7 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
         </dependency>
+
     </dependencies>
 
 
@@ -177,7 +178,22 @@
                     </execution>
                 </executions>
             </plugin>
-            
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                <execution>
+                    <phase>com.axonactive.agiletools.agiledeck</phase>
+                    <goals>
+                    <goal>single</goal>
+                    </goals>
+                </execution>
+                </executions>
+                <configuration>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -208,22 +224,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                            <goal>single</goal>
-                            </goals>
-                        </execution>
-                        </executions>
-                        <configuration>
-                        <descriptorRefs>
-                            <descriptorRef>jar-with-dependencies</descriptorRef>
-                        </descriptorRefs>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
