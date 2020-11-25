@@ -58,7 +58,7 @@ try {
 
 		/* Stage start, will notify to slack channel of team that run job */
 		stage('Start'){
-//			notifyBeginBuildToSlack()
+			notifyBeginBuildToSlack()
 			sh "rm -r ./* || true"
 			sh "rm -r ./.* || true"
 		}
@@ -165,12 +165,12 @@ try {
 
 		/* Stage post build, if no error, notify success to slack channel */
 		stage('Finish') {
-//			notifySuccessToSlack()
+			notifySuccessToSlack()
 		}
 	}
 } catch (e) {
 	/* if error notify error to slack channel */
-//	notifyFailedToSlack()
+	notifyFailedToSlack()
 	currentBuild.result = 'FAILED'
 }
 

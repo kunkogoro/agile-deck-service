@@ -56,7 +56,7 @@ public class GameBoardSocket {
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("code") String code) {
+    public void onMessage(Session session, String message, @PathParam("code") String code) {
         JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
         String action = jsonObject.getString(ACTION);
 
@@ -73,7 +73,16 @@ public class GameBoardSocket {
             case "reset-answer":
                 resetAnswer(code);
                 break;
+            case "re-connect":
+                reConnect(session);
         }
+    }
+
+    private void reConnect(Session session) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("action", "re-connect");
+        data.put("message", "Re-connect success!");
+        session.getAsyncRemote().sendObject(toJson(data));
     }
 
     private List<PlayerSelectedCard> filterPlayers(String code) {
