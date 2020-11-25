@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,7 +23,13 @@ import lombok.Setter;
 @Table(name = "tbl_games")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@NamedQueries({
+    @NamedQuery(name = Game.GET_ALL_GAME, query = "SELECT g FROM Game g")
+})
 public class Game {
+
+    private static final String QUALIFIER = "com.axonactive.agiletools.agiledeck.game.entity.Game";
+    public static final String GET_ALL_GAME = QUALIFIER + "getAllGame";
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
