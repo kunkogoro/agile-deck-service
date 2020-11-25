@@ -7,12 +7,14 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
 import com.axonactive.agiletools.agiledeck.game.entity.GameMsgCodes;
 
 @RequestScoped
+@Transactional
 public class GameService {
 
     @PersistenceContext
