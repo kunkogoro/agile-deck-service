@@ -73,16 +73,16 @@ public class GameBoardSocket {
             case "reset-answer":
                 resetAnswer(code);
                 break;
-            case "re-connect":
-                reConnect(session);
+            case "next-question":
+                nextQuestion(code);
+                break;
         }
     }
 
-    private void reConnect(Session session) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("action", "re-connect");
-        data.put("message", "Re-connect success!");
-        session.getAsyncRemote().sendObject(toJson(data));
+    private void nextQuestion(String code) {
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "next-question");
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private List<PlayerSelectedCard> filterPlayers(String code) {
@@ -162,8 +162,6 @@ public class GameBoardSocket {
         Map<String, Object> data = new HashMap<>();
         data.put(ACTION, "join-game");
         data.put("data", toJson(playerSelectedCards));
-
-
         broadcast(sessions.get(code), toJson(data));
     }
 
