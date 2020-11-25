@@ -27,13 +27,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter @Setter
 @NamedQueries({
-    @NamedQuery(name = AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_IS_PLAYING, query = "SELECT aq FROM AnsweredQuestion aq WHERE aq.gameBoard.id = :id AND aq.playing = true")
+    @NamedQuery(name = AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_IS_PLAYING, query = "SELECT aq FROM AnsweredQuestion aq WHERE aq.gameBoard.id = :id AND aq.playing = true"),
+    @NamedQuery(name = AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_QUESTION_CONTENT, query = "SELECT aq FROM AnsweredQuestion aq WHERE aq.gameBoard.id = :gameBoardId AND aq.content.content = :content")
 })
 public class AnsweredQuestion {
 
     private static final String QUANLIFIER = "com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion";
     
     public static final String GET_BY_GAME_BOARD_ID_AND_IS_PLAYING = QUANLIFIER + "getByGameBoardIdAndIsPlaying";
+
+    public static final String GET_BY_GAME_BOARD_ID_AND_QUESTION_CONTENT = QUANLIFIER + "getByGameBoardIdAndQuestionContent";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +63,11 @@ public class AnsweredQuestion {
         answeredQuestion.setAnswerOptions(defaultAnswerOptions);
         answeredQuestion.setPlaying(true);
 		return answeredQuestion;
+    }
+
+    public AnsweredQuestion(GameBoard gameBoard, QuestionContent content) {
+        this.gameBoard = gameBoard;
+        this.content = content;
     }
     
 }
