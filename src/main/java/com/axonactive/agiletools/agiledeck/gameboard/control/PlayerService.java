@@ -14,7 +14,6 @@ import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerMsgCodes;
-// import com.github.javafaker.Faker;
 import com.github.javafaker.Faker;
 
 @RequestScoped
@@ -40,7 +39,6 @@ public class PlayerService {
         String name = "";
         do {
             name = faker.food().fruit();
-            System.out.println("name init: " + name);
         } while(isExisted(gameBoard.getCode(), name) || name.length() > 15);
         return new Player(gameBoard, name);
     }

@@ -1,19 +1,27 @@
 package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.json.bind.JsonbBuilder;
+import javax.json.bind.annotation.JsonbProperty;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Setter @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class PlayerSelectedCard {
+public class PlayerSelectedCard implements Serializable {
+
+    @JsonbProperty("player")
     private Player player;
+
+    @JsonbProperty("selectedCardId")
     private Long selectedCardId;
+
+    public PlayerSelectedCard(Player player, Long selectedCardId) {
+        this.player = player;
+        this.selectedCardId = selectedCardId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -35,8 +43,4 @@ public class PlayerSelectedCard {
         return Objects.hash(player.getId(), selectedCardId);
     }
 
-    @Override
-    public String toString() {
-        return JsonbBuilder.create().toJson(this);
-    }
 }

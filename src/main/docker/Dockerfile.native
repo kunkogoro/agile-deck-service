@@ -23,7 +23,10 @@ RUN chown 1001 /work \
     && chmod "g+rwX" /work \
     && chown 1001:root /work
 COPY --chown=1001:root target/*-runner /work/application
+<<<<<<< HEAD
 # COPY --chown=1001:root target/quarkus-app/lib/ /work/lib/
+=======
+>>>>>>> a671aeb8f6ff9abeb229efc166825c1e7d8ce0b8
 
 EXPOSE 8080
 USER 1001
