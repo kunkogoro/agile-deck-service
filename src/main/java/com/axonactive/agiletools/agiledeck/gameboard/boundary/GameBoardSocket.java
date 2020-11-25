@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -19,21 +18,16 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")
 public class GameBoardSocket {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameBoardSocket.class);
 
+    private static final String ACTION = "action";
+    
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     private final Map<String, List<PlayerSelectedCard>> players = new ConcurrentHashMap<>();
     private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
-
-    private final Jsonb jsonb = JsonbBuilder.create();
-    
-    private final String action = "action";
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -64,7 +58,7 @@ public class GameBoardSocket {
     @OnMessage
     public void onMessage(String message, @PathParam("code") String code) {
         JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
-        String action = jsonObject.getString(this.action);
+        String action = jsonObject.getString(ACTION);
 
         switch (action) {
             case "join-game":
@@ -79,10 +73,7 @@ public class GameBoardSocket {
             case "reset-answer":
                 resetAnswer(code);
                 break;
-            default:
-                System.out.println("No action selected!");
         }
-
     }
 
     private List<PlayerSelectedCard> filterPlayers(String code) {
@@ -104,15 +95,15 @@ public class GameBoardSocket {
         sendFlipStatus(code);
 
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put(this.action, "reset-answer");
-        broadcast(sessions.get(code), jsonb.toJson(data));
+        data.put(ACTION, "reset-answer");
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private void flipCard(String code) {
         flippedAnswers.put(code, true);
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put(this.action, "flip-card");
-        broadcast(sessions.get(code), jsonb.toJson(data));
+        data.put(ACTION, "flip-card");
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
@@ -124,26 +115,17 @@ public class GameBoardSocket {
                 playerSelectedCard.setSelectedCardId(selectedCardId);
 
                 Map<String, Object> data = new ConcurrentHashMap<>();
-                data.put(this.action, "selected-card");
-                data.put("data", playerSelectedCard);
+                data.put(ACTION, "selected-card");
+                data.put("data", toJson(playerSelectedCard));
 
-                broadcast(sessions.get(code), jsonb.toJson(data));
+                broadcast(sessions.get(code), toJson(data));
             }
         });
     }
 
     private void joinGame(JsonObject info, String code) {
-        Player player = jsonb.fromJson(info.toString(), Player.class);
+        Player player = fromJson(info.toString());
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
-
-        
-        System.out.println("Object to json with Jsonb: " + jsonb.toJson(playerSelectedCard));
-        System.out.println("toString of PlayerSocket: " + playerSelectedCard.toString());
-        if(Objects.nonNull(playerSelectedCard.getPlayer())) {
-            System.out.println("playerSelectedCard not null");
-            System.out.println("player not null with   ID: " + playerSelectedCard.getPlayer().getId());
-            System.out.println("player not null with Name: " + playerSelectedCard.getPlayer().getName());
-        }
 
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
@@ -159,25 +141,45 @@ public class GameBoardSocket {
 
     private void sendFlipStatus(String code) {
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put(this.action, "flip-status");
+        data.put(ACTION, "flip-status");
         data.put("isFlip", flippedAnswers.get(code));
 
-        broadcast(sessions.get(code), jsonb.toJson(data));
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private void sendListPlayer(String code) {
         List<PlayerSelectedCard> playerSelectedCards = filterPlayers(code);
 
         Map<String, Object> data = new HashMap<>();
-        data.put(this.action, "join-game");
-        data.put("data", playerSelectedCards);
+        data.put(ACTION, "join-game");
+        data.put("data", toJson(playerSelectedCards));
 
 
-        broadcast(sessions.get(code), jsonb.toJson(data));
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private void broadcast(List<Session> sessions, String message) {
         sessions.forEach(s -> s.getAsyncRemote().sendObject(message));
     }
 
+    private String toJson(Map<String, Object> data) {
+        return JsonbBuilder.create().toJson(data);
+    }
+
+    private Player fromJson(String stringifiedJson) {
+        return JsonbBuilder.create().fromJson(stringifiedJson, Player.class);
+    }
+
+    private String toJson(PlayerSelectedCard playerSelectedCard) {
+        String player = JsonbBuilder.create().toJson(playerSelectedCard.getPlayer());
+        String selectedCardId = JsonbBuilder.create().toJson(playerSelectedCard.getSelectedCardId());
+
+        return "{\"player\":" + player + ",\"selectedCardId\":" + selectedCardId + "}";
+    }
+
+    private List<String> toJson(List<PlayerSelectedCard> playerSelectedCards) {
+        List<String> list = new ArrayList<>();
+        playerSelectedCards.forEach(p -> list.add(toJson(p)));
+        return list;
+    }
 }
