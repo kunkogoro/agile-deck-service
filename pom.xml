@@ -114,7 +114,10 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version> -->
         </dependency>
-
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-config-yaml</artifactId>
+        </dependency>
     </dependencies>
 
 
