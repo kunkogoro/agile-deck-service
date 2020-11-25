@@ -72,8 +72,16 @@ public class GameBoardSocket {
                 break;
             case "reset-answer":
                 resetAnswer(code);
+            case "next-question":
+                nextQuestion(code);
                 break;
         }
+    }
+
+    private void nextQuestion(String code) {
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "next-scenario");
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private List<PlayerSelectedCard> filterPlayers(String code) {
@@ -153,8 +161,6 @@ public class GameBoardSocket {
         Map<String, Object> data = new HashMap<>();
         data.put(ACTION, "join-game");
         data.put("data", toJson(playerSelectedCards));
-
-
         broadcast(sessions.get(code), toJson(data));
     }
 

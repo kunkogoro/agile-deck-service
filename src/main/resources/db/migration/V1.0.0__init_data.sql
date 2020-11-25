@@ -42,44 +42,44 @@ VALUES('Building a new highway', 1),
     ('Negotiating the release of a kidnapped person', 1),
     ('Learning to speak in public', 1),
     ('Learning to dive', 1),
-    ('Building a tree house', 1);
-    ('Organizing a party', 1);
-    ('Laying a pavement', 1);
-    ('Adopting a child', 1);
-    ('Knitting a scarf', 1);
-    ('Moving house', 1);
-    ('Learning a new language', 1);
-    ('Growing a beard', 1);
-    ('Wring a wedding speech', 1);
-    ('Making wine', 1);
-    ('Converting a loft', 1);
-    ('Making a table', 1);
-    ('Writing a song', 1);
-    ('Solving an equation', 1);
-    ('Pruning a tree', 1);
-    ('Making a clay vase', 1);
-    ('Building a bridge', 1);
-    ('Renovating a house', 1);
-    ('Creating a website to sell pet products', 1);
-    ('Training to run a marathon', 1);
-    ('Writing a book', 1);
-    ('Making a Hollywood blockbuster', 1);
-    ('Losing weight', 1);
-    ('Cooking Sunday lunch', 1);
-    ('Building a new house', 1);
-    ('Building an extension', 1);
-    ('Building a nuclear submarine', 1);
-    ('Putting a person on the moon', 1);
-    ('Laying a new lawn', 1);
-    ('Raising money for charity', 1);
-    ('Becoming a bodybuilder', 1);
-    ('Learning to play the guitar', 1);
-    ('Planning a wedding', 1);
-    ('Growing a vegetable patch', 1);
-    ('Designing a poster', 1);
-    ('Landscaping a garden', 1);
-    ('Decorating a house', 1);
-    ('Having a baby', 1);
+    ('Building a tree house', 1),
+    ('Organizing a party', 1),
+    ('Laying a pavement', 1),
+    ('Adopting a child', 1),
+    ('Knitting a scarf', 1),
+    ('Moving house', 1),
+    ('Learning a new language', 1),
+    ('Growing a beard', 1),
+    ('Wring a wedding speech', 1),
+    ('Making wine', 1),
+    ('Converting a loft', 1),
+    ('Making a table', 1),
+    ('Writing a song', 1),
+    ('Solving an equation', 1),
+    ('Pruning a tree', 1),
+    ('Making a clay vase', 1),
+    ('Building a bridge', 1),
+    ('Renovating a house', 1),
+    ('Creating a website to sell pet products', 1),
+    ('Training to run a marathon', 1),
+    ('Writing a book', 1),
+    ('Making a Hollywood blockbuster', 1),
+    ('Losing weight', 1),
+    ('Cooking Sunday lunch', 1),
+    ('Building a new house', 1),
+    ('Building an extension', 1),
+    ('Building a nuclear submarine', 1),
+    ('Putting a person on the moon', 1),
+    ('Laying a new lawn', 1),
+    ('Raising money for charity', 1),
+    ('Becoming a bodybuilder', 1),
+    ('Learning to play the guitar', 1),
+    ('Planning a wedding', 1),
+    ('Growing a vegetable patch', 1),
+    ('Designing a poster', 1),
+    ('Landscaping a garden', 1),
+    ('Decorating a house', 1),
+    ('Having a baby', 1),
     ('Building a car', 1);
 
 INSERT INTO public.tbl_answered_question_details
