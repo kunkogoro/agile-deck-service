@@ -72,6 +72,7 @@ public class GameBoardSocket {
                 break;
             case "reset-answer":
                 resetAnswer(code);
+                break;
             case "next-question":
                 nextQuestion(code);
                 break;
@@ -80,7 +81,7 @@ public class GameBoardSocket {
 
     private void nextQuestion(String code) {
         Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put(ACTION, "next-scenario");
+        data.put(ACTION, "next-question");
         broadcast(sessions.get(code), toJson(data));
     }
 
