@@ -65,7 +65,7 @@ public class GameBoardResource {
 
     @GET
     @Path("/join/{code}")
-    public Response join(@PathParam("code") String code) {       
+    public Response join(@PathParam("code") String code) {
         AnsweredQuestion currentQuestion = gameBoardService.join(code);
         Player player = playerService.create(code);
         AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
