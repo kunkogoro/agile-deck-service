@@ -21,6 +21,7 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
 public class GameBoardSocket {
 
     private static final String ACTION = "action";
+    private static final String IS_LAST_ONE = "isLastOne";
     
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     private final Map<String, List<PlayerSelectedCard>> players = new ConcurrentHashMap<>();
@@ -53,11 +54,6 @@ public class GameBoardSocket {
         }
     }
 
-    @OnError
-    public void onError(Session session, Throwable throwable) {
-        throwable.printStackTrace();
-    }
-
     @OnMessage
     public void onMessage(String message, @PathParam("code") String code) {
         JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
@@ -77,7 +73,7 @@ public class GameBoardSocket {
                 resetAnswer(code);
                 break;
             case "next-question":
-                nextQuestion(code, jsonObject.getBoolean("isLastOne"));
+                nextQuestion(code, jsonObject.getBoolean(IS_LAST_ONE));
                 break;
         }
     }
@@ -86,7 +82,7 @@ public class GameBoardSocket {
         latestQuestion.put(code, isLastOne);
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put(ACTION, "next-question");
-        data.put("isLastOne", isLastOne);
+        data.put(IS_LAST_ONE, isLastOne);
         broadcast(sessions.get(code), toJson(data));
     }
 
@@ -162,7 +158,7 @@ public class GameBoardSocket {
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put(ACTION, "init-data");
         data.put("isFlip", flippedAnswers.get(code));
-        data.put("isLastOne", isLastestQUestion);
+        data.put(IS_LAST_ONE, isLastestQUestion);
         
         broadcast(sessions.get(code), toJson(data));
     }
