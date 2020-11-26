@@ -3,6 +3,7 @@ package com.axonactive.agiletools.agiledeck.gameboard.control;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -85,5 +86,5 @@ public class GameBoardService {
     private String generateGameBoardCode() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();   
-    }    
+    }   
 }

@@ -51,5 +51,4 @@ public class QuestionService {
         AnsweredQuestion answeredQuestion = query.getResultStream().findFirst().orElse(null);
         return Objects.nonNull(answeredQuestion);
     }
-
 }
