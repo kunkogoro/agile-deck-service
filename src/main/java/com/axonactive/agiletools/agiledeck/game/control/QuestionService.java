@@ -9,7 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.game.entity.QuestionMsgCodes;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 
 @RequestScoped
@@ -28,10 +30,15 @@ public class QuestionService {
     public Question random(List<Question> questions, Long gameBoardId){
 
         Question question = new Question();
+        Integer checkNoQuestionsLeft = 0;
 
         do{
+            if(checkNoQuestionsLeft == questions.size()){
+                throw new AgileDeckException(QuestionMsgCodes.NO_QUESTIONS_LEFT);
+            }
             int indexRandom = new Random().nextInt(questions.size());
             question = questions.get(indexRandom);
+            checkNoQuestionsLeft += 1;
         }while(isExisted(gameBoardId, question));
         
         return question;
@@ -44,6 +51,5 @@ public class QuestionService {
         AnsweredQuestion answeredQuestion = query.getResultStream().findFirst().orElse(null);
         return Objects.nonNull(answeredQuestion);
     }
-
 
 }

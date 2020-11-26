@@ -28,6 +28,7 @@ public class GameBoardSocket {
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     private final Map<String, List<PlayerSelectedCard>> players = new ConcurrentHashMap<>();
     private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> latestQuestion = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -74,14 +75,16 @@ public class GameBoardSocket {
                 resetAnswer(code);
                 break;
             case "next-question":
-                nextQuestion(code);
+                nextQuestion(code, jsonObject.getBoolean("isLastOne"));
                 break;
         }
     }
 
-    private void nextQuestion(String code) {
+    private void nextQuestion(String code, Boolean isLastOne) {
+        latestQuestion.put(code, isLastOne);
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put(ACTION, "next-question");
+        data.put("isLastOne", isLastOne);
         broadcast(sessions.get(code), toJson(data));
     }
 
@@ -149,10 +152,16 @@ public class GameBoardSocket {
     }
 
     private void sendFlipStatus(String code) {
-        Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put(ACTION, "flip-status");
-        data.put("isFlip", flippedAnswers.get(code));
+        Boolean isLastestQUestion = false;
+        if(Objects.nonNull(latestQuestion.get(code))) {
+            isLastestQUestion = latestQuestion.get(code);
+        }
 
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "init-data");
+        data.put("isFlip", flippedAnswers.get(code));
+        data.put("isLastOne", isLastestQUestion);
+        
         broadcast(sessions.get(code), toJson(data));
     }
 
