@@ -28,6 +28,7 @@ public class GameBoardSocket {
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     private final Map<String, List<PlayerSelectedCard>> players = new ConcurrentHashMap<>();
     private final Map<String, Boolean> flippedAnswers = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> latestQuestion = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("code") String code) {
@@ -73,16 +74,18 @@ public class GameBoardSocket {
             case "reset-answer":
                 resetAnswer(code);
                 break;
-            case "re-connect":
-                reConnect(session);
+            case "next-question":
+                nextQuestion(code, jsonObject.getBoolean("isLastOne"));
+                break;
         }
     }
 
-    private void reConnect(Session session) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("action", "re-connect");
-        data.put("message", "Re-connect success!");
-        session.getAsyncRemote().sendObject(toJson(data));
+    private void nextQuestion(String code, Boolean isLastOne) {
+        latestQuestion.put(code, isLastOne);
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "next-question");
+        data.put("isLastOne", isLastOne);
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private List<PlayerSelectedCard> filterPlayers(String code) {
@@ -149,10 +152,16 @@ public class GameBoardSocket {
     }
 
     private void sendFlipStatus(String code) {
-        Map<String, Object> data = new ConcurrentHashMap<>();
-        data.put(ACTION, "flip-status");
-        data.put("isFlip", flippedAnswers.get(code));
+        Boolean isLastestQUestion = false;
+        if(Objects.nonNull(latestQuestion.get(code))) {
+            isLastestQUestion = latestQuestion.get(code);
+        }
 
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "init-data");
+        data.put("isFlip", flippedAnswers.get(code));
+        data.put("isLastOne", isLastestQUestion);
+        
         broadcast(sessions.get(code), toJson(data));
     }
 
@@ -162,8 +171,6 @@ public class GameBoardSocket {
         Map<String, Object> data = new HashMap<>();
         data.put(ACTION, "join-game");
         data.put("data", toJson(playerSelectedCards));
-
-
         broadcast(sessions.get(code), toJson(data));
     }
 

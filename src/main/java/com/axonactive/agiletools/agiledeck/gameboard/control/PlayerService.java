@@ -15,9 +15,13 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerMsgCodes;
 
+// simport org.jboss.logmanager.Logger;
+
 @RequestScoped
 @Transactional
 public class PlayerService {
+
+    // private static final Logger LOGGER = Logger.getLogger(PlayerService.class.getName());
     
     @PersistenceContext
     EntityManager em;
@@ -37,7 +41,9 @@ public class PlayerService {
         Faker faker = new Faker();
         String name = "";
         do {
+            // LOGGER.info("Faker.food: " + faker.food());
             name = faker.food().fruit();
+            // LOGGER.info("Name of food: " + name);
         } while(isExisted(gameBoard.getCode(), name) || name.length() > 15);
         return new Player(gameBoard, name);
     }
