@@ -45,5 +45,4 @@ public class QuestionService {
         return Objects.nonNull(answeredQuestion);
     }
 
-
 }
