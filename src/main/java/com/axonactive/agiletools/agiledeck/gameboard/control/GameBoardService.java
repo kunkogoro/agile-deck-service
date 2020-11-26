@@ -40,7 +40,6 @@ public class GameBoardService {
     AnsweredQuestionService answeredQuestionService;
 
     public AnsweredQuestion join(String code) {
-        validateCode(code);
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
 
@@ -55,7 +54,6 @@ public class GameBoardService {
     
 
     public GameBoard getByCode(String code) {
-        validateCode(code);
         TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
         query.setParameter("code", code);
         return query.getResultStream().findFirst().orElse(null);
@@ -88,12 +86,5 @@ public class GameBoardService {
     private String generateGameBoardCode() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();   
-    }    
-
-    private void validateCode(String code) {
-        String CODE_PATTERN = "[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}";
-        if(!Pattern.matches(CODE_PATTERN, code)) {
-            throw new AgileDeckException(GameBoardMsgCodes.UNMATCHED_CODE_FORMAT);
-        }
-    }
+    }   
 }
