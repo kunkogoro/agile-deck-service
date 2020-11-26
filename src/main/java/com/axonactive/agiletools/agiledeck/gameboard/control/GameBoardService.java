@@ -3,7 +3,6 @@ package com.axonactive.agiletools.agiledeck.gameboard.control;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,10 +14,8 @@ import javax.transaction.Transactional;
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
 import com.axonactive.agiletools.agiledeck.game.control.GameService;
-import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;

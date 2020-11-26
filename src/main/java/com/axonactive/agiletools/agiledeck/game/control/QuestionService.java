@@ -23,8 +23,7 @@ public class QuestionService {
     public List<Question> getAllByGameID(Long gameID){
         TypedQuery<Question> query = em.createNamedQuery(Question.GET_ALL_BY_GAME_ID, Question.class);
         query.setParameter("gameId", gameID);
-        List<Question> listQuestion = query.getResultList();
-        return listQuestion;
+        return query.getResultList();
     }
 
     public Question random(List<Question> questions, Long gameBoardId){
