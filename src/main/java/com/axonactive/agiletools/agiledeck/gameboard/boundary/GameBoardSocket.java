@@ -56,7 +56,7 @@ public class GameBoardSocket {
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("code") String code) {
+    public void onMessage(Session session, String message, @PathParam("code") String code) {
         JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
         String action = jsonObject.getString(ACTION);
 
