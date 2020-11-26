@@ -1,6 +1,7 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -17,7 +18,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
+import com.axonactive.agiletools.agiledeck.game.entity.Question;
 import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
 import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
@@ -38,7 +42,13 @@ public class GameBoardResource {
     PlayerService playerService;
 
     @Inject
+    QuestionService questionService;
+
+    @Inject
     AnsweredQuestionDetailService answeredQuestionDetailService;
+
+    @Inject
+    AnsweredQuestionService answeredQuestionService;
 
     @Context
     UriInfo uriInfo;
@@ -46,6 +56,9 @@ public class GameBoardResource {
     @PUT
     public Response create(@QueryParam("game") Long gameId) {
         GameBoard gameBoard = gameBoardService.create(gameId);
+        List<Question> questions = questionService.getAllByGameID(gameId);
+        Question question = questionService.random(questions, gameBoard.getId());
+        answeredQuestionService.create(question, gameBoard);
         URI location = this.uriInfo.getAbsolutePathBuilder().path(String.valueOf(gameBoard.getCode())).build();
         return Response.created(location).entity(gameBoard).build(); 
     }
