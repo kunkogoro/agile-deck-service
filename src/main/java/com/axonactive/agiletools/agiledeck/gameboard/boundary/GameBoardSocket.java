@@ -40,7 +40,6 @@ public class GameBoardSocket {
             List<Session> playerSession = sessions.get(code);
             playerSession.add(session);
         }
-
         sendFlipStatus(code);
     }
 
