@@ -1,7 +1,6 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
