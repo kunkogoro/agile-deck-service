@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.control;
+package com.axonactive.agiletools.agiledeck.gameboard.control;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,11 +16,12 @@ import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
 import com.axonactive.agiletools.agiledeck.game.control.GameService;
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
-import com.axonactive.agiletools.agiledeck.play.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.play.entity.GameBoard;
-import com.axonactive.agiletools.agiledeck.play.entity.GameBoardMsgCodes;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 
 @RequestScoped
+@Transactional
 public class GameBoardService {
 
     @PersistenceContext
@@ -32,27 +33,35 @@ public class GameBoardService {
     @Inject
     AnswerService answerService;
 
-    @Transactional
+    @Inject
+    AnsweredQuestionService answeredQuestionService;
+
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
-        List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
-        return AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
-    }
 
-    private GameBoard getByCode(String code) {
+        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getId());
+
+        if(Objects.isNull(currentAnswerQuestion)){
+            List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
+            currentAnswerQuestion =  AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
+        }
+        return currentAnswerQuestion;
+    }
+    
+
+    public GameBoard getByCode(String code) {
         TypedQuery<GameBoard> query = em.createNamedQuery(GameBoard.GET_BY_CODE, GameBoard.class);
         query.setParameter("code", code);
         return query.getResultStream().findFirst().orElse(null);
     }
 
-    private void validate(GameBoard gameBoard){
+    public void validate(GameBoard gameBoard){
         if(Objects.isNull(gameBoard)) {
             throw new AgileDeckException(GameBoardMsgCodes.GAME_BOARD_NOT_FOUND);
         }
     }
 
-    @Transactional
     public GameBoard create(Long gameId) {
         Game game = findGameById(gameId);
         GameBoard gameBoard = init(game);
@@ -74,5 +83,5 @@ public class GameBoardService {
     private String generateGameBoardCode() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();   
-    }    
+    }   
 }

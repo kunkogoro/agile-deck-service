@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.play.entity;
+package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,13 +22,16 @@ import lombok.Setter;
 @Table (name = "tbl_game_boards")
 @Entity
 @NamedQueries({
-    @NamedQuery(name = GameBoard.GET_BY_CODE, query = "SELECT gb FROM GameBoard gb WHERE gb.code = :code")
+    @NamedQuery(name = GameBoard.GET_BY_CODE, query = "SELECT gb FROM GameBoard gb WHERE gb.code = :code"),
+    @NamedQuery(name = GameBoard.GET_BY_ID, query = "SELECT gb FROM GameBoard gb WHERE gb.id = :id")
 })
 public class GameBoard {
 
     private static final String QUALIFIER = "com.axonactive.agiletools.agiledeck.play.entity.GameBoard";
 
-    public static final String GET_BY_CODE = QUALIFIER + "getByCode";    
+    public static final String GET_BY_CODE = QUALIFIER + "getByCode";  
+    
+    public static final String GET_BY_ID = QUALIFIER + "getById";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
