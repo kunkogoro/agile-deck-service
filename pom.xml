@@ -110,15 +110,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-config-yaml</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.axonactive.agiletools</groupId>-->
-<!--            <artifactId>quarkus-faker</artifactId>-->
-<!--            <version>1.0.2-SNAPSHOT</version>-->
-<!--            &lt;!&ndash; <groupId>com.github.javafaker</groupId>-->
-<!--            <artifactId>javafaker</artifactId>-->
-<!--            <version>1.0.2</version> &ndash;&gt;-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
 
     </dependencies>
 

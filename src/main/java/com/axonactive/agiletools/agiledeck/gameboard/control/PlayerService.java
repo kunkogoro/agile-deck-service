@@ -64,4 +64,10 @@ public class PlayerService {
         validate(player);
         return player;
     }
+
+    public Player changeName(Long id, String name) {
+        Player existedPlayer = findById(id);
+        existedPlayer.setName(name);
+        return em.merge(existedPlayer);
+    }
 }
