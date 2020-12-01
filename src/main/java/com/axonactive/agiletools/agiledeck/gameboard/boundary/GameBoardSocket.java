@@ -114,7 +114,6 @@ public class GameBoardSocket {
                 playerSelectedCards.add(playerSelectedCard);
             }
         });
-
         return playerSelectedCards;
     }
 
