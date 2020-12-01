@@ -1,20 +1,22 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 
-import java.io.StringReader;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.bind.JsonbBuilder;
-import javax.websocket.*;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
-import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
+import java.io.StringReader;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")
@@ -74,9 +76,29 @@ public class GameBoardSocket {
             case "next-question":
                 nextQuestion(code, jsonObject.getBoolean(IS_LAST_ONE));
                 break;
+            case "update-player":
+                updatePlayer(code, jsonObject);
+                break;
         }
     }
 
+    private void updatePlayer(String code, JsonObject jsonObject) {
+        Long id = (long) jsonObject.getInt("id");
+        String name = jsonObject.getString("name");
+
+        players.get(code).forEach(playerSelectedCard -> {
+            Player player = playerSelectedCard.getPlayer();
+            if (player.getId().equals(id)) {
+                player.setName(name);
+
+                Map<String, Object> data = new HashMap<>();
+                data.put(ACTION, "update-player");
+                data.put("playerId", id);
+                data.put("playerName", name);
+                broadcast(sessions.get(code), toJson(data));
+            }
+        });
+    }
     private void nextQuestion(String code, Boolean isLastOne) {
         latestQuestion.put(code, isLastOne);
         Map<String, Object> data = new ConcurrentHashMap<>();
