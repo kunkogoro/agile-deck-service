@@ -14,10 +14,8 @@ import javax.transaction.Transactional;
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
 import com.axonactive.agiletools.agiledeck.game.control.GameService;
-import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
@@ -85,5 +83,5 @@ public class GameBoardService {
     private String generateGameBoardCode() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();   
-    }    
+    }   
 }

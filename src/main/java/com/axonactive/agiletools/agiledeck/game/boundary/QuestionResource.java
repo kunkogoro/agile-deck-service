@@ -60,7 +60,6 @@ public class QuestionResource {
         try{
             questionService.random(listQuestion, gameBoard.getId());
         }catch(AgileDeckException ade) {
-            System.out.println(ade.getMessage());
             isLastOne = true;
         }
 

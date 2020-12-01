@@ -15,7 +15,6 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerMsgCodes;
 
-
 @RequestScoped
 @Transactional
 public class PlayerService {
@@ -39,9 +38,7 @@ public class PlayerService {
         Faker faker = new Faker();
         String name = "";
         do {
-            // LOGGER.info("Faker.food: " + faker.food());
             name = faker.food().fruit();
-            // LOGGER.info("Name of food: " + name);
         } while(isExisted(gameBoard.getCode(), name) || name.length() > 15);
         return new Player(gameBoard, name);
     }
@@ -66,5 +63,11 @@ public class PlayerService {
         Player player = query.getResultStream().findFirst().orElse(null);
         validate(player);
         return player;
+    }
+
+    public Player changeName(Long id, String name) {
+        Player existedPlayer = findById(id);
+        existedPlayer.setName(name);
+        return em.merge(existedPlayer);
     }
 }

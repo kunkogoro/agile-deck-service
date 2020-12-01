@@ -5,7 +5,8 @@ import com.axonactive.agiletools.agiledeck.MsgCodes;
 public enum GameBoardMsgCodes implements MsgCodes{
 
     GAME_BOARD_NOT_FOUND,
-    GAME_BOARD_CODE_NOT_FOUND;
+    GAME_BOARD_CODE_NOT_FOUND, 
+    UNMATCHED_CODE_FORMAT;
 
     @Override
     public String getValue() {

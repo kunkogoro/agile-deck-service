@@ -1,9 +1,8 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
 
-import java.io.StringReader;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
@@ -15,15 +14,16 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
-import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
+import java.io.StringReader;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
 @ServerEndpoint("/ws/{code}")
 public class GameBoardSocket {
 
     private static final String ACTION = "action";
+    private static final String IS_LAST_ONE = "isLastOne";
     
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
     private final Map<String, List<PlayerSelectedCard>> players = new ConcurrentHashMap<>();
@@ -42,7 +42,6 @@ public class GameBoardSocket {
             List<Session> playerSession = sessions.get(code);
             playerSession.add(session);
         }
-
         sendFlipStatus(code);
     }
 
@@ -57,7 +56,7 @@ public class GameBoardSocket {
     }
 
     @OnMessage
-    public void onMessage(Session session, String message, @PathParam("code") String code) {
+    public void onMessage(String message, @PathParam("code") String code) {
         JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
         String action = jsonObject.getString(ACTION);
 
@@ -75,16 +74,36 @@ public class GameBoardSocket {
                 resetAnswer(code);
                 break;
             case "next-question":
-                nextQuestion(code, jsonObject.getBoolean("isLastOne"));
+                nextQuestion(code, jsonObject.getBoolean(IS_LAST_ONE));
+                break;
+            case "update-player":
+                updatePlayer(code, jsonObject);
                 break;
         }
     }
 
+    private void updatePlayer(String code, JsonObject jsonObject) {
+        Long id = (long) jsonObject.getInt("id");
+        String name = jsonObject.getString("name");
+
+        players.get(code).forEach(playerSelectedCard -> {
+            Player player = playerSelectedCard.getPlayer();
+            if (player.getId().equals(id)) {
+                player.setName(name);
+
+                Map<String, Object> data = new HashMap<>();
+                data.put(ACTION, "update-player");
+                data.put("playerId", id);
+                data.put("playerName", name);
+                broadcast(sessions.get(code), toJson(data));
+            }
+        });
+    }
     private void nextQuestion(String code, Boolean isLastOne) {
         latestQuestion.put(code, isLastOne);
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put(ACTION, "next-question");
-        data.put("isLastOne", isLastOne);
+        data.put(IS_LAST_ONE, isLastOne);
         broadcast(sessions.get(code), toJson(data));
     }
 
@@ -95,7 +114,6 @@ public class GameBoardSocket {
                 playerSelectedCards.add(playerSelectedCard);
             }
         });
-
         return playerSelectedCards;
     }
 
@@ -160,7 +178,7 @@ public class GameBoardSocket {
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put(ACTION, "init-data");
         data.put("isFlip", flippedAnswers.get(code));
-        data.put("isLastOne", isLastestQUestion);
+        data.put(IS_LAST_ONE, isLastestQUestion);
         
         broadcast(sessions.get(code), toJson(data));
     }
