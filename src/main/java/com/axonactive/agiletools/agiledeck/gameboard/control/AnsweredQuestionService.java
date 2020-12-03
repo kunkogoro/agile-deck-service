@@ -1,14 +1,15 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
+import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+
 import javax.enterprise.context.RequestScoped;
+import javax.json.bind.JsonbBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 @RequestScoped
 @Transactional
@@ -20,6 +21,7 @@ public class AnsweredQuestionService {
     public AnsweredQuestion create(Question question, GameBoard gameBoard){
         AnsweredQuestion answeredQuestion = new AnsweredQuestion(gameBoard, question.getContent());
         answeredQuestion.setPlaying(true);
+        System.out.println("Data: " + JsonbBuilder.create().toJson(answeredQuestion));
         em.persist(answeredQuestion);
         return answeredQuestion;
     }
