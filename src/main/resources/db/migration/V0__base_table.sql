@@ -4,7 +4,7 @@
 --
 
 CREATE TABLE public.tbl_answer_groups (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     name character varying(255)
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE public.tbl_answer_groups (
 --
 
 CREATE TABLE public.tbl_answered_question_details (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     answered_question_id bigint,
     player_id bigint,
     answer_content character varying(255),
@@ -28,8 +28,9 @@ CREATE TABLE public.tbl_answered_question_details (
 -- Name: tbl_answered_questions; Type: TABLE; Schema: public; Owner: -
 --
 
+
 CREATE TABLE public.tbl_answered_questions (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     game_board_id bigint NOT NULL,
     question_content character varying(255),
     question_content_as_image character varying(255),
@@ -45,7 +46,7 @@ CREATE TABLE public.tbl_answered_questions (
 --
 
 CREATE TABLE public.tbl_answers (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     answer_content character varying(255),
     number_order bigint NOT NULL,
     answer_content_as_image character varying(255),
@@ -61,7 +62,7 @@ CREATE TABLE public.tbl_answers (
 --
 
 CREATE TABLE public.tbl_game_boards (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     code character varying(50) NOT NULL,
     game_id bigint NOT NULL
 );
@@ -73,7 +74,7 @@ CREATE TABLE public.tbl_game_boards (
 --
 
 CREATE TABLE public.tbl_games (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     description character varying(255),
     name character varying(255),
     game_as_image character varying(255)
@@ -86,7 +87,7 @@ CREATE TABLE public.tbl_games (
 --
 
 CREATE TABLE public.tbl_players (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     game_board_id bigint NOT NULL,
     avatar character varying(255),
     name character varying(255) NOT NULL
@@ -99,7 +100,7 @@ CREATE TABLE public.tbl_players (
 --
 
 CREATE TABLE public.tbl_questions (
-    id bigint NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     question_content character varying(255),
     question_content_as_image character varying(255),
     game_id bigint
@@ -112,7 +113,8 @@ CREATE TABLE public.tbl_questions (
 -- Data for Name: tbl_answer_groups; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_answer_groups VALUES (1, 'Approach set');
+INSERT INTO public.tbl_answer_groups (name)
+VALUES ( 'Approach set');
 
 
 --
@@ -121,11 +123,14 @@ INSERT INTO public.tbl_answer_groups VALUES (1, 'Approach set');
 -- Data for Name: tbl_answered_question_details; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_answered_question_details VALUES (1, 1, 1, NULL, 'iterative.png');
-INSERT INTO public.tbl_answered_question_details VALUES (2, 1, 2, NULL, 'bigbang.png');
-INSERT INTO public.tbl_answered_question_details VALUES (3, 1, 3, NULL, 'incremental.png');
-INSERT INTO public.tbl_answered_question_details VALUES (4, 1, 4, NULL, 'iterative.png');
-INSERT INTO public.tbl_answered_question_details VALUES (5, 1, 5, NULL, NULL);
+INSERT INTO public.tbl_answered_question_details
+(answered_question_id, player_id, answer_content_as_image)
+VALUES(1,1,'iterative.png'),
+    (1,2,'bigbang.png'),
+    (1,3,'incremental.png'),
+    (1,4,'iterative.png'),
+    (1,5, null);
+
 
 
 --
@@ -134,10 +139,13 @@ INSERT INTO public.tbl_answered_question_details VALUES (5, 1, 5, NULL, NULL);
 -- Data for Name: tbl_answered_questions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_answered_questions VALUES (1, 1, 'Building a new highway', NULL, NULL, NULL, true);
-INSERT INTO public.tbl_answered_questions VALUES (2, 1, 'Learning to ride a horse', NULL, NULL, NULL, false);
-INSERT INTO public.tbl_answered_questions VALUES (3, 2, 'Sewing a patchwork quilt', NULL, NULL, NULL, false);
-INSERT INTO public.tbl_answered_questions VALUES (4, 2, 'Negotiating the release of a kidnapped person', NULL, NULL, NULL, true);
+INSERT INTO public.tbl_answered_questions
+(game_board_id, question_content, playing)
+VALUES(1, 'Building a new highway', true),
+    (1, 'Learning to ride a horse', false),
+    (2, 'Sewing a patchwork quilt', false),
+    (2, 'Negotiating the release of a kidnapped person', true);
+
 
 
 --
@@ -146,9 +154,11 @@ INSERT INTO public.tbl_answered_questions VALUES (4, 2, 'Negotiating the release
 -- Data for Name: tbl_answers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_answers VALUES (1, 'Iterative', 1, 'iterative.png', 1, 1, NULL);
-INSERT INTO public.tbl_answers VALUES (2, 'Incremental', 2, 'incremental.png', 1, 1, NULL);
-INSERT INTO public.tbl_answers VALUES (3, 'Bigbang', 3, 'bigbang.png', 1, 1, NULL);
+INSERT INTO tbl_answers (answer_content, number_order, answer_content_as_image, answer_group_id, game_id)
+VALUES ('Iterative', 1, 'iterative.png', 1, 1),
+    ('Incremental', 2, 'incremental.png', 1, 1),
+    ('Bigbang', 3, 'bigbang.png', 1, 1);
+
 
 
 --
@@ -157,8 +167,9 @@ INSERT INTO public.tbl_answers VALUES (3, 'Bigbang', 3, 'bigbang.png', 1, 1, NUL
 -- Data for Name: tbl_game_boards; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_game_boards VALUES (1, 'b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1);
-INSERT INTO public.tbl_game_boards VALUES (2, 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
+INSERT INTO public.tbl_game_boards (code, game_id)
+VALUES ( 'b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
+        ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
 
 
 --
@@ -167,7 +178,8 @@ INSERT INTO public.tbl_game_boards VALUES (2, 'asd6gfga-f296-sdf3-0fn2-asf86gc1c
 -- Data for Name: tbl_games; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_games VALUES (1, 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban', 'Iterative - Incremental - Big Bang', NULL);
+INSERT INTO public.tbl_games(name, description)
+VALUES ('A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban', 'Iterative - Incremental - Big Bang');
 
 
 --
@@ -176,11 +188,14 @@ INSERT INTO public.tbl_games VALUES (1, 'A workshop game to encourage people to 
 -- Data for Name: tbl_players; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_players VALUES (1, 1, NULL, 'Strawberries');
-INSERT INTO public.tbl_players VALUES (2, 1, NULL, 'Banana');
-INSERT INTO public.tbl_players VALUES (3, 1, NULL, 'Orange');
-INSERT INTO public.tbl_players VALUES (4, 1, NULL, 'Mango');
-INSERT INTO public.tbl_players VALUES (5, 1, NULL, 'Durian');
+INSERT INTO public.tbl_players
+(name, game_board_id)
+VALUES('Strawberries', 1),
+    ('Banana', 1),
+    ('Orange', 1),
+    ('Mango', 1),
+    ('Durian', 1);
+
 
 
 --
@@ -189,51 +204,54 @@ INSERT INTO public.tbl_players VALUES (5, 1, NULL, 'Durian');
 -- Data for Name: tbl_questions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_questions VALUES (1, 'Building a new highway', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (2, 'Learning to ride a horse', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (3, 'Sewing a patchwork quilt', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (4, 'Negotiating the release of a kidnapped person', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (5, 'Learning to speak in public', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (6, 'Learning to dive', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (7, 'Building a tree house', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (8, 'Organizing a party', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (9, 'Laying a pavement', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (10, 'Adopting a child', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (11, 'Knitting a scarf', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (12, 'Moving house', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (13, 'Learning a new language', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (14, 'Growing a beard', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (15, 'Wring a wedding speech', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (16, 'Making wine', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (17, 'Converting a loft', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (18, 'Making a table', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (19, 'Writing a song', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (20, 'Solving an equation', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (21, 'Pruning a tree', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (22, 'Making a clay vase', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (23, 'Building a bridge', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (24, 'Renovating a house', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (25, 'Creating a website to sell pet products', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (26, 'Training to run a marathon', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (27, 'Writing a book', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (28, 'Making a Hollywood blockbuster', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (29, 'Losing weight', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (30, 'Cooking Sunday lunch', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (31, 'Building a new house', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (32, 'Building an extension', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (33, 'Building a nuclear submarine', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (34, 'Putting a person on the moon', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (35, 'Laying a new lawn', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (36, 'Raising money for charity', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (37, 'Becoming a bodybuilder', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (38, 'Learning to play the guitar', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (39, 'Planning a wedding', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (40, 'Growing a vegetable patch', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (41, 'Designing a poster', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (42, 'Landscaping a garden', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (43, 'Decorating a house', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (44, 'Having a baby', NULL, 1);
-INSERT INTO public.tbl_questions VALUES (45, 'Building a car', NULL, 1);
+INSERT INTO public.tbl_questions
+(question_content, game_id)
+VALUES('Building a new highway', 1),
+    ('Learning to ride a horse', 1),
+    ('Sewing a patchwork quilt', 1),
+    ('Negotiating the release of a kidnapped person', 1),
+    ('Learning to speak in public', 1),
+    ('Learning to dive', 1),
+    ('Building a tree house', 1),
+    ('Organizing a party', 1),
+    ('Laying a pavement', 1),
+    ('Adopting a child', 1),
+    ('Knitting a scarf', 1),
+    ('Moving house', 1),
+    ('Learning a new language', 1),
+    ('Growing a beard', 1),
+    ('Wring a wedding speech', 1),
+    ('Making wine', 1),
+    ('Converting a loft', 1),
+    ('Making a table', 1),
+    ('Writing a song', 1),
+    ('Solving an equation', 1),
+    ('Pruning a tree', 1),
+    ('Making a clay vase', 1),
+    ('Building a bridge', 1),
+    ('Renovating a house', 1),
+    ('Creating a website to sell pet products', 1),
+    ('Training to run a marathon', 1),
+    ('Writing a book', 1),
+    ('Making a Hollywood blockbuster', 1),
+    ('Losing weight', 1),
+    ('Cooking Sunday lunch', 1),
+    ('Building a new house', 1),
+    ('Building an extension', 1),
+    ('Building a nuclear submarine', 1),
+    ('Putting a person on the moon', 1),
+    ('Laying a new lawn', 1),
+    ('Raising money for charity', 1),
+    ('Becoming a bodybuilder', 1),
+    ('Learning to play the guitar', 1),
+    ('Planning a wedding', 1),
+    ('Growing a vegetable patch', 1),
+    ('Designing a poster', 1),
+    ('Landscaping a garden', 1),
+    ('Decorating a house', 1),
+    ('Having a baby', 1),
+    ('Building a car', 1);
+
 
 
 -- Completed on 2020-12-03 16:27:24
