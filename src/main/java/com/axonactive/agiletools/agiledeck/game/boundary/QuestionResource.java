@@ -1,19 +1,5 @@
 package com.axonactive.agiletools.agiledeck.game.boundary;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.GameService;
 import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
@@ -23,6 +9,15 @@ import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionSer
 import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Path("/questions")
 @Transactional
@@ -45,7 +40,7 @@ public class QuestionResource {
     @GET
     @Path("/{code}")
     public Response getQuestion(@PathParam("code") String code){
-        Boolean isLastOne = false;
+        boolean isLastOne = false;
         GameBoard gameBoard = gameBoardService.getByCode(code);
         Game game = gameService.findById(gameBoard.getGame().getId());
 
