@@ -67,6 +67,18 @@ CREATE TABLE public.tbl_game_boards (
     game_id bigint NOT NULL
 );
 
+--
+-- TOC entry 190 (class 1259 OID 16515)
+-- Name: tbl_game_board_config; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tbl_game_board_config (
+    id BIGSERIAL PRIMARY KEY,
+    question_title character varying(255),
+    answer_title character varying(255),
+    player_title character varying(255)
+);
+
 
 --
 -- TOC entry 190 (class 1259 OID 16515)
@@ -75,10 +87,12 @@ CREATE TABLE public.tbl_game_boards (
 
 CREATE TABLE public.tbl_games (
     id BIGSERIAL PRIMARY KEY,
+    game_board_config_id bigint NOT NULL,
     description character varying(255),
     name character varying(255),
     game_as_image character varying(255)
 );
+
 
 
 --
@@ -171,6 +185,15 @@ INSERT INTO public.tbl_game_boards (code, game_id)
 VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
         ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
 
+--
+-- TOC entry 2159 (class 0 OID 16515)
+-- Dependencies: 190
+-- Data for Name: tbl_game_board_config; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.tbl_game_board_config(question_title, answer_title, player_title)
+VALUES ('Select a scenario', 'Pick an approach', 'Players');
+
 
 --
 -- TOC entry 2159 (class 0 OID 16515)
@@ -178,8 +201,9 @@ VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
 -- Data for Name: tbl_games; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_games(name, description)
-VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban');
+INSERT INTO public.tbl_games(game_board_config_id,name, description)
+VALUES (1, 'Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban'),
+        (1, 'New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process');
 
 --
 -- TOC entry 2160 (class 0 OID 16521)
