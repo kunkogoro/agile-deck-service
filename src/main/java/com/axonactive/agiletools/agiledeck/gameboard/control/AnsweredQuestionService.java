@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequestScoped
 @Transactional
@@ -36,4 +37,9 @@ public class AnsweredQuestionService {
         em.merge(answeredQuestion);
     }
 
+    public List<AnsweredQuestion> findByGameBoardId(Long id) {
+        TypedQuery<AnsweredQuestion> query = em.createNamedQuery(AnsweredQuestion.GET_BY_GAME_BOARD_ID, AnsweredQuestion.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 }
