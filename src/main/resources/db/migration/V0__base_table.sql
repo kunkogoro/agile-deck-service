@@ -128,7 +128,8 @@ CREATE TABLE public.tbl_questions (
 --
 
 INSERT INTO public.tbl_answer_groups (name)
-VALUES('Approach set');
+VALUES('Approach set'),
+    ('Solution for New Deck');
 
 
 --
@@ -144,8 +145,6 @@ VALUES(1,1,'iterative.png'),
     (1,3,'incremental.png'),
     (1,4,'iterative.png'),
     (1,5, null);
-
-
 
 --
 -- TOC entry 2156 (class 0 OID 16500)
@@ -171,7 +170,9 @@ VALUES(1, 'Building a new highway', true),
 INSERT INTO tbl_answers (answer_content, number_order, answer_content_as_image, answer_group_id, game_id)
 VALUES ('Iterative', 1, 'iterative.png', 1, 1),
     ('Incremental', 2, 'incremental.png', 1, 1),
-    ('Bigbang', 3, 'bigbang.png', 1, 1);
+    ('Bigbang', 3, 'bigbang.png', 1, 1),
+    ('Yes', 1, '', 2, 2),
+    ('No', 2, '', 2, 2);
 
 
 
@@ -192,7 +193,8 @@ VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
 --
 
 INSERT INTO public.tbl_game_board_config(question_title, answer_title, player_title)
-VALUES ('Select a scenario', 'Pick an approach', 'Players');
+VALUES ('Select a scenario', 'Pick an approach', 'Players'),
+        ('Problems', 'Answers', 'Players');
 
 
 --
@@ -203,7 +205,7 @@ VALUES ('Select a scenario', 'Pick an approach', 'Players');
 
 INSERT INTO public.tbl_games(game_board_config_id,name, description)
 VALUES (1, 'Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban'),
-        (1, 'New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process');
+        (2, 'New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process');
 
 --
 -- TOC entry 2160 (class 0 OID 16521)
@@ -273,7 +275,8 @@ VALUES('Building a new highway', 1),
     ('Landscaping a garden', 1),
     ('Decorating a house', 1),
     ('Having a baby', 1),
-    ('Building a car', 1);
+    ('Building a car', 1),
+    ('Problem1', 2);
 
 
 
