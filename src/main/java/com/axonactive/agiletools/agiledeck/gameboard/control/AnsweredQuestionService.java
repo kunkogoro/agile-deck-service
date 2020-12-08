@@ -28,7 +28,7 @@ public class AnsweredQuestionService {
         return answeredQuestion;
     }
 
-    public AnsweredQuestion findCurrenrPLaying(Long gameBoardId) {
+    public AnsweredQuestion findCurrentPLaying(Long gameBoardId) {
         TypedQuery<AnsweredQuestion> query = em.createNamedQuery(AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_IS_PLAYING, AnsweredQuestion.class);
         query.setParameter("id", gameBoardId);        
         return query.getResultStream().findFirst().orElse(null);
