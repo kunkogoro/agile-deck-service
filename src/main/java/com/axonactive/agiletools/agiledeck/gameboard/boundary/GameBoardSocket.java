@@ -79,7 +79,16 @@ public class GameBoardSocket {
             case "update-player":
                 updatePlayer(code, jsonObject);
                 break;
+            case "update-question":
+                updateQuestion(code);
+                break;
         }
+    }
+
+    private void updateQuestion(String code) {
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "update-question");
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private void updatePlayer(String code, JsonObject jsonObject) {
@@ -138,7 +147,7 @@ public class GameBoardSocket {
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
         Long playerId = Long.parseLong(jsonObject.getString("playerId"));
-        Long selectedCardId = (long) jsonObject.getInt("selectedCardId");
+        String selectedCardId = jsonObject.getString("selectedCardId");
 
         players.get(code).forEach(playerSelectedCard -> {
             if (playerId.equals(playerSelectedCard.getPlayer().getId())) {

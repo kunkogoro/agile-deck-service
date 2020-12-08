@@ -18,7 +18,7 @@ CREATE TABLE public.tbl_answered_question_details (
     id BIGSERIAL PRIMARY KEY,
     answered_question_id bigint,
     player_id bigint,
-    answer_content character varying(255),
+    answer_content text,
     answer_content_as_image character varying(255)
 );
 
@@ -32,9 +32,9 @@ CREATE TABLE public.tbl_answered_question_details (
 CREATE TABLE public.tbl_answered_questions (
     id BIGSERIAL PRIMARY KEY,
     game_board_id bigint NOT NULL,
-    question_content character varying(255),
+    question_content text,
     question_content_as_image character varying(255),
-    answer_content character varying(255),
+    answer_content text,
     answer_content_as_image character varying(255),
     playing boolean
 );
@@ -47,7 +47,7 @@ CREATE TABLE public.tbl_answered_questions (
 
 CREATE TABLE public.tbl_answers (
     id BIGSERIAL PRIMARY KEY,
-    answer_content character varying(255),
+    answer_content text,
     number_order bigint NOT NULL,
     answer_content_as_image character varying(255),
     answer_group_id bigint NOT NULL,
@@ -77,8 +77,12 @@ CREATE TABLE public.tbl_games (
     id BIGSERIAL PRIMARY KEY,
     description character varying(255),
     name character varying(255),
-    game_as_image character varying(255)
+    game_as_image character varying(255),
+    question_title character varying(255),
+    answer_title character varying(255),
+    player_title character varying(255)
 );
+
 
 
 --
@@ -101,7 +105,7 @@ CREATE TABLE public.tbl_players (
 
 CREATE TABLE public.tbl_questions (
     id BIGSERIAL PRIMARY KEY,
-    question_content character varying(255),
+    question_content text,
     question_content_as_image character varying(255),
     game_id bigint
 );
@@ -114,7 +118,8 @@ CREATE TABLE public.tbl_questions (
 --
 
 INSERT INTO public.tbl_answer_groups (name)
-VALUES('Approach set');
+VALUES('Approach set'),
+    ('Solution for New Deck');
 
 
 --
@@ -130,8 +135,6 @@ VALUES(1,1,'iterative.png'),
     (1,3,'incremental.png'),
     (1,4,'iterative.png'),
     (1,5, null);
-
-
 
 --
 -- TOC entry 2156 (class 0 OID 16500)
@@ -157,7 +160,9 @@ VALUES(1, 'Building a new highway', true),
 INSERT INTO tbl_answers (answer_content, number_order, answer_content_as_image, answer_group_id, game_id)
 VALUES ('Iterative', 1, 'iterative.png', 1, 1),
     ('Incremental', 2, 'incremental.png', 1, 1),
-    ('Bigbang', 3, 'bigbang.png', 1, 1);
+    ('Bigbang', 3, 'bigbang.png', 1, 1),
+    ('Yes', 1, 'yes.png', 2, 2),
+    ('No', 2, 'no.png', 2, 2);
 
 
 
@@ -178,8 +183,9 @@ VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
 -- Data for Name: tbl_games; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_games(name, description)
-VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban');
+INSERT INTO public.tbl_games(name, description,game_as_image, question_title, answer_title, player_title)
+VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban','iib.png', 'Select a scenario', 'Pick an approach', 'Players'),
+        ('New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process','nd.png', 'Problems', 'Answers', 'Players');
 
 --
 -- TOC entry 2160 (class 0 OID 16521)
@@ -249,7 +255,8 @@ VALUES('Building a new highway', 1),
     ('Landscaping a garden', 1),
     ('Decorating a house', 1),
     ('Having a baby', 1),
-    ('Building a car', 1);
+    ('Building a car', 1),
+    ('Problem1', 2);
 
 
 

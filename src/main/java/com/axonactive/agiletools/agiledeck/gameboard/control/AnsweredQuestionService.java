@@ -26,7 +26,7 @@ public class AnsweredQuestionService {
         return answeredQuestion;
     }
 
-    public AnsweredQuestion findCurrenrPLaying(Long gameBoardId) {
+    public AnsweredQuestion findCurrentPLaying(Long gameBoardId) {
         TypedQuery<AnsweredQuestion> query = em.createNamedQuery(AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_IS_PLAYING, AnsweredQuestion.class);
         query.setParameter("id", gameBoardId);        
         return query.getResultStream().findFirst().orElse(null);
@@ -36,4 +36,19 @@ public class AnsweredQuestionService {
         em.merge(answeredQuestion);
     }
 
+    public List<AnsweredQuestion> findByGameBoardId(Long id) {
+        TypedQuery<AnsweredQuestion> query = em.createNamedQuery(AnsweredQuestion.GET_BY_GAME_BOARD_ID, AnsweredQuestion.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
+    public AnsweredQuestion findById(Long id){
+        return em.find(AnsweredQuestion.class, id);
+    }
+    public AnsweredQuestion update(Long id, AnsweredQuestion updateAnsweredQuestion){
+        AnsweredQuestion answeredQuestion= findById(id);
+        answeredQuestion.setContent(updateAnsweredQuestion.getContent());
+        return em.merge(answeredQuestion);
+    }
+    
 }
