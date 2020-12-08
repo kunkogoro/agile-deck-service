@@ -1,8 +1,6 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import java.util.Map;
-
-import javax.inject.Inject;
+    import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

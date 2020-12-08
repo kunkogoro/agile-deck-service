@@ -44,7 +44,7 @@ public class QuestionResource {
         GameBoard gameBoard = gameBoardService.getByCode(code);
         Game game = gameService.findById(gameBoard.getGame().getId());
 
-        AnsweredQuestion currentAnsweredQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getId());
+        AnsweredQuestion currentAnsweredQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
         currentAnsweredQuestion.setPlaying(false);
         answeredQuestionService.updateStatusPlaying(currentAnsweredQuestion);
         

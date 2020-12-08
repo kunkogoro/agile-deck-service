@@ -55,6 +55,7 @@ try {
                     -e quarkus.datasource.password=${DB_PASS} \
                     -e quarkus.datasource.jdbc.url=${DB_URL} \
                     -e quarkus.hibernate-orm.database.generation=${DB_GENERATION} \
+                    -e quarkus.file.dir=${STORAGE_DIR} \
                     ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${RELEASE_TAG}"
                sh "docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"
             }

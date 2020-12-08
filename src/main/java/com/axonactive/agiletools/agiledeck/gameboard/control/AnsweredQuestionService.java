@@ -1,6 +1,8 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
-import java.util.List;
+import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 import javax.enterprise.context.RequestScoped;
 import javax.json.bind.JsonbBuilder;
@@ -8,10 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 @RequestScoped
 @Transactional
@@ -28,7 +26,7 @@ public class AnsweredQuestionService {
         return answeredQuestion;
     }
 
-    public AnsweredQuestion findCurrenrPLaying(Long gameBoardId) {
+    public AnsweredQuestion findCurrentPLaying(Long gameBoardId) {
         TypedQuery<AnsweredQuestion> query = em.createNamedQuery(AnsweredQuestion.GET_BY_GAME_BOARD_ID_AND_IS_PLAYING, AnsweredQuestion.class);
         query.setParameter("id", gameBoardId);        
         return query.getResultStream().findFirst().orElse(null);

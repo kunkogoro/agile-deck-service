@@ -18,7 +18,7 @@ CREATE TABLE public.tbl_answered_question_details (
     id BIGSERIAL PRIMARY KEY,
     answered_question_id bigint,
     player_id bigint,
-    answer_content character varying(255),
+    answer_content text,
     answer_content_as_image character varying(255)
 );
 
@@ -32,9 +32,9 @@ CREATE TABLE public.tbl_answered_question_details (
 CREATE TABLE public.tbl_answered_questions (
     id BIGSERIAL PRIMARY KEY,
     game_board_id bigint NOT NULL,
-    question_content character varying(255),
+    question_content text,
     question_content_as_image character varying(255),
-    answer_content character varying(255),
+    answer_content text,
     answer_content_as_image character varying(255),
     playing boolean
 );
@@ -47,7 +47,7 @@ CREATE TABLE public.tbl_answered_questions (
 
 CREATE TABLE public.tbl_answers (
     id BIGSERIAL PRIMARY KEY,
-    answer_content character varying(255),
+    answer_content text,
     number_order bigint NOT NULL,
     answer_content_as_image character varying(255),
     answer_group_id bigint NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE public.tbl_players (
 
 CREATE TABLE public.tbl_questions (
     id BIGSERIAL PRIMARY KEY,
-    question_content character varying(255),
+    question_content text,
     question_content_as_image character varying(255),
     game_id bigint
 );
