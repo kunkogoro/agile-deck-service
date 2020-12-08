@@ -19,8 +19,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Path("/gameboards")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -76,5 +79,26 @@ public class GameBoardResource {
             answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
         }
         return Response.ok(answeredQuestionDetail).build();
+    }
+
+    @GET
+    @Path("/history/{code}")
+    public Response getHistory(@PathParam("code") String code) {
+        GameBoard currentGameBoard = gameBoardService.getByCode(code);
+        gameBoardService.validate(currentGameBoard);
+
+        Map<String, Object> history = new LinkedHashMap<>();
+        List<AnsweredQuestion> questionList = answeredQuestionService.findByGameBoardId(currentGameBoard.getId());
+        questionList.forEach(answeredQuestion -> {
+            List<AnsweredQuestionDetail> answerList = answeredQuestionDetailService.getAllByAnsweredQuestionId(answeredQuestion.getId())
+                    .stream()
+                    .filter(answeredQuestionDetail -> Objects.nonNull(answeredQuestionDetail.getAnswer()))
+                    .collect(Collectors.toList());
+            if (!answerList.isEmpty()) {
+                history.put(answeredQuestion.getContent().getContent(), answerList);
+            }
+        });
+
+        return Response.ok(history).build();
     }
 }

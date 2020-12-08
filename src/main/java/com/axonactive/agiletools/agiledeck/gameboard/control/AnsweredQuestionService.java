@@ -1,6 +1,7 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
 import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.game.entity.QuestionContent;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequestScoped
 @Transactional
@@ -36,4 +38,18 @@ public class AnsweredQuestionService {
         em.merge(answeredQuestion);
     }
 
+    public List<AnsweredQuestion> findByGameBoardId(Long id) {
+        TypedQuery<AnsweredQuestion> query = em.createNamedQuery(AnsweredQuestion.GET_BY_GAME_BOARD_ID, AnsweredQuestion.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
+    public AnsweredQuestion findById(Long id){
+        return em.find(AnsweredQuestion.class, id);
+    }
+    public AnsweredQuestion update(Long id, AnsweredQuestion updateAnsweredQuestion){
+        AnsweredQuestion answeredQuestion= findById(id);
+        answeredQuestion.setContent(updateAnsweredQuestion.getContent());
+        return em.merge(answeredQuestion);
+    }
 }
