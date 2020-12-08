@@ -79,7 +79,12 @@ public class GameBoardSocket {
             case "update-player":
                 updatePlayer(code, jsonObject);
                 break;
+            case "update-problem":
+                updateProblem(code, jsonObject);
         }
+    }
+    private void updateProblem(String code, JsonObject jsonObject){
+        Long id = (long)
     }
 
     private void updatePlayer(String code, JsonObject jsonObject) {
