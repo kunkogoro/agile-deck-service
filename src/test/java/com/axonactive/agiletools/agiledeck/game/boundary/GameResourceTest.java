@@ -13,5 +13,12 @@ public class GameResourceTest {
         RestAssured.given().when().get("/games").then().statusCode(200);
     }
 
+    @Test
+   
+    public void whenViewHistoryOfGameBoard_thenReturnHistoryOfGameBoard(){
+        
+        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36").when().get("gameboards/history/{code}").then().statusCode(200);
+    }
+
 }
 
