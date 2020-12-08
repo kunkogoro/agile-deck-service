@@ -1,9 +1,10 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import javax.json.Json;
+import java.io.StringReader;
 
-import com.axonactive.agiletools.agiledeck.game.entity.QuestionContent;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.bind.Jsonb;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,30 +12,28 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.vertx.core.json.JsonObject;
 
 @QuarkusTest
 public class AnsweredQuestionResourceTest {
         @Test
+        
         public void whenChangeNameQuestion_thenReturnNewNameQuestion() {
-                // QuestionContent questionContent = new QuestionContent();
-                // questionContent.setContent("Content to update");
-                // AnsweredQuestion answeredQuestion = new AnsweredQuestion();
-                // answeredQuestion.setContent(questionContent);
-
-                JsonObject answerContent = (JsonObject) Json.createObjectBuilder()
-                                .add("content", "Bigbang")
-                                .add("content", "New problem")
+                JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "New Problem").build())
                                 .build();
-
                                 
-                Response response = RestAssured.given()
-                        .pathParam("id", 1)
-                        .body(answerContent).when()
-                        .put("answeredquestions/{id}").then().assertThat().statusCode(200).extract().response();
+                Response res = RestAssured.given()
+                        .pathParam("id", 1L)
+                        .header("Content-Type", "application/json")
+                        .body(answerContent)
+                        .when()
+                        .put("answeredquestions/{id}");
 
-                 System.out.println(response);
-
-                Assertions.assertEquals(200, response.getStatusCode());
+                Assertions.assertEquals(200, res.getStatusCode());
+                
+                JsonObject jsonObject = Json.createReader(new StringReader(res.body().asString())).readObject();
+                String content = jsonObject.getJsonObject("content").getString("content");
+                Assertions.assertEquals("New Problem",content);
         }
 }
