@@ -52,22 +52,30 @@ public class FileService {
     }
 
     public String saveFile(InputPart inputPart) {
-        try {
-            String contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition");
-            String fileName = getFileName(contentDisposition);
+        String contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition");
+        String fileName = getFileName(contentDisposition);
 
+        try {
             InputStream inputStream = inputPart.getBody(InputStream.class, null);
             byte[] bytes = IOUtils.toByteArray(inputStream);
 
             File customDir = new File(STORAGE_DIR);
             String fileNamePath = customDir.getAbsolutePath() + File.separator + fileName;
-            Files.write(Paths.get(fileNamePath), bytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            new Thread(() -> {
+                try {
+                    Files.write(Paths.get(fileNamePath), bytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new IllegalArgumentException("CAN NOT SAVE FILE");
+                }
+            }).start();
 
-            return fileName;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("CAN NOT SAVE FILE");
         }
+
+        return fileName;
     }
 
     public List<String> saveMultiFiles(List<InputPart> inputParts) {
