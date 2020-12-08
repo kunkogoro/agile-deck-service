@@ -1,7 +1,6 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
 import com.axonactive.agiletools.agiledeck.game.entity.Question;
-import com.axonactive.agiletools.agiledeck.game.entity.QuestionContent;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 

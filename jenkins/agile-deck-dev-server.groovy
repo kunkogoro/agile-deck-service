@@ -156,6 +156,7 @@ try {
 							-e quarkus.datasource.password=${DB_PASS} \
 							-e quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} \
 							-e quarkus.hibernate-orm.database.generation=${DB_GENERATION} \
+							-e quarkus.file.dir=${STORAGE_DIR} \
 							${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${pomVersion}"""
 					sshCommand remote: remote, command:  """docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"""
 				}
