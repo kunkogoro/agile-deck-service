@@ -45,6 +45,15 @@ public class GameBoardSocketTest {
         
             session.getAsyncRemote().sendText("{\"action\":\"reset-answer\"}");
             Assertions.assertEquals("{\"data\":[\"{\\\"player\\\":{\\\"gameBoard\\\":{\\\"code\\\":\\\"b4661d5e-f296-4cf6-887d-cfa0f97d1f36\\\",\\\"game\\\":{\\\"description\\\":\\\"A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban\\\",\\\"id\\\":1,\\\"name\\\":\\\"Iterative - Incremental - Big Bang\\\"},\\\"id\\\":1},\\\"id\\\":11,\\\"name\\\":\\\"Soursop\\\"},\\\"selectedCardId\\\":null}\"],\"action\":\"join-game\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+            
+            session.getAsyncRemote().sendText("{\"action\":\"next-question\"}");
+            Assertions.assertEquals("{\"isLastOne\":false,\"isFlip\":false,\"action\":\"init-data\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+        
+            session.getAsyncRemote().sendText("{\"action\":\"update-player\"}");
+            Assertions.assertEquals("{\"action\":\"reset-answer\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+        
+            session.getAsyncRemote().sendText("{\"action\":\"update-question\"}");
+            Assertions.assertEquals("{\"action\":\"update-question\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
         }
     }
 
