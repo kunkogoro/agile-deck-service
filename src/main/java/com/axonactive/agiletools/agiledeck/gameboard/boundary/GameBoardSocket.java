@@ -138,7 +138,7 @@ public class GameBoardSocket {
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
         Long playerId = Long.parseLong(jsonObject.getString("playerId"));
-        Long selectedCardId = (long) jsonObject.getInt("selectedCardId");
+        String selectedCardId = jsonObject.getString("selectedCardId");
 
         players.get(code).forEach(playerSelectedCard -> {
             if (playerId.equals(playerSelectedCard.getPlayer().getId())) {

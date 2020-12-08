@@ -1,4 +1,4 @@
-package com.axonactive.agiletools.agiledeck.file;
+package com.axonactive.agiletools.agiledeck.file.boundary;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
@@ -11,6 +11,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import com.axonactive.agiletools.agiledeck.file.control.FileService;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;

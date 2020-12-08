@@ -28,7 +28,7 @@ public class Answer {
     private static final String QUALIFIER = "com.axonactive.agiletools.agiledeck.game.entity.";
     
     public static final String FIND_BY_GAME = QUALIFIER + "findByGame";
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

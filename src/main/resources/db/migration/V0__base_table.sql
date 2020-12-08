@@ -67,18 +67,6 @@ CREATE TABLE public.tbl_game_boards (
     game_id bigint NOT NULL
 );
 
---
--- TOC entry 190 (class 1259 OID 16515)
--- Name: tbl_game_board_config; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.tbl_game_board_config (
-    id BIGSERIAL PRIMARY KEY,
-    question_title character varying(255),
-    answer_title character varying(255),
-    player_title character varying(255)
-);
-
 
 --
 -- TOC entry 190 (class 1259 OID 16515)
@@ -87,10 +75,12 @@ CREATE TABLE public.tbl_game_board_config (
 
 CREATE TABLE public.tbl_games (
     id BIGSERIAL PRIMARY KEY,
-    game_board_config_id bigint NOT NULL,
     description character varying(255),
     name character varying(255),
-    game_as_image character varying(255)
+    game_as_image character varying(255),
+    question_title character varying(255),
+    answer_title character varying(255),
+    player_title character varying(255)
 );
 
 
@@ -171,8 +161,8 @@ INSERT INTO tbl_answers (answer_content, number_order, answer_content_as_image, 
 VALUES ('Iterative', 1, 'iterative.png', 1, 1),
     ('Incremental', 2, 'incremental.png', 1, 1),
     ('Bigbang', 3, 'bigbang.png', 1, 1),
-    ('Yes', 1, '', 2, 2),
-    ('No', 2, '', 2, 2);
+    ('Yes', 1, 'yes.png', 2, 2),
+    ('No', 2, 'no.png', 2, 2);
 
 
 
@@ -186,16 +176,6 @@ INSERT INTO public.tbl_game_boards (code, game_id)
 VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
         ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
 
---
--- TOC entry 2159 (class 0 OID 16515)
--- Dependencies: 190
--- Data for Name: tbl_game_board_config; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.tbl_game_board_config(question_title, answer_title, player_title)
-VALUES ('Select a scenario', 'Pick an approach', 'Players'),
-        ('Problems', 'Answers', 'Players');
-
 
 --
 -- TOC entry 2159 (class 0 OID 16515)
@@ -203,9 +183,9 @@ VALUES ('Select a scenario', 'Pick an approach', 'Players'),
 -- Data for Name: tbl_games; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_games(game_board_config_id,name, description)
-VALUES (1, 'Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban'),
-        (2, 'New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process');
+INSERT INTO public.tbl_games(name, description,game_as_image, question_title, answer_title, player_title)
+VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scum & Kanban','iib.png', 'Select a scenario', 'Pick an approach', 'Players'),
+        ('New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process','nd.png', 'Problems', 'Answers', 'Players');
 
 --
 -- TOC entry 2160 (class 0 OID 16521)
