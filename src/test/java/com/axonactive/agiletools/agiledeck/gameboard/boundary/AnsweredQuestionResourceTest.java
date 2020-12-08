@@ -36,4 +36,20 @@ public class AnsweredQuestionResourceTest {
                 String content = jsonObject.getJsonObject("content").getString("content");
                 Assertions.assertEquals("New Problem",content);
         }
+        @Test
+        public void whenAddNewQuestion_thenReturnNewQuestion(){
+                JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Add new problem").build())
+                                .build();
+
+                Response response = RestAssured.given()
+                                .pathParam("gameBoardCode", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                                .header("Content-Type", "application/json")
+                                .body(answerContent)
+                                .when()
+                                .post("answeredquestions/{gameBoardCode}");
+                Assertions.assertEquals(200, response.getStatusCode());
+                // System.out.println(response.asString());
+        }
 }
