@@ -152,6 +152,19 @@ VALUES ('Iterative', 1, 'iib_iterative.png', 1, 1),
     ('Yes', 1, 'nd_yes.png', 2, 2),
     ('No', 2, 'nd_no.png', 2, 2);
 
+--
+-- TOC entry 2155 (class 0 OID 16494)
+-- Dependencies: 186
+-- Data for Name: tbl_answered_question_details; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.tbl_answered_question_details
+(answered_question_id, player_id, answer_content_as_image)
+VALUES(1,1,'iterative.png'),
+    (1,2,'bigbang.png'),
+    (1,3,'incremental.png'),
+    (1,4,'iterative.png'),
+    (1,5, null);
 
 
 --
