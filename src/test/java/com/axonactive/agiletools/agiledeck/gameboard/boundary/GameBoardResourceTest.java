@@ -17,7 +17,7 @@ class GameBoardResourceTest {
 
     @Test
     public void whenCreateNewGameBoard_thenReturnGameNotFound() {
-        RestAssured.given().queryParam("game", 2).when().put("gameboards").then().statusCode(400).header("MSG_CODE",
+        RestAssured.given().queryParam("game", 1000).when().put("gameboards").then().statusCode(400).header("MSG_CODE",
                 CoreMatchers.is("GAME_NOT_FOUND"));
     }
 

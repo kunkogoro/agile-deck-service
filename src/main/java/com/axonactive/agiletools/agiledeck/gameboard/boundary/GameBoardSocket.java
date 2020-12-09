@@ -156,7 +156,7 @@ public class GameBoardSocket {
                 Map<String, Object> data = new ConcurrentHashMap<>();
                 data.put(ACTION, "selected-card");
                 data.put("data", toJson(playerSelectedCard));
-
+                System.out.println(data.toString());
                 broadcast(sessions.get(code), toJson(data));
             }
         });
