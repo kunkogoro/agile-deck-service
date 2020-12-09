@@ -46,7 +46,7 @@ public class FileService {
             try {
                 Files.createDirectories(path);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException("CAN NOT CREATE STORAGE");
             }
         }
     }
@@ -65,13 +65,11 @@ public class FileService {
                 try {
                     Files.write(Paths.get(fileNamePath), bytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                 } catch (IOException e) {
-                    e.printStackTrace();
                     throw new IllegalArgumentException("CAN NOT SAVE FILE");
                 }
             }).start();
 
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalArgumentException("CAN NOT SAVE FILE");
         }
 
