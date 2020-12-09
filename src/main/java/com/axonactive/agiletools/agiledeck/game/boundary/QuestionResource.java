@@ -58,7 +58,6 @@ public class QuestionResource {
             isLastOne = true;
         }
 
-
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put("answeredQuestion", newAnsweredQuestion);
         data.put("isLastOne", isLastOne);

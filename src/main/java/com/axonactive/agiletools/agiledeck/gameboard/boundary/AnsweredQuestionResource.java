@@ -3,7 +3,6 @@ package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -28,14 +27,7 @@ public class AnsweredQuestionResource {
     AnsweredQuestionService answeredQuestionService;
     @Inject
     GameBoardService gameBoardService;
-
-    // @PUT
-    // @Path("{id}")
-    // public Response update(@PathParam("id") Long answeredQuestionId, AnsweredQuestion newAnsweredQuestion){
-    //     AnsweredQuestion answeredQuestion = answeredQuestionService.update(answeredQuestionId,newAnsweredQuestion);
-    //     return Response.ok(answeredQuestion).build();
-    // }
-
+    
     @PUT
     @Path("{code}")
     public Response update(@PathParam("code") String gameBoardCode, AnsweredQuestion newAnsweredQuestion){

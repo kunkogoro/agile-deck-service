@@ -163,9 +163,11 @@ public class GameBoardSocket {
     }
 
     private void joinGame(JsonObject info, String code) {
-        Player player = fromJson(info.toString());
+        Player player = fromJson(info.getJsonObject("player").toString());
+        boolean isLastestQuestion = info.getBoolean("isLastestQuestion");
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
-
+        this.latestQuestion.put(code, isLastestQuestion);
+        this.sendFlipStatus(code);
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
             list.add(playerSelectedCard);
@@ -174,7 +176,6 @@ public class GameBoardSocket {
             List<PlayerSelectedCard> list = players.get(code);
             list.add(playerSelectedCard);
         }
-
         sendListPlayer(code);
     }
 
