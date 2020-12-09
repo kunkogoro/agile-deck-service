@@ -27,7 +27,7 @@ public class AnsweredQuestionResource {
     AnsweredQuestionService answeredQuestionService;
     @Inject
     GameBoardService gameBoardService;
-
+    
     @PUT
     @Path("{code}")
     public Response update(@PathParam("code") String gameBoardCode, AnsweredQuestion newAnsweredQuestion){

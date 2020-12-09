@@ -156,16 +156,18 @@ public class GameBoardSocket {
                 Map<String, Object> data = new ConcurrentHashMap<>();
                 data.put(ACTION, "selected-card");
                 data.put("data", toJson(playerSelectedCard));
-
+                System.out.println(data.toString());
                 broadcast(sessions.get(code), toJson(data));
             }
         });
     }
 
     private void joinGame(JsonObject info, String code) {
-        Player player = fromJson(info.toString());
+        Player player = fromJson(info.getJsonObject("player").toString());
+        boolean isLastestQuestion = info.getBoolean("isLastestQuestion");
         PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
-
+        this.latestQuestion.put(code, isLastestQuestion);
+        this.sendFlipStatus(code);
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
             list.add(playerSelectedCard);
@@ -174,7 +176,6 @@ public class GameBoardSocket {
             List<PlayerSelectedCard> list = players.get(code);
             list.add(playerSelectedCard);
         }
-
         sendListPlayer(code);
     }
 

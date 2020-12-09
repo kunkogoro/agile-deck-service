@@ -1,10 +1,7 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import java.io.StringReader;
-
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.bind.Jsonb;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
