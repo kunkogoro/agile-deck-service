@@ -24,7 +24,6 @@ public class AnsweredQuestionService {
     public AnsweredQuestion create(Question question, GameBoard gameBoard){
         AnsweredQuestion answeredQuestion = new AnsweredQuestion(gameBoard, question.getContent());
         answeredQuestion.setPlaying(true);
-        System.out.println("Data: " + JsonbBuilder.create().toJson(answeredQuestion));
         em.persist(answeredQuestion);
         return answeredQuestion;
     }
