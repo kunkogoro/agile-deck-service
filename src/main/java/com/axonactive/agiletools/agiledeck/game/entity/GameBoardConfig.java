@@ -20,5 +20,11 @@ public class GameBoardConfig {
 
     @Column(name = "player_title")
     private String playerTitle;
+
+    @Column(name = "image_player_start")
+    private String imagePlayerStart;
+
+    @Column(name = "image_backside")
+    private String imageBackside;
     
 }

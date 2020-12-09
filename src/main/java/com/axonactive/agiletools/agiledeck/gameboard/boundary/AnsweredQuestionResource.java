@@ -1,6 +1,6 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-    import javax.inject.Inject;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -29,11 +29,12 @@ public class AnsweredQuestionResource {
     GameBoardService gameBoardService;
 
     @PUT
-    @Path("{id}")
-    public Response update(@PathParam("id") Long answeredQuestionId, AnsweredQuestion newAnsweredQuestion){
-        AnsweredQuestion answeredQuestion = answeredQuestionService.update(answeredQuestionId,newAnsweredQuestion);
-        
-        return Response.ok(answeredQuestion).build();
+    @Path("{code}")
+    public Response update(@PathParam("code") String gameBoardCode, AnsweredQuestion newAnsweredQuestion){
+        GameBoard gameBoard = gameBoardService.getByCode(gameBoardCode);
+        Question question = new Question();
+        question.setContent(newAnsweredQuestion.getContent());
+        return Response.ok(answeredQuestionService.update(gameBoard, question)).build();
     }
 
     @POST
@@ -42,6 +43,7 @@ public class AnsweredQuestionResource {
         GameBoard gameBoard = gameBoardService.getByCode(gameBoardCode);
         AnsweredQuestion previousAnsweredQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
         previousAnsweredQuestion.setPlaying(false);
+        answeredQuestionService.updateStatusPlaying(previousAnsweredQuestion);
         Question question = new Question();
         question.setContent(newAnsweredQuestion.getContent());
         AnsweredQuestion answeredQuestion = answeredQuestionService.create(question, gameBoard);
