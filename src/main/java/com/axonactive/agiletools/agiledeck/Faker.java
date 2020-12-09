@@ -1,6 +1,6 @@
 package com.axonactive.agiletools.agiledeck;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Faker {
     String[] fruits = {"Abiu","Ackee","Apple","Apricot","Avocado","Banana","Bilberry","Blackberry","Blackcurrant",
@@ -18,7 +18,8 @@ public class Faker {
 
 
     public String fruit() {
-        int i = new Random().nextInt(fruits.length);
+        SecureRandom random = new SecureRandom();
+        int i = random.nextInt(fruits.length);
         return fruits[i];
     }
 
