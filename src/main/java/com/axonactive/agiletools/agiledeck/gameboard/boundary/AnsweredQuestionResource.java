@@ -29,13 +29,6 @@ public class AnsweredQuestionResource {
     @Inject
     GameBoardService gameBoardService;
 
-    // @PUT
-    // @Path("{id}")
-    // public Response update(@PathParam("id") Long answeredQuestionId, AnsweredQuestion newAnsweredQuestion){
-    //     AnsweredQuestion answeredQuestion = answeredQuestionService.update(answeredQuestionId,newAnsweredQuestion);
-    //     return Response.ok(answeredQuestion).build();
-    // }
-
     @PUT
     @Path("{code}")
     public Response update(@PathParam("code") String gameBoardCode, AnsweredQuestion newAnsweredQuestion){
