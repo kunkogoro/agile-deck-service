@@ -26,7 +26,6 @@ public class AnsweredQuestionResource {
     @Path("{id}")
     public Response updateAnsweredQuestion(@PathParam("id") Long answeredQuestionId, AnsweredQuestion newAnsweredQuestion){
         AnsweredQuestion answeredQuestion = answeredQuestionService.update(answeredQuestionId,newAnsweredQuestion);
-        
         return Response.ok(answeredQuestion).build();
     }
 }
