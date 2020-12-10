@@ -4,6 +4,8 @@ package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
 
+import org.hibernate.annotations.SourceType;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -146,14 +148,21 @@ public class GameBoardSocket {
     }
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
+
         Long playerId = Long.parseLong(jsonObject.getString("playerId"));
-        String selectedCardId = jsonObject.getString("selectedCardId");
+        String content = jsonObject.getString("content");
+        String contentAsImage = jsonObject.getString("contentAsImage");
+        String contentAsDescription = jsonObject.getString("contentAsDescription");
+
 
         players.get(code).forEach(playerSelectedCard -> {
             if (playerId.equals(playerSelectedCard.getPlayer().getId())) {
-                playerSelectedCard.setSelectedCardId(selectedCardId);
+                playerSelectedCard.setSelectedCardId(contentAsImage);
+                playerSelectedCard.setContent(content);
+                playerSelectedCard.setContentAsDescription(contentAsDescription);
 
                 Map<String, Object> data = new ConcurrentHashMap<>();
+                
                 data.put(ACTION, "selected-card");
                 data.put("data", toJson(playerSelectedCard));
                 broadcast(sessions.get(code), toJson(data));
@@ -162,11 +171,11 @@ public class GameBoardSocket {
     }
 
     private void joinGame(JsonObject info, String code) {
+
         Player player = fromJson(info.getJsonObject("player").toString());
 
-
         boolean isLastestQuestion = info.getBoolean("isLastestQuestion");
-        PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
+        PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null, null, null);
 
 
         this.latestQuestion.put(code, isLastestQuestion);
@@ -179,6 +188,7 @@ public class GameBoardSocket {
             List<PlayerSelectedCard> list = players.get(code);
             list.add(playerSelectedCard);
         }
+
         sendListPlayer(code);
     }
 
@@ -220,8 +230,13 @@ public class GameBoardSocket {
     private String toJson(PlayerSelectedCard playerSelectedCard) {
         String player = JsonbBuilder.create().toJson(playerSelectedCard.getPlayer());
         String selectedCardId = JsonbBuilder.create().toJson(playerSelectedCard.getSelectedCardId());
+        String content = JsonbBuilder.create().toJson(playerSelectedCard.getContent());
+        String contentAsDescription = JsonbBuilder.create().toJson(playerSelectedCard.getContentAsDescription());
 
-        return "{\"player\":" + player + ",\"selectedCardId\":" + selectedCardId + "}";
+        return "{\"player\":" + player + "," + '\n' + 
+        "\"selectedCardId\":" + selectedCardId + "," + '\n' +
+        "\"content\":" + content + "," + '\n' +
+        "\"contentAsDescription\":" + contentAsDescription + "}";
     }
 
     private List<String> toJson(List<PlayerSelectedCard> playerSelectedCards) {

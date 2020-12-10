@@ -15,6 +15,9 @@ public class AnswerContent {
     @Column(name = "answer_content")
     private String content;
 
+    @Column(name = "answer_content_as_description", nullable = true)
+    private String contentAsDescription;
+
     @Column(name = "answer_content_as_image")
     private String contentAsImage;
 }
