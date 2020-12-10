@@ -48,6 +48,7 @@ CREATE TABLE public.tbl_answered_questions (
 CREATE TABLE public.tbl_answers (
     id BIGSERIAL PRIMARY KEY,
     answer_content text,
+    answer_describtion text NULL,
     number_order bigint NOT NULL,
     answer_content_as_image character varying(255),
     answer_group_id bigint NOT NULL,
@@ -145,12 +146,12 @@ VALUES(1, 'Building a new highway', true),
 -- Data for Name: tbl_answers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO tbl_answers (answer_content, number_order, answer_content_as_image, answer_group_id, game_id)
-VALUES ('Iterative', 1, 'iib_iterative.png', 1, 1),
-    ('Incremental', 2, 'iib_incremental.png', 1, 1),
-    ('Bigbang', 3, 'iib_bigbang.png', 1, 1),
-    ('Yes', 1, 'default_answer.png', 2, 2),
-    ('No', 2, 'default_answer.png', 2, 2);
+INSERT INTO tbl_answers (answer_content, answer_describtion, number_order, answer_content_as_image, answer_group_id, game_id)
+VALUES ('Iterative','', 1, 'iib_iterative.png', 1, 1),
+    ('Incremental','', 2, 'iib_incremental.png', 1, 1),
+    ('Bigbang','', 3, 'iib_bigbang.png', 1, 1),
+    ('Yes','Yes', 1, 'default_answer.png', 2, 2),
+    ('No','No', 2, 'default_answer.png', 2, 2);
 
 --
 -- TOC entry 2155 (class 0 OID 16494)
