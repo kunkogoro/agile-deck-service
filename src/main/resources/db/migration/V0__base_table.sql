@@ -149,8 +149,8 @@ INSERT INTO tbl_answers (answer_content, number_order, answer_content_as_image, 
 VALUES ('Iterative', 1, 'iib_iterative.png', 1, 1),
     ('Incremental', 2, 'iib_incremental.png', 1, 1),
     ('Bigbang', 3, 'iib_bigbang.png', 1, 1),
-    ('Yes', 1, 'nd_yes.png', 2, 2),
-    ('No', 2, 'nd_no.png', 2, 2);
+    ('Yes', 1, 'default_answer.png', 2, 2),
+    ('No', 2, 'default_answer.png', 2, 2);
 
 --
 -- TOC entry 2155 (class 0 OID 16494)
