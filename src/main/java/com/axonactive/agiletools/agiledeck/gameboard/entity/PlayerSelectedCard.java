@@ -19,9 +19,17 @@ public class PlayerSelectedCard implements Serializable {
     @JsonbProperty("selectedCardId")
     private String selectedCardId;
 
-    public PlayerSelectedCard(Player player, String selectedCardId) {
+    @JsonbProperty("content")
+    private String content;
+
+    @JsonbProperty("contentAsDescription")
+    private String contentAsDescription;
+
+    public PlayerSelectedCard(Player player, String selectedCardId, String content, String contentAsDescription) {
         this.player = player;
         this.selectedCardId = selectedCardId;
+        this.content = content;
+        this.contentAsDescription = contentAsDescription;
     }
 
     @Override

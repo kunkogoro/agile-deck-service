@@ -19,6 +19,7 @@ CREATE TABLE public.tbl_answered_question_details (
     answered_question_id bigint,
     player_id bigint,
     answer_content text,
+    answer_content_as_description text NULL,
     answer_content_as_image character varying(255)
 );
 
@@ -35,6 +36,7 @@ CREATE TABLE public.tbl_answered_questions (
     question_content text,
     question_content_as_image character varying(255),
     answer_content text,
+    answer_content_as_description text NULL,
     answer_content_as_image character varying(255),
     playing boolean
 );
@@ -48,7 +50,7 @@ CREATE TABLE public.tbl_answered_questions (
 CREATE TABLE public.tbl_answers (
     id BIGSERIAL PRIMARY KEY,
     answer_content text,
-    answer_describtion text NULL,
+    answer_content_as_description text NULL,
     number_order bigint NOT NULL,
     answer_content_as_image character varying(255),
     answer_group_id bigint NOT NULL,
@@ -146,7 +148,7 @@ VALUES(1, 'Building a new highway', true),
 -- Data for Name: tbl_answers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO tbl_answers (answer_content, answer_describtion, number_order, answer_content_as_image, answer_group_id, game_id)
+INSERT INTO tbl_answers (answer_content, answer_content_as_description, number_order, answer_content_as_image, answer_group_id, game_id)
 VALUES ('Iterative','', 1, 'iib_iterative.png', 1, 1),
     ('Incremental','', 2, 'iib_incremental.png', 1, 1),
     ('Bigbang','', 3, 'iib_bigbang.png', 1, 1),
@@ -259,7 +261,6 @@ VALUES('Building a new highway', 1),
     ('Having a baby', 1),
     ('Building a car', 1),
     ('Problem1', 2);
-
 
 
 -- Completed on 2020-12-03 16:27:24
