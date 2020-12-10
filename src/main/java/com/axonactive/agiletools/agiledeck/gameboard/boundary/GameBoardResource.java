@@ -1,27 +1,5 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import java.net.URI;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
 import com.axonactive.agiletools.agiledeck.AgileDeckException;
 import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
 import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
@@ -34,6 +12,21 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Path("/gameboards")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -86,7 +79,7 @@ public class GameBoardResource {
         List<Question> listQuestion = questionService.getAllByGameID(gameId);
         try{
             questionService.random(listQuestion, gameBoardService.getByCode(code).getId());
-        }catch(AgileDeckException ade) {
+        }catch(AgileDeckException agileDeckException) {
             isLastOne = true;
         }
         Map<String, Object> data = new ConcurrentHashMap<>();

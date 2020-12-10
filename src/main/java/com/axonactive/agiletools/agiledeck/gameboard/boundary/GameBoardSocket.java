@@ -4,8 +4,6 @@ package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.PlayerSelectedCard;
 
-import org.hibernate.annotations.SourceType;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
 import javax.json.JsonObject;

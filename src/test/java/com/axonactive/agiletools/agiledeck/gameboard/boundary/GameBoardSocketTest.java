@@ -1,20 +1,14 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import java.net.URI;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.TimeUnit;
-
-import javax.websocket.ClientEndpoint;
-import javax.websocket.ContainerProvider;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-
+import io.quarkus.test.common.http.TestHTTPResource;
+import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.quarkus.test.common.http.TestHTTPResource;
-import io.quarkus.test.junit.QuarkusTest;
+import javax.websocket.*;
+import java.net.URI;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
 @QuarkusTest
 public class GameBoardSocketTest {
@@ -55,6 +49,30 @@ public class GameBoardSocketTest {
         
             session.getAsyncRemote().sendText("{\"action\":\"update-question\"}");
             Assertions.assertEquals("{\"action\":\"update-question\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+        }
+    }
+
+    @Test
+    public void whenUpdatedName() throws Exception{
+
+        try(Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)){
+            Assertions.assertEquals("CONNECT", MESSAGES.poll(10, TimeUnit.SECONDS));
+
+            session.getAsyncRemote().sendText("{\"action\": \"update-player\",\"id\": 1,\"name\": \"Agile Tony\"}");
+            Assertions.assertEquals("{\"isLastOne\":false,\"isFlip\":false,\"action\":\"init-data\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+
+        }
+    }
+
+    @Test
+    public void whenPlayerSelectedCard() throws Exception{
+
+        try(Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)){
+            Assertions.assertEquals("CONNECT", MESSAGES.poll(10, TimeUnit.SECONDS));
+
+            session.getAsyncRemote().sendText("{\"action\": \"selected-card\",\"playerId\": 1,\"selectedCardId\": \"bigbang.png\"}");
+            Assertions.assertEquals("{\"isLastOne\":false,\"isFlip\":false,\"action\":\"init-data\"}", MESSAGES.poll(10, TimeUnit.SECONDS));
+
         }
     }
 
