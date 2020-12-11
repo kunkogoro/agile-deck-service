@@ -39,7 +39,7 @@ public class AnsweredQuestionResource {
 
     @POST
     @Path("{Code}")
-    public Response add(@PathParam("Code") String gameBoardCode, AnsweredQuestion newAnsweredQuestion  ){
+    public Response add(@PathParam("Code") String gameBoardCode, AnsweredQuestion newAnsweredQuestion){
         GameBoard gameBoard = gameBoardService.getByCode(gameBoardCode);
         AnsweredQuestion previousAnsweredQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
         previousAnsweredQuestion.setPlaying(false);
