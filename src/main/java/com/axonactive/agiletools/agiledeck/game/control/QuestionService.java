@@ -26,21 +26,22 @@ public class QuestionService {
     }
 
     public Question random(List<Question> questions, Long gameBoardId){
-
         Question question;
-        int checkNoQuestionsLeft = 0;
-
         do{
-            if(checkNoQuestionsLeft == questions.size()){
+            if(questions.size() == 0){
                 throw new AgileDeckException(QuestionMsgCodes.NO_QUESTIONS_LEFT);
             }
+
             SecureRandom random = new SecureRandom();
             int indexRandom = random.nextInt(questions.size());
             question = questions.get(indexRandom);
-            checkNoQuestionsLeft += 1;
-        }while(isExisted(gameBoardId, question));
-        
-        return question;
+
+            if(isExisted(gameBoardId, question)) {
+                questions.remove(indexRandom);
+            } else {
+                return question;
+            }
+        } while(true);
     }
 
     private boolean isExisted(Long gameBoardId, Question question) {
