@@ -1,10 +1,11 @@
 package com.axonactive.agiletools.agiledeck.game.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 @Getter
 @Setter
@@ -26,5 +27,9 @@ public class GameBoardConfig {
 
     @Column(name = "image_backside")
     private String imageBackside;
-    
+
+    private Boolean editable;
+
+    @Column(name = "additional_possibility")
+    private Boolean additionalPossibility;
 }
