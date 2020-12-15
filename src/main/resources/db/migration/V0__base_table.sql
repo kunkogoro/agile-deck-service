@@ -191,7 +191,7 @@ VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
 
 INSERT INTO public.tbl_games(name, description,game_as_image, question_title, answer_title, player_title, image_player_start, image_backside, editable, additional_possibility)
 VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scrum & Kanban','iib_home.png', 'Select a scenario', 'Pick an approach', 'Players', 'iib_playerstart.png', 'iib_backside.png', false, false),
-        ('New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process','nd_home.png', 'Problems', 'Answers', 'Players', 'nd_playerstart.png', 'nd_backside.png', true, true);
+        ('New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process','nd_home.png', 'Pick a problem', 'Choose an answer', 'Players', 'nd_playerstart.png', 'nd_backside.png', true, true);
 
 --
 -- TOC entry 2160 (class 0 OID 16521)
