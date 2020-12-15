@@ -99,6 +99,8 @@ public class GameBoardResource {
         }
         Long gameId = gameBoardService.getByCode(code).getGame().getId();
         answeredQuestionDetail.getAnsweredQuestion().setAnswerOptions(answerService.getByGame(gameId));
+
+
         boolean isLastOne = false;
         List<Question> listQuestion = questionService.getAllByGameID(gameId);
         try{
@@ -106,6 +108,7 @@ public class GameBoardResource {
         }catch(AgileDeckException ade) {
             isLastOne = true;
         }
+
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put("answeredQuestionDetail", answeredQuestionDetail);
         data.put("isLastOne", isLastOne);
