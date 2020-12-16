@@ -127,7 +127,7 @@ public class GameBoardSocket {
     }
 
     private void resetAnswer(String code) {
-        players.get(code).forEach(playerSelectedCard -> playerSelectedCard.setSelectedCardId(null));
+        players.get(code).forEach(PlayerSelectedCard::reset);
         sendListPlayer(code);
 
         flippedAnswers.put(code, false);

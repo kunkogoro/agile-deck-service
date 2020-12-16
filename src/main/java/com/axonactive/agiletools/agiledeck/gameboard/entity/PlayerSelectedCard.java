@@ -1,13 +1,12 @@
 package com.axonactive.agiletools.agiledeck.gameboard.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.json.bind.annotation.JsonbProperty;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.json.bind.annotation.JsonbProperty;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Setter @Getter
 @NoArgsConstructor
@@ -30,6 +29,12 @@ public class PlayerSelectedCard implements Serializable {
         this.selectedCardId = selectedCardId;
         this.content = content;
         this.contentAsDescription = contentAsDescription;
+    }
+
+    public void reset() {
+        this.selectedCardId = null;
+        this.content = null;
+        this.contentAsDescription = null;
     }
 
     @Override
