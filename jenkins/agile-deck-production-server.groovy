@@ -1,6 +1,7 @@
 /*
 SLACK_CHANNEL=redbull
 RELEASE_BRANCH=release
+GIT_URI=agile-tools/agile-deck/agile-deck-service
  */
 
 /* current pom version of project */
@@ -55,16 +56,22 @@ try {
             sh "git merge ${RELEASE_BRANCH} --strategy-option theirs --allow-unrelated-histories"
             sh "git add ."
             sh "git commit -m 'Create tag ${pomVersion}' || true"
-            sh "git push -u origin master"
+            withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git"
+            }
         }
 
         stage('Create release tag from master branch') {
             sh "git tag ${pomVersion}"
-            sh "git push origin ${pomVersion}"
+            withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git"
+            }
         }
 
         stage('Delete release branch') {
-            sh "git push origin --delete ${RELEASE_BRANCH}"
+            withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git --delete ${RELEASE_BRANCH}"
+            }
         }
 
         /* Stage post build, if no error, notify success to slack channel */
