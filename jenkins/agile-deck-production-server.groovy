@@ -42,7 +42,7 @@ try {
         stage('Checkout'){
             checkout scm
             sh "git checkout ${RELEASE_BRANCH}"
-            sh 'git pull'
+//            sh 'git pull'
             pomVersion = readMavenPom().getVersion()
         }
 

@@ -67,7 +67,7 @@ try {
 		stage('Checkout'){
 			checkout scm
 			sh "git checkout ${CHECKOUT_BRANCH}"
-			sh 'git pull'
+//			sh 'git pull'
 			// Get current pom version after checkout the project
 			pomVersion = readMavenPom().getVersion()
 		}
