@@ -20,7 +20,7 @@ public class GameService {
     @PersistenceContext
     EntityManager em;
 
-    public List<Game> getInfomationGame(){
+    public List<Game> getInformationGame(){
         TypedQuery<Game> query = em.createNamedQuery(Game.GET_ALL_GAME, Game.class);
         return query.getResultList();
     }

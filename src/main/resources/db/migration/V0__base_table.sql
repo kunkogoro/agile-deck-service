@@ -150,7 +150,7 @@ VALUES(1, 'Building a new highway', true),
 -- Data for Name: tbl_answers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO tbl_answers (answer_content, answer_content_as_description, number_order, answer_content_as_image, answer_group_id, game_id)
+INSERT INTO public.tbl_answers (answer_content, answer_content_as_description, number_order, answer_content_as_image, answer_group_id, game_id)
 VALUES ('Iterative','', 1, 'iib_iterative.png', 1, 1),
     ('Incremental','', 2, 'iib_incremental.png', 1, 1),
     ('Bigbang','', 3, 'iib_bigbang.png', 1, 1),
