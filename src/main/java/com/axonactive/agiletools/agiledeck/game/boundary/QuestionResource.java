@@ -11,7 +11,6 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 import javax.inject.Inject;
-import javax.json.bind.JsonbBuilder;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -70,6 +69,7 @@ public class QuestionResource {
         GameBoard gameBoard = gameBoardService.getByCode(gameBoardCode);
         gameBoardService.validate(gameBoard);
         questionService.createQuestion(questions, gameBoard);
+
         return Response.ok().build();
     }
 }
