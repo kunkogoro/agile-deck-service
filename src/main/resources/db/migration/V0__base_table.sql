@@ -114,6 +114,7 @@ CREATE TABLE public.tbl_questions (
     id BIGSERIAL PRIMARY KEY,
     question_content text,
     question_content_as_image character varying(255),
+    game_board_id bigint,
     game_id bigint
 );
 

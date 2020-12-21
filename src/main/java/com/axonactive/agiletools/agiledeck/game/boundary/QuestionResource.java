@@ -11,6 +11,7 @@ import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 import javax.inject.Inject;
+import javax.json.bind.JsonbBuilder;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -48,7 +49,7 @@ public class QuestionResource {
         currentAnsweredQuestion.setPlaying(false);
         answeredQuestionService.updateStatusPlaying(currentAnsweredQuestion);
         
-        List<Question> listQuestion = questionService.getAllByGameID(game.getId());
+        List<Question> listQuestion = questionService.getAllByGameID(game.getId(), code);
 
         Question question = questionService.random(listQuestion, gameBoard.getId());
         AnsweredQuestion newAnsweredQuestion =  answeredQuestionService.create(question, gameBoard);
@@ -64,4 +65,11 @@ public class QuestionResource {
         return Response.ok(data).build();
     }
 
+    @POST
+    public Response createQuestions(@QueryParam("gameBoardCode") String gameBoardCode, List<Question> questions) {
+        GameBoard gameBoard = gameBoardService.getByCode(gameBoardCode);
+        gameBoardService.validate(gameBoard);
+        questionService.createQuestion(questions, gameBoard);
+        return Response.ok().build();
+    }
 }
