@@ -46,7 +46,6 @@ public class GameBoardService {
         this.validate(gameBoard);
 
         AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
-        System.out.println(JsonbBuilder.create().toJson(currentAnswerQuestion));
         
         if(Objects.isNull(currentAnswerQuestion)){
             List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());

@@ -28,7 +28,7 @@ public class QuestionService {
     public Question random(List<Question> questions, Long gameBoardId){
         Question question;
         do{
-            if(questions.size() == 0){
+            if(questions.isEmpty()){
                 throw new AgileDeckException(QuestionMsgCodes.NO_QUESTIONS_LEFT);
             }
 
