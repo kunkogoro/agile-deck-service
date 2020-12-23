@@ -49,8 +49,7 @@ public class CustomAnswerService {
     public List<CustomAnswer> getByGameBoadId(GameBoard gameBoard){
         TypedQuery<CustomAnswer> query = em.createNamedQuery(CustomAnswer.GET_BY_GAME_BOARD_ID, CustomAnswer.class);
         query.setParameter("gameBoardId", gameBoard.getId());
-        List<CustomAnswer> customAnswers = query.getResultList();
-        return customAnswers;
+        return query.getResultList();
     }
 
     public void editContent(CustomAnswer customAnswer){
@@ -64,9 +63,7 @@ public class CustomAnswerService {
 
         TypedQuery<CustomAnswer> query = em.createNamedQuery(CustomAnswer.GET_BY_ID, CustomAnswer.class);
         query.setParameter("customAnswerId", customAnswerId);
-
-        CustomAnswer customAnswer = query.getResultStream().findFirst().orElse(null);
-        return customAnswer;
+        return query.getResultStream().findFirst().orElse(null);
     }
 
     private void validate(CustomAnswer customAnswer){

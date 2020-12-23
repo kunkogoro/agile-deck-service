@@ -7,8 +7,7 @@ public enum CustomAnswerMsgCodes implements MsgCodes{
 
     @Override
     public String getValue() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.toString();
     }
     
 }

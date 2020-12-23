@@ -1,10 +1,5 @@
 package com.axonactive.agiletools.agiledeck.gameboard.control;
 
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.CustomAnswer;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -13,6 +8,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+
+import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 
 @RequestScoped
 @Transactional

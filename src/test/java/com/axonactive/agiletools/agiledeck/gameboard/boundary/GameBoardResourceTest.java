@@ -136,6 +136,26 @@ class GameBoardResourceTest {
     }
 
     @Test
+    public void whenPlayerAddAnswerAtTheFirstTime_thenReturnStatusOk(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .build();
+
+        Response response = RestAssured.given().pathParam("code", "e3bb8a9d-704e-430e-acae-1fb0a9695205")
+                                .header("Content-Type", "application/json")
+                                .body(answerContent)
+                                .when()
+                                .put("gameboards/add-answer/{code}");
+
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
     public void whenPlayerAddAnswer_thenReturnGameBoardNotFound(){
         JsonObject answerContent = Json.createObjectBuilder()
                                 .add("content", Json.createObjectBuilder()
@@ -190,6 +210,27 @@ class GameBoardResourceTest {
                                 .build();
         
         RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                    .header("Content-Type", "application/json")
+                    .body(answerContent)
+                    .when()
+                    .put("gameboards/update-answer-content/{code}")
+                    .then()
+                    .statusCode(200);
+    }
+
+    @Test
+    public void whenPlayerUpdateAnswerAtTheFirstTime_thenReturnStatusOk(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .add("id", 1)
+                                .build();
+        
+        RestAssured.given().pathParam("code", "e3bb8a9d-704e-430e-acae-1fb0a96rtfu8")
                     .header("Content-Type", "application/json")
                     .body(answerContent)
                     .when()
