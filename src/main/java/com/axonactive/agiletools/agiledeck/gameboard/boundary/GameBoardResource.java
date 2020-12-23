@@ -1,32 +1,45 @@
 package com.axonactive.agiletools.agiledeck.gameboard.boundary;
 
-import com.axonactive.agiletools.agiledeck.AgileDeckException;
-import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
-import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
-import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
-import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionService;
-import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
-import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import com.axonactive.agiletools.agiledeck.AgileDeckException;
+import com.axonactive.agiletools.agiledeck.file.control.FileService;
+import com.axonactive.agiletools.agiledeck.game.control.AnswerService;
+import com.axonactive.agiletools.agiledeck.game.control.QuestionService;
+import com.axonactive.agiletools.agiledeck.game.entity.Answer;
+import com.axonactive.agiletools.agiledeck.game.entity.Game;
+import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionDetailService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.AnsweredQuestionService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.CustomAnswerService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.GameBoardService;
+import com.axonactive.agiletools.agiledeck.gameboard.control.PlayerService;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestionDetail;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.CustomAnswer;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.Player;
 
 @Path("/gameboards")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -51,6 +64,12 @@ public class GameBoardResource {
 
     @Inject
     AnswerService answerService;
+
+    @Inject
+    CustomAnswerService customAnswerService;
+
+    @Inject
+    FileService fileService;
 
     @Context
     UriInfo uriInfo;
@@ -92,15 +111,24 @@ public class GameBoardResource {
     @Path("/rejoin/{code}")
     public Response rejoin(@PathParam("code") String code, @QueryParam("playerId") Long playerId) {
         AnsweredQuestion currentQuestion = gameBoardService.join(code);
+
         Player player = playerService.findById(playerId);
+
         AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.rejoin(currentQuestion, player);
         if (Objects.isNull(answeredQuestionDetail)) {
             answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
         }
-        Long gameId = gameBoardService.getByCode(code).getGame().getId();
-        answeredQuestionDetail.getAnsweredQuestion().setAnswerOptions(answerService.getByGame(gameId));
 
-
+        GameBoard gameBoard = gameBoardService.getByCode(code);
+        Long gameId = gameBoard.getGame().getId();
+        
+        List<CustomAnswer> customAnswers = customAnswerService.getByGameBoadId(gameBoard);
+        if (customAnswers.isEmpty()) {
+            answeredQuestionDetail.getAnsweredQuestion().setAnswerOptions(answerService.getByGame(gameId));
+        } else {
+            answeredQuestionDetail.getAnsweredQuestion().setCustomAnswersOptions(customAnswers);
+        }
+        
         boolean isLastOne = false;
         List<Question> listQuestion = questionService.getAllByGameID(gameId);
         try{
@@ -135,4 +163,55 @@ public class GameBoardResource {
 
         return Response.ok(history).build();
     }
+
+    @PUT
+    @Path("/add-answer/{code}")
+    public Response addNewAnswer(@PathParam("code") String code, Answer answer){
+
+        GameBoard gameBoard = gameBoardService.getByCode(code);
+        gameBoardService.validate(gameBoard);
+        gameBoardService.validateLengthListAnswerOfGameBoard(gameBoard);
+
+        if(gameBoardService.validateGameBoardInCustomAnswer(gameBoard)){
+            customAnswerService.addAnswerOfGameBoard(answer, gameBoard);
+            return Response.ok().build();
+        }
+
+        Game game = gameBoard.getGame();
+        List<Answer> defaultAnswer = answerService.getByGame(game.getId());
+        customAnswerService.createNewCustomAnswerOfGameBoard(defaultAnswer, gameBoard);
+        customAnswerService.addAnswerOfGameBoard(answer, gameBoard);
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/update-answer-content/{code}")
+    public Response updateAnswerContent(@PathParam("code") String code, CustomAnswer customAnswer){
+
+        GameBoard gameBoard = gameBoardService.getByCode(code);
+        gameBoardService.validate(gameBoard);
+
+        if(gameBoardService.validateGameBoardInCustomAnswer(gameBoard)){
+            customAnswerService.editContent(customAnswer);
+            return Response.ok().build();
+        }
+
+        Game game = gameBoard.getGame();
+        List<Answer> defaultAnswer = answerService.getByGame(game.getId());
+        List<Answer> answerCopy = new ArrayList<>();
+        defaultAnswer.forEach(answer -> {
+            if(answer.getId() == customAnswer.getId()){
+                Answer item = new Answer(customAnswer.getContent(), answer.getNumberOrder(), answer.getAnswerGroup(), answer.getGame(), answer.getQuestion());
+                answerCopy.add(item);
+            }else{
+                answerCopy.add(answer);
+            }
+        });
+
+        customAnswerService.createNewCustomAnswerOfGameBoard(answerCopy, gameBoard);
+
+        return Response.ok().build();
+    }
+    
+
 }

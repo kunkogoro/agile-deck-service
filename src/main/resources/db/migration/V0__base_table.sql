@@ -71,19 +71,13 @@ CREATE TABLE public.tbl_game_boards (
 );
 
 
---
--- TOC entry 188 (class 1259 OID 16506)
--- Name: tbl_custom_answers; Type: TABLE; Schema: public; Owner: -
---
-
 CREATE TABLE public.tbl_custom_answers (
     id BIGSERIAL PRIMARY KEY,
     answer_content text,
     answer_content_as_description text NULL,
     number_order bigint NOT NULL,
     answer_content_as_image character varying(255),
-    answer_group_id bigint NOT NULL,
-    game_board_id bigint,
+    game_board_id bigint
 );
 
 

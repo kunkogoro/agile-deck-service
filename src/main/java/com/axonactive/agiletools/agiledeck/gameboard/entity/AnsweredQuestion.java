@@ -43,6 +43,9 @@ public class AnsweredQuestion {
     @Transient
     private List<Answer> answerOptions;
 
+    @Transient
+    private List<CustomAnswer> customAnswersOptions;
+
     private boolean playing;
   
     @Embedded
@@ -54,6 +57,14 @@ public class AnsweredQuestion {
         answeredQuestion.setAnswerOptions(defaultAnswerOptions);
         answeredQuestion.setPlaying(true);
 		return answeredQuestion;
+    }
+
+    public static AnsweredQuestion createWithoutCustomAnswer(GameBoard gameBoard, List<CustomAnswer> customAnswers){
+        AnsweredQuestion answeredQuestion = new AnsweredQuestion();
+        answeredQuestion.setGameBoard(gameBoard);
+        answeredQuestion.setCustomAnswersOptions(customAnswers);
+        answeredQuestion.setPlaying(true);
+        return answeredQuestion;
     }
 
     public AnsweredQuestion(GameBoard gameBoard, QuestionContent content) {
