@@ -71,6 +71,16 @@ CREATE TABLE public.tbl_game_boards (
 );
 
 
+CREATE TABLE public.tbl_custom_answers (
+    id BIGSERIAL PRIMARY KEY,
+    answer_content text,
+    answer_content_as_description text NULL,
+    number_order bigint NOT NULL,
+    answer_content_as_image character varying(255),
+    game_board_id bigint
+);
+
+
 --
 -- TOC entry 190 (class 1259 OID 16515)
 -- Name: tbl_games; Type: TABLE; Schema: public; Owner: -
@@ -208,6 +218,26 @@ VALUES('Strawberries', 1),
     ('Durian', 1);
 
 
+--
+-- Insert into table custom answer to run test case
+
+INSERT INTO public.tbl_custom_answers 
+(answer_content, answer_content_as_description, answer_content_as_image, number_order, game_board_id)
+VALUES ('a', '', 'a.png', 1, 2),
+('b', '', 'a.png', 1, 2),
+('c', '', 'a.png', 1, 2),
+('d', '', 'a.png', 1, 2),
+('e', '', 'a.png', 1, 2),
+('f', '', 'a.png', 1, 2),
+('g', '', 'a.png', 1, 2),
+('h', '', 'a.png', 1, 2),
+('j', '', 'a.png', 1, 2),
+('k', '', 'a.png', 1, 2),
+('l', '', 'a.png', 1, 2),
+('q', '', 'a.png', 1, 2),
+('w', '', 'a.png', 1, 2),
+('y', '', 'a.png', 1, 2),
+('r', '', 'a.png', 1, 2);
 
 --
 -- TOC entry 2161 (class 0 OID 16527)

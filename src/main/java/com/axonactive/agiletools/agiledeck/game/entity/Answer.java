@@ -54,4 +54,13 @@ public class Answer {
     public Answer(Long id) {
         this.id = id;
     }
+
+    public Answer(AnswerContent content, Integer numberOrder, AnswerGroup answerGroup, Game game, Question question) {
+        this.content = content;
+        this.numberOrder = numberOrder;
+        this.answerGroup = answerGroup;
+        this.game = game;
+        this.question = question;
+    }
+
 }
