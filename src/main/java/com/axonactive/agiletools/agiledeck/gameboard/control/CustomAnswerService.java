@@ -39,6 +39,13 @@ public class CustomAnswerService {
         });
     }
 
+    public void delete(Long customAnswerId){
+        CustomAnswer isExitedCustomAnswer = findById(customAnswerId);
+        if(!Objects.isNull(isExitedCustomAnswer)){
+            em.remove(isExitedCustomAnswer);
+        }
+    }
+
     public List<CustomAnswer> getByGameBoadId(GameBoard gameBoard){
         TypedQuery<CustomAnswer> query = em.createNamedQuery(CustomAnswer.GET_BY_GAME_BOARD_ID, CustomAnswer.class);
         query.setParameter("gameBoardId", gameBoard.getId());
@@ -48,6 +55,7 @@ public class CustomAnswerService {
 
     public void editContent(CustomAnswer customAnswer){
         CustomAnswer existedCustomAnswer = findById(customAnswer.getId());
+        validate(existedCustomAnswer);
         existedCustomAnswer.setContent(customAnswer.getContent());
         em.merge(existedCustomAnswer);
     }
@@ -58,8 +66,6 @@ public class CustomAnswerService {
         query.setParameter("customAnswerId", customAnswerId);
 
         CustomAnswer customAnswer = query.getResultStream().findFirst().orElse(null);
-        validate(customAnswer);
-
         return customAnswer;
     }
 

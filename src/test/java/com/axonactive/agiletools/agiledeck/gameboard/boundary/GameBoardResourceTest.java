@@ -260,4 +260,15 @@ class GameBoardResourceTest {
             .statusCode(400)
             .header("MSG_CODE", CoreMatchers.is("GAME_BOARD_NOT_FOUND"));                        
     }
+
+    @Test
+    public void whenPlayerDeleteAnswer_thenReturnStatusOk(){
+        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+            .header("Content-Type", "application/json")
+            .body(4)
+            .when()
+            .delete("gameboards/delete-answer/{code}")
+            .then()
+            .statusCode(200);
+    }
 }
