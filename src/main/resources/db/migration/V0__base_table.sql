@@ -218,6 +218,26 @@ VALUES('Strawberries', 1),
     ('Durian', 1);
 
 
+--
+-- Insert into table custom answer to run test case
+
+INSERT INTO public.tbl_custom_answers 
+(answer_content, answer_content_as_description, answer_content_as_image, number_order, game_board_id)
+VALUES ('a', '', 'a.png', 1, 2),
+('b', '', 'a.png', 1, 2),
+('c', '', 'a.png', 1, 2),
+('d', '', 'a.png', 1, 2),
+('e', '', 'a.png', 1, 2),
+('f', '', 'a.png', 1, 2),
+('g', '', 'a.png', 1, 2),
+('h', '', 'a.png', 1, 2),
+('j', '', 'a.png', 1, 2),
+('k', '', 'a.png', 1, 2),
+('l', '', 'a.png', 1, 2),
+('q', '', 'a.png', 1, 2),
+('w', '', 'a.png', 1, 2),
+('y', '', 'a.png', 1, 2),
+('r', '', 'a.png', 1, 2);
 
 --
 -- TOC entry 2161 (class 0 OID 16527)

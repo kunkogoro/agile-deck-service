@@ -136,26 +136,6 @@ class GameBoardResourceTest {
     }
 
     @Test
-    public void whenPlayerAddAnswerAtTheFirstTime_thenReturnStatusOk(){
-        JsonObject answerContent = Json.createObjectBuilder()
-                                .add("content", Json.createObjectBuilder()
-                                        .add("content", "Abc")
-                                        .add("contentAsDescription", "")
-                                        .add("contentAsImage", "abc.png")
-                                        .build()
-                                    )
-                                .build();
-
-        RestAssured.given().pathParam("code", "a69d6489-9af1-4685-8896-3454e0a16032")
-            .header("Content-Type", "application/json")
-            .body(answerContent)
-            .when()
-            .put("gameboards/add-answer/{code}")
-            .then()
-            .statusCode(200);                 
-    }
-
-    @Test
     public void whenPlayerAddAnswer_thenReturnGameBoardNotFound(){
         JsonObject answerContent = Json.createObjectBuilder()
                                 .add("content", Json.createObjectBuilder()
@@ -219,27 +199,6 @@ class GameBoardResourceTest {
     }
 
     @Test
-    public void whenPlayerUpdateAnswerAtTheFirstTime_thenReturnStatusOk(){
-        JsonObject answerContent = Json.createObjectBuilder()
-                                .add("content", Json.createObjectBuilder()
-                                        .add("content", "Abc")
-                                        .add("contentAsDescription", "")
-                                        .add("contentAsImage", "abc.png")
-                                        .build()
-                                    )
-                                .add("id", 1)
-                                .build();
-        
-        RestAssured.given().pathParam("code", "a2ae195d-017c-485b-a369-2ff0aabf7df9")
-                    .header("Content-Type", "application/json")
-                    .body(answerContent)
-                    .when()
-                    .put("gameboards/update-answer-content/{code}")
-                    .then()
-                    .statusCode(200);
-    }
-
-    @Test
     public void whenPlayerUpdateAnswer_thenReturnGameBoardNotFound(){
         JsonObject answerContent = Json.createObjectBuilder()
                                 .add("content", Json.createObjectBuilder()
@@ -265,7 +224,7 @@ class GameBoardResourceTest {
     public void whenPlayerDeleteAnswer_thenReturnStatusOk(){
         RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
             .header("Content-Type", "application/json")
-            .body(4)
+            .body(20)
             .when()
             .delete("gameboards/delete-answer/{code}")
             .then()
