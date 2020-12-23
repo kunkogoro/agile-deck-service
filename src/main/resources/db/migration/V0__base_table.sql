@@ -190,7 +190,9 @@ VALUES(1,1,'iterative.png'),
 
 INSERT INTO public.tbl_game_boards (code, game_id)
 VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
-        ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
+        ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1),
+        ( 'e3bb8a9d-704e-430e-acae-1fb0a9695205', 1),
+        ( 'e3bb8a9d-704e-430e-acae-1fb0a96rtfu8', 1);
 
 
 --
