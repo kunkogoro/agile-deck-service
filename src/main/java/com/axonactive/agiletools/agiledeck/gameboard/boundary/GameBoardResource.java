@@ -78,7 +78,7 @@ public class GameBoardResource {
     @PUT
     public Response create(@QueryParam("game") Long gameId) {
         GameBoard gameBoard = gameBoardService.create(gameId);
-        List<Question> questions = questionService.getAllByGameID(gameId);
+        List<Question> questions = questionService.getAllByGameID(gameId, null);
         Question question = questionService.random(questions, gameBoard.getId());
         answeredQuestionService.create(question, gameBoard);
         URI location = this.uriInfo.getAbsolutePathBuilder().path(String.valueOf(gameBoard.getCode())).build();
@@ -96,7 +96,7 @@ public class GameBoardResource {
         answeredQuestionDetail.getAnsweredQuestion().setAnswerOptions(answerService.getByGame(gameId));
 
         boolean isLastOne = false;
-        List<Question> listQuestion = questionService.getAllByGameID(gameId);
+        List<Question> listQuestion = questionService.getAllByGameID(gameId, code);
         try{
             questionService.random(listQuestion, gameBoardService.getByCode(code).getId());
         }catch(AgileDeckException agileDeckException) {
@@ -131,7 +131,7 @@ public class GameBoardResource {
         }
         
         boolean isLastOne = false;
-        List<Question> listQuestion = questionService.getAllByGameID(gameId);
+        List<Question> listQuestion = questionService.getAllByGameID(gameId, code);
         try{
             questionService.random(listQuestion, gameBoardService.getByCode(code).getId());
         }catch(AgileDeckException ade) {
