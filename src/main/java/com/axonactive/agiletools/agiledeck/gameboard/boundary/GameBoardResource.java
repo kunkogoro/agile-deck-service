@@ -217,7 +217,7 @@ public class GameBoardResource {
 
     @DELETE
     @Path("/delete-answer/{code}")
-    public Response deleteAnswer(@PathParam("code") String code, Long customAnswerId){
+    public Response deleteAnswer(@PathParam("code") String code, @QueryParam("answerId") Long customAnswerId){
         customAnswerService.delete(customAnswerId);
         return Response.ok().build();
     }
