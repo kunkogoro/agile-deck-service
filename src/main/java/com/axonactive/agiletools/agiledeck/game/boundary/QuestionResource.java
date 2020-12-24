@@ -15,8 +15,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("/questions")
@@ -47,11 +46,11 @@ public class QuestionResource {
         AnsweredQuestion currentAnsweredQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
         currentAnsweredQuestion.setPlaying(false);
         answeredQuestionService.updateStatusPlaying(currentAnsweredQuestion);
-        
+
         List<Question> listQuestion = questionService.getAllByGameID(game.getId(), code);
 
         Question question = questionService.random(listQuestion, gameBoard.getId());
-        AnsweredQuestion newAnsweredQuestion =  answeredQuestionService.create(question, gameBoard);
+        AnsweredQuestion newAnsweredQuestion = answeredQuestionService.create(question, gameBoard);
         try{
             questionService.random(listQuestion, gameBoard.getId());
         }catch(AgileDeckException ade) {
@@ -60,6 +59,42 @@ public class QuestionResource {
 
         Map<String, Object> data = new ConcurrentHashMap<>();
         data.put("answeredQuestion", newAnsweredQuestion);
+        data.put("isLastOne", isLastOne);
+        return Response.ok(data).build();
+    }
+
+    @GET
+    @Path("/{code}/order")
+    public Response getQuestionOrder(@PathParam("code") String code) {
+        boolean isLastOne = false;
+        GameBoard gB = gameBoardService.getByCode(code);
+        Game g = gameService.findById(gB.getGame().getId());
+
+        AnsweredQuestion currentAnsweredQuestion = answeredQuestionService.findCurrentPLaying(gB.getId());
+        currentAnsweredQuestion.setPlaying(false);
+        answeredQuestionService.updateStatusPlaying(currentAnsweredQuestion);
+
+        List<Question> listQuestion = questionService.getAllByGameID(g.getId(), code);
+
+        Question nextQuestion = null;
+        int d = 0;
+        for(int i=0; i<listQuestion.size()-1; ++i) {
+            ++d;
+            if (listQuestion.get(i).getContent().getContent()
+                    .equals(currentAnsweredQuestion.getContent().getContent())) {
+                nextQuestion = listQuestion.get(i+1);
+                break;
+            }
+        }
+
+        if (Objects.isNull(nextQuestion)) {
+            nextQuestion = listQuestion.get(0);
+        } else if (d == listQuestion.size() - 1) {
+            isLastOne = true;
+        }
+
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put("answeredQuestion", answeredQuestionService.create(nextQuestion, gB));
         data.put("isLastOne", isLastOne);
         return Response.ok(data).build();
     }
