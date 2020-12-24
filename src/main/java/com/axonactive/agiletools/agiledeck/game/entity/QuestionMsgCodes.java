@@ -7,7 +7,7 @@ public enum QuestionMsgCodes implements MsgCodes{
 
     @Override
     public String getValue() {
-        return null;
+        return this.toString();
     }
     
 }
