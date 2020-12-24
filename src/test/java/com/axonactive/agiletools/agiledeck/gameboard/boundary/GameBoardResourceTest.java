@@ -89,6 +89,16 @@ class GameBoardResourceTest {
                 .then().statusCode(200);
     }
 
+    @Test
+    public void whenPlayerRejoinGame_thenReturnDefaultAnswerQuestionDetail(){
+        RestAssured.given().pathParam("code", "e3bb8a9d-704e-430e-acae-1fb0a96dsy76")
+                .queryParam("playerId", 1)
+                .when()
+                .get("gameboards/rejoin/{code}")
+                .then()
+                .statusCode(200);
+    }
+
 
     @Test
     public void whenCreateNewGameBoard_thenReturnLocationInHeader() {
@@ -230,7 +240,7 @@ class GameBoardResourceTest {
                                 .add("id", 1)
                                 .build();
         
-        RestAssured.given().pathParam("code", "e3bb8a9d-704e-430e-acae-1fb0a96rtfu8")
+        RestAssured.given().pathParam("code", "asd6gfga-f296-sdf3-0fn2-asf86gc1crt2")
                     .header("Content-Type", "application/json")
                     .body(answerContent)
                     .when()
