@@ -93,7 +93,13 @@ public class GameBoardResource {
         Player player = playerService.create(code);
         AnsweredQuestionDetail answeredQuestionDetail = answeredQuestionDetailService.create(currentQuestion, player);
         Long gameId = gameBoardService.getByCode(code).getGame().getId();
-        answeredQuestionDetail.getAnsweredQuestion().setAnswerOptions(answerService.getByGame(gameId));
+
+        List<CustomAnswer> customAnswers = customAnswerService.getByGameBoadId(gameBoardService.getByCode(code));
+        if (customAnswers.isEmpty()) {
+            answeredQuestionDetail.getAnsweredQuestion().setAnswerOptions(answerService.getByGame(gameId));
+        } else {
+            answeredQuestionDetail.getAnsweredQuestion().setCustomAnswersOptions(customAnswers);
+        }
 
         boolean isLastOne = false;
         List<Question> listQuestion = questionService.getAllByGameID(gameId, code);
@@ -217,7 +223,7 @@ public class GameBoardResource {
 
     @DELETE
     @Path("/delete-answer/{code}")
-    public Response deleteAnswer(@PathParam("code") String code, Long customAnswerId){
+    public Response deleteAnswer(@PathParam("code") String code, @QueryParam("answerId") Long customAnswerId){
         customAnswerService.delete(customAnswerId);
         return Response.ok().build();
     }

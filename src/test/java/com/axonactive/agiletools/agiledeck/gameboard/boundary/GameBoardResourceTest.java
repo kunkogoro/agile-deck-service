@@ -275,7 +275,7 @@ class GameBoardResourceTest {
     public void whenPlayerDeleteAnswer_thenReturnStatusOk(){
         RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
             .header("Content-Type", "application/json")
-            .body(20)
+            .queryParam("answerId", 20)
             .when()
             .delete("gameboards/delete-answer/{code}")
             .then()
