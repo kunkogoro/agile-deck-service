@@ -28,9 +28,6 @@ public class AnsweredQuestionResourceTest {
 
                 Assertions.assertEquals(200, res.getStatusCode());
                 
-                // JsonObject jsonObject = Json.createReader(new StringReader(res.body().asString())).readObject();
-                // String content = jsonObject.getJsonObject("content").getString("content");
-                // Assertions.assertEquals("New Problem",content);
         }
         @Test
         public void whenAddNewQuestion_thenReturnNewQuestion(){
@@ -46,6 +43,5 @@ public class AnsweredQuestionResourceTest {
                                 .when()
                                 .post("answeredquestions/{gameBoardCode}");
                 Assertions.assertEquals(200, response.getStatusCode());
-                // System.out.println(response.asString());
         }
 }

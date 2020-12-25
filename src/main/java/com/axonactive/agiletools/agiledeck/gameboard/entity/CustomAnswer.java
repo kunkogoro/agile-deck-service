@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @Table( name = "tbl_custom_answers")
 @NamedQueries({
-    @NamedQuery( name = CustomAnswer.GET_BY_GAME_BOARD_ID, query = "SELECT ca FROM CustomAnswer ca WHERE ca.gameBoard.id = :gameBoardId"),
+    @NamedQuery( name = CustomAnswer.GET_BY_GAME_BOARD_ID, query = "SELECT ca FROM CustomAnswer ca WHERE ca.gameBoard.id = :gameBoardId ORDER BY ca.numberOrder"),
     @NamedQuery( name = CustomAnswer.GET_BY_ID, query = "SELECT ca FROM CustomAnswer ca WHERE ca.id = :customAnswerId"),
     @NamedQuery( name = CustomAnswer.GET_MAX_NUMBER_ORDER_BY_GAME_BOARD_ID, query = "SELECT MAX(ca.numberOrder) FROM CustomAnswer ca WHERE ca.gameBoard.id = :gameBoardId")
 })

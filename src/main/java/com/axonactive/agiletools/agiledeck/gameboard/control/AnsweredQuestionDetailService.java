@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
+import javax.json.bind.JsonbBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -70,7 +71,6 @@ public class AnsweredQuestionDetailService {
     
     public void resetAnswer(Long ansQuestId) {
         List<AnsweredQuestionDetail> answeredQuestionDetails = getAllByAnsweredQuestionId(ansQuestId);
-
         answeredQuestionDetails.forEach(aqd -> {
             aqd.setAnswer(null);
             em.merge(aqd);
