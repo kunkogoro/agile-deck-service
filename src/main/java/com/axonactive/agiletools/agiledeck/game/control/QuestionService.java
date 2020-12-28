@@ -1,18 +1,17 @@
 package com.axonactive.agiletools.agiledeck.game.control;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import com.axonactive.agiletools.agiledeck.AgileDeckException;
+import com.axonactive.agiletools.agiledeck.game.entity.Question;
+import com.axonactive.agiletools.agiledeck.game.entity.QuestionMsgCodes;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import com.axonactive.agiletools.agiledeck.AgileDeckException;
-import com.axonactive.agiletools.agiledeck.game.entity.Question;
-import com.axonactive.agiletools.agiledeck.game.entity.QuestionMsgCodes;
-import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import java.security.SecureRandom;
+import java.util.List;
+import java.util.Objects;
 
 @RequestScoped
 public class QuestionService {
@@ -27,20 +26,22 @@ public class QuestionService {
     }
 
     public Question random(List<Question> questions, Long gameBoardId){
-
-        Question question = new Question();
-        Integer checkNoQuestionsLeft = 0;
-
+        Question question;
         do{
-            if(checkNoQuestionsLeft == questions.size()){
+            if(questions.size() == 0){
                 throw new AgileDeckException(QuestionMsgCodes.NO_QUESTIONS_LEFT);
             }
-            int indexRandom = new Random().nextInt(questions.size());
+
+            SecureRandom random = new SecureRandom();
+            int indexRandom = random.nextInt(questions.size());
             question = questions.get(indexRandom);
-            checkNoQuestionsLeft += 1;
-        }while(isExisted(gameBoardId, question));
-        
-        return question;
+
+            if(isExisted(gameBoardId, question)) {
+                questions.remove(indexRandom);
+            } else {
+                return question;
+            }
+        } while(true);
     }
 
     private boolean isExisted(Long gameBoardId, Question question) {

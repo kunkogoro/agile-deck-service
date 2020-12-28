@@ -40,7 +40,7 @@ public class GameBoardService {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
 
-        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrenrPLaying(gameBoard.getId());
+        AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
 
         if(Objects.isNull(currentAnswerQuestion)){
             List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());

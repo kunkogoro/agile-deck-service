@@ -12,6 +12,7 @@ NETWORK_NAME=agile-deck-network
 
 SERVER_IP=192.168.70.91
 SERVER_CREDENTIAL_ID=redbull-control-server
+GIT_URI=agile-tools/agile-deck/agile-deck-service
 
 CORS_ORIGINS=http://staging.agiledeck.axonactive.vn.local
 
@@ -57,7 +58,7 @@ try{
         stage('Checkout'){
             checkout scm
             sh "git checkout ${CHECKOUT_BRANCH}"
-            sh 'git pull'
+//            sh 'git pull'
             currentPomVersion = readMavenPom().getVersion()// Get current pom version after checkout the project
 
         }
@@ -132,7 +133,9 @@ try{
                 sh "mvn versions:set -DnewVersion=${currentPomVersion.replace("-SNAPSHOT","")}"
             }
             sh "git commit -am 'Create ${RELEASE_BRANCH} branch with version ${currentPomVersion.replace("-SNAPSHOT","")} - Jenkins'"
-            sh "git push origin ${releaseStagingBranchName}"
+            withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git"
+            }
         }
 
         /* This stage will create a new develop branch on Git and also increase version in POM file */
@@ -144,7 +147,9 @@ try{
             }
 
             sh "git commit -am 'Increase minor version in pom file - Jenkins'"
-            sh "git push -u origin ${CHECKOUT_BRANCH}"
+            withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git"
+            }
         }
 
         stage('Pull and run image on Staging server') {
@@ -178,6 +183,7 @@ try{
                             -e quarkus.datasource.password=${DB_PASS} \
                             -e quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} \
                             -e quarkus.hibernate-orm.database.generation=${DB_GENERATION} \
+							-e quarkus.file.dir=${STORAGE_DIR} \
                             ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${currentPomVersion.replace("-SNAPSHOT","")}"""
                     sshCommand remote: remote, command:  """docker network connect ${NETWORK_NAME} ${CONTAINER_NAME}"""
                 }

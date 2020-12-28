@@ -1,6 +1,7 @@
 package com.axonactive.agiletools.agiledeck.game.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,5 +45,8 @@ public class Game {
 
     @Column(name = "description")
     private String description;
+
+    @Embedded
+    private GameBoardConfig gameBoardConfig;
 
 }

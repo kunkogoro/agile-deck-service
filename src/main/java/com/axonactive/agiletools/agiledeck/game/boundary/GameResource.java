@@ -25,7 +25,7 @@ public class GameResource {
 
     @GET
     public Response getAllGame(){
-        List<Game> listGame = gameService.getInfomationGame();
+        List<Game> listGame = gameService.getInformationGame();
         return Response.ok(listGame).build();
     }
 }

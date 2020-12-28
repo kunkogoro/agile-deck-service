@@ -79,7 +79,16 @@ public class GameBoardSocket {
             case "update-player":
                 updatePlayer(code, jsonObject);
                 break;
+            case "update-question":
+                updateQuestion(code);
+                break;
         }
+    }
+
+    private void updateQuestion(String code) {
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put(ACTION, "update-question");
+        broadcast(sessions.get(code), toJson(data));
     }
 
     private void updatePlayer(String code, JsonObject jsonObject) {
@@ -118,7 +127,7 @@ public class GameBoardSocket {
     }
 
     private void resetAnswer(String code) {
-        players.get(code).forEach(playerSelectedCard -> playerSelectedCard.setSelectedCardId(null));
+        players.get(code).forEach(PlayerSelectedCard::reset);
         sendListPlayer(code);
 
         flippedAnswers.put(code, false);
@@ -137,26 +146,38 @@ public class GameBoardSocket {
     }
 
     private void playerSelectedCard(JsonObject jsonObject, String code) {
+
         Long playerId = Long.parseLong(jsonObject.getString("playerId"));
-        Long selectedCardId = (long) jsonObject.getInt("selectedCardId");
+        String content = jsonObject.getString("content");
+        String contentAsImage = jsonObject.getString("contentAsImage");
+        String contentAsDescription = jsonObject.getString("contentAsDescription");
+
 
         players.get(code).forEach(playerSelectedCard -> {
             if (playerId.equals(playerSelectedCard.getPlayer().getId())) {
-                playerSelectedCard.setSelectedCardId(selectedCardId);
+                playerSelectedCard.setSelectedCardId(contentAsImage);
+                playerSelectedCard.setContent(content);
+                playerSelectedCard.setContentAsDescription(contentAsDescription);
 
                 Map<String, Object> data = new ConcurrentHashMap<>();
+                
                 data.put(ACTION, "selected-card");
                 data.put("data", toJson(playerSelectedCard));
-
                 broadcast(sessions.get(code), toJson(data));
             }
         });
     }
 
     private void joinGame(JsonObject info, String code) {
-        Player player = fromJson(info.toString());
-        PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null);
 
+        Player player = fromJson(info.getJsonObject("player").toString());
+
+        boolean isLastestQuestion = info.getBoolean("isLastestQuestion");
+        PlayerSelectedCard playerSelectedCard = new PlayerSelectedCard(player, null, null, null);
+
+
+        this.latestQuestion.put(code, isLastestQuestion);
+        this.sendFlipStatus(code);
         if(!players.containsKey(code)) {
             List<PlayerSelectedCard> list = new ArrayList<>();
             list.add(playerSelectedCard);
@@ -207,8 +228,13 @@ public class GameBoardSocket {
     private String toJson(PlayerSelectedCard playerSelectedCard) {
         String player = JsonbBuilder.create().toJson(playerSelectedCard.getPlayer());
         String selectedCardId = JsonbBuilder.create().toJson(playerSelectedCard.getSelectedCardId());
+        String content = JsonbBuilder.create().toJson(playerSelectedCard.getContent());
+        String contentAsDescription = JsonbBuilder.create().toJson(playerSelectedCard.getContentAsDescription());
 
-        return "{\"player\":" + player + ",\"selectedCardId\":" + selectedCardId + "}";
+        return "{\"player\":" + player + "," + '\n' + 
+        "\"selectedCardId\":" + selectedCardId + "," + '\n' +
+        "\"content\":" + content + "," + '\n' +
+        "\"contentAsDescription\":" + contentAsDescription + "}";
     }
 
     private List<String> toJson(List<PlayerSelectedCard> playerSelectedCards) {
