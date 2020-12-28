@@ -48,15 +48,15 @@ try {
         }
 
         stage('Merge release branch into master') {
-            sh "git fetch origin ${RELEASE_BRANCH}"
-            sh "git checkout ${RELEASE_BRANCH}"
-            sh "git fetch origin master"
-            sh "git checkout master"
-            sh "git branch"
-            sh "git merge ${RELEASE_BRANCH} --strategy-option theirs --allow-unrelated-histories"
-            sh "git add ."
-            sh "git commit -m 'Create tag ${pomVersion}' || true"
             withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                sh "git fetch https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git ${RELEASE_BRANCH}"
+                sh "git checkout ${RELEASE_BRANCH}"
+                sh "git fetch https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git master"
+                sh "git checkout master"
+                sh "git branch"
+                sh "git merge ${RELEASE_BRANCH} --strategy-option theirs --allow-unrelated-histories"
+                sh "git add ."
+                sh "git commit -m 'Create tag ${pomVersion}' || true"
                 sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git"
             }
         }
@@ -64,7 +64,7 @@ try {
         stage('Create release tag from master branch') {
             sh "git tag ${pomVersion}"
             withCredentials([usernamePassword(credentialsId: "75d76f6e-31ce-4146-9310-c75e88d86226", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
-                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git"
+                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@gitsource.axonactive.com/${GIT_URI}.git ${pomVersion}"
             }
         }
 
