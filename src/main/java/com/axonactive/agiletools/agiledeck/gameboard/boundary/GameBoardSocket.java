@@ -94,7 +94,7 @@ public class GameBoardSocket {
     private void updatePlayer(String code, JsonObject jsonObject) {
         Long id = (long) jsonObject.getInt("id");
         String name = jsonObject.getString("name");
-
+        
         players.get(code).forEach(playerSelectedCard -> {
             Player player = playerSelectedCard.getPlayer();
             if (player.getId().equals(id)) {
@@ -108,6 +108,7 @@ public class GameBoardSocket {
             }
         });
     }
+
     private void nextQuestion(String code, Boolean isLastOne) {
         latestQuestion.put(code, isLastOne);
         Map<String, Object> data = new ConcurrentHashMap<>();

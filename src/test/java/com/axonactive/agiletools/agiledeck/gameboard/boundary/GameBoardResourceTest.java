@@ -30,6 +30,14 @@ class GameBoardResourceTest {
     }
 
     @Test
+    public void whenJoinGame_thenReturnAnswerQuestionDetailByCustomAnswer() {
+        Response response = RestAssured.given().pathParam("code", "asd6gfga-f296-sdf3-0fn2-asf86gc1crt2").when()
+                .get("gameboards/join/{code}");
+
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
     public void whenJoinGame_thenReturnAnswer() {
         RestAssured.given().pathParam("code", "code-not-found").when().get("gameboards/join/{code}").then().statusCode(400)
                 .header("MSG_CODE", CoreMatchers.is("GAME_BOARD_NOT_FOUND"));
