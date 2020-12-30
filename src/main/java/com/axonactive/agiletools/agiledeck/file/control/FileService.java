@@ -25,10 +25,6 @@ public class FileService {
     @PersistenceContext
     EntityManager em;
 
-    public FileService() {
-        createStorage();
-    }
-
     private String getFileName(String contentDisposition) {
         String[] content = contentDisposition.split(";");
         for (String fileName : content) {
@@ -40,8 +36,8 @@ public class FileService {
         return "unknown";
     }
 
-    private void createStorage() {
-        java.nio.file.Path path = Paths.get(STORAGE_DIR);
+    private void createStorage(String subFolder) {
+        java.nio.file.Path path = Paths.get(STORAGE_DIR, subFolder);
         if (!path.toFile().exists()) {
             try {
                 Files.createDirectories(path);
@@ -51,7 +47,9 @@ public class FileService {
         }
     }
 
-    public String saveFile(InputPart inputPart) {
+    public String saveFile(InputPart inputPart, String subFolder) {
+        this.createStorage(subFolder);
+
         String contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition");
         String fileName = getFileName(contentDisposition);
 
@@ -59,7 +57,7 @@ public class FileService {
             InputStream inputStream = inputPart.getBody(InputStream.class, null);
             byte[] bytes = IOUtils.toByteArray(inputStream);
 
-            File customDir = new File(STORAGE_DIR);
+            File customDir = new File(STORAGE_DIR + File.separator + subFolder);
             String fileNamePath = customDir.getAbsolutePath() + File.separator + fileName;
             new Thread(() -> {
                 try {
@@ -73,19 +71,21 @@ public class FileService {
             throw new IllegalArgumentException("CAN NOT SAVE FILE");
         }
 
-        return fileName;
+        if (subFolder.trim().isEmpty()) return fileName;
+        return subFolder + '/' + fileName;
     }
 
-    public List<String> saveMultiFiles(List<InputPart> inputParts) {
+    public List<String> saveMultiFiles(List<InputPart> inputParts, String subFolder) {
         List<String> fileNames = new ArrayList<>();
         for (InputPart inputPart: inputParts) {
-            fileNames.add(saveFile(inputPart));
+            fileNames.add(saveFile(inputPart, subFolder));
         }
         return fileNames;
     }
 
-    public File getFile(String fileName) {
-        File fileDownload = new File(STORAGE_DIR + File.separator + fileName);
+    public File getFile(String fileName, String subFolder) {
+        String path = STORAGE_DIR + File.separator + subFolder + File.separator + fileName;
+        File fileDownload = new File(path);
         if (!fileDownload.exists()) {
             throw new IllegalArgumentException("FILE NOT EXISTED");
         }

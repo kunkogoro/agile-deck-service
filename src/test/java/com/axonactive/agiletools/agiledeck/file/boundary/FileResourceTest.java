@@ -38,11 +38,23 @@ class FileResourceTest {
 
     @Test
     @Order(1)
+    public void giveTextFile_whenUploadFileWithGameBoardCode_thenReturnOkStatusCode() {
+        RestAssured.given()
+                .multiPart("file", file)
+                .when()
+                .post("files/upload/b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @Order(2)
     public void whenDownloadFileFromServer_thenReturnOkStatusCode() {
         RestAssured.given()
                 .pathParam("fileName", "testfile.txt")
+                .pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
                 .when()
-                .get("files/download/{fileName}")
+                .get("files/download/{code}/{fileName}")
                 .then()
                 .statusCode(200);
     }

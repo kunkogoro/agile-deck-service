@@ -34,8 +34,20 @@ public class FileResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
     public Response upload(@MultipartForm MultipartFormDataInput input) {
+        return this.uploadResponse(input, "");
+    }
+
+    @POST
+    @Path("/upload/{code}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response uploadCustomFile(@MultipartForm MultipartFormDataInput input, @PathParam("code") String code) {
+        return this.uploadResponse(input, code);
+    }
+
+    private Response uploadResponse(MultipartFormDataInput input, String code) {
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-        List<String> fileNames = fileService.saveMultiFiles(uploadForm.get("file"));
+        List<String> fileNames = fileService.saveMultiFiles(uploadForm.get("file"), code);
 
         List<String> pathFileName = fileNames.stream()
                 .map(s -> s = uriInfo.getBaseUri().toString() + "files/download/" + s)
@@ -50,13 +62,23 @@ public class FileResource {
     @Path("/download/{filename}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response download(@PathParam("filename") String fileName) {
-        File file = fileService.getFile(fileName);
+        return this.downloadResponse(fileName, "");
+    }
+
+
+    @GET
+    @Path("/download/{code}/{filename}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadCustomFile(@PathParam("filename") String fileName, @PathParam("code") String code) {
+        return this.downloadResponse(fileName, code);
+    }
+
+
+    private Response downloadResponse(String fileName, String code) {
+        File file = fileService.getFile(fileName, code);
         return Response.ok(file)
                 .header("Content-Disposition", "attachment;filename=" + fileName)
                 .build();
     }
-
-
-
 
 }
