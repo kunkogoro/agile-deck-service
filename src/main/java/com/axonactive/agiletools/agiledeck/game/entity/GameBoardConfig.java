@@ -30,6 +30,9 @@ public class GameBoardConfig {
 
     private Boolean editable;
 
+    @Column(name = "random_when_next")
+    private Boolean randomWhenNext;
+
     @Column(name = "additional_possibility")
     private Boolean additionalPossibility;
 }

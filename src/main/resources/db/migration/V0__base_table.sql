@@ -71,6 +71,16 @@ CREATE TABLE public.tbl_game_boards (
 );
 
 
+CREATE TABLE public.tbl_custom_answers (
+    id BIGSERIAL PRIMARY KEY,
+    answer_content text,
+    answer_content_as_description text NULL,
+    number_order bigint NOT NULL,
+    answer_content_as_image character varying(255),
+    game_board_id bigint
+);
+
+
 --
 -- TOC entry 190 (class 1259 OID 16515)
 -- Name: tbl_games; Type: TABLE; Schema: public; Owner: -
@@ -87,7 +97,8 @@ CREATE TABLE public.tbl_games (
     image_player_start character varying(255),
     image_backside character varying(255),
     editable boolean,
-    additional_possibility boolean
+    additional_possibility boolean,
+    random_when_next boolean
 );
 
 
@@ -114,6 +125,7 @@ CREATE TABLE public.tbl_questions (
     id BIGSERIAL PRIMARY KEY,
     question_content text,
     question_content_as_image character varying(255),
+    game_board_id bigint,
     game_id bigint
 );
 
@@ -180,7 +192,10 @@ VALUES(1,1,'iterative.png'),
 
 INSERT INTO public.tbl_game_boards (code, game_id)
 VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
-        ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1);
+        ( 'asd6gfga-f296-sdf3-0fn2-asf86gc1crt2', 1),
+        ( 'e3bb8a9d-704e-430e-acae-1fb0a9695205', 1),
+        ( 'e3bb8a9d-704e-430e-acae-1fb0a96rtfu8', 1),
+        ( 'e3bb8a9d-704e-430e-acae-1fb0a96dsy76', 1);
 
 
 --
@@ -189,9 +204,9 @@ VALUES('b4661d5e-f296-4cf6-887d-cfa0f97d1f36', 1),
 -- Data for Name: tbl_games; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tbl_games(name, description,game_as_image, question_title, answer_title, player_title, image_player_start, image_backside, editable, additional_possibility)
-VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scrum & Kanban','iib_home.png', 'Select a scenario', 'Pick an approach', 'Players', 'iib_playerstart.png', 'iib_backside.png', false, false),
-        ('New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process','nd_home.png', 'Pick a problem', 'Choose an answer', 'Players', 'nd_playerstart.png', 'nd_backside.png', true, true);
+INSERT INTO public.tbl_games(name, description,game_as_image, question_title, answer_title, player_title, image_player_start, image_backside, editable, additional_possibility, random_when_next)
+VALUES ('Iterative - Incremental - Big Bang', 'A workshop game to encourage people to think about alternative approaches for tackling projects. - by Scrum & Kanban','iib_home.png', 'Select a scenario', 'Pick an approach', 'Players', 'iib_playerstart.png', 'iib_backside.png', false, false, true),
+        ('New Deck', 'The objective of the game is to make a decision as to how to best maximize the profit of this process','nd_home.png', 'Pick a problem', 'Choose an answer', 'Players', 'nd_playerstart.png', 'nd_backside.png', true, true, false);
 
 --
 -- TOC entry 2160 (class 0 OID 16521)
@@ -208,6 +223,26 @@ VALUES('Strawberries', 1),
     ('Durian', 1);
 
 
+--
+-- Insert into table custom answer to run test case
+
+INSERT INTO public.tbl_custom_answers 
+(answer_content, answer_content_as_description, answer_content_as_image, number_order, game_board_id)
+VALUES ('a', '', 'a.png', 1, 2),
+('b', '', 'a.png', 1, 2),
+('c', '', 'a.png', 1, 2),
+('d', '', 'a.png', 1, 2),
+('e', '', 'a.png', 1, 2),
+('f', '', 'a.png', 1, 2),
+('g', '', 'a.png', 1, 2),
+('h', '', 'a.png', 1, 2),
+('j', '', 'a.png', 1, 2),
+('k', '', 'a.png', 1, 2),
+('l', '', 'a.png', 1, 2),
+('q', '', 'a.png', 1, 2),
+('w', '', 'a.png', 1, 2),
+('y', '', 'a.png', 1, 2),
+('r', '', 'a.png', 1, 2);
 
 --
 -- TOC entry 2161 (class 0 OID 16527)

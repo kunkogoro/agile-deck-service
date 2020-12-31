@@ -23,6 +23,14 @@ class GameBoardResourceTest {
 
     @Test
     public void whenJoinGame_thenReturnAnswerQuestionDetail() {
+        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36").when()
+                .get("gameboards/join/{code}");
+
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void whenJoinGame_thenReturnAnswerQuestionDetailByCustomAnswer() {
         Response response = RestAssured.given().pathParam("code", "asd6gfga-f296-sdf3-0fn2-asf86gc1crt2").when()
                 .get("gameboards/join/{code}");
 
@@ -55,7 +63,7 @@ class GameBoardResourceTest {
     @Test
     public void whenPlayerRejoinGame_thenReturnReturnAnswerQuetionDetail(){
         Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
-                .queryParam("playerId", 5).when().get("gameboards/rejoin/{code}");
+                .queryParam("playerId", 1).when().get("gameboards/rejoin/{code}");
 
         Assertions.assertEquals(200, response.getStatusCode());
     }
@@ -89,6 +97,16 @@ class GameBoardResourceTest {
                 .then().statusCode(200);
     }
 
+    @Test
+    public void whenPlayerRejoinGame_thenReturnDefaultAnswerQuestionDetail(){
+        RestAssured.given().pathParam("code", "e3bb8a9d-704e-430e-acae-1fb0a96dsy76")
+                .queryParam("playerId", 1)
+                .when()
+                .get("gameboards/rejoin/{code}")
+                .then()
+                .statusCode(200);
+    }
+
 
     @Test
     public void whenCreateNewGameBoard_thenReturnLocationInHeader() {
@@ -113,5 +131,162 @@ class GameBoardResourceTest {
                 .when().put("answeredquestiondetails/{answerQuestionDetailId}");
 
         Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void whenPlayerAddAnswer_thenReturnStatusOk(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .build();
+
+        Response response = RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                                .header("Content-Type", "application/json")
+                                .body(answerContent)
+                                .when()
+                                .put("gameboards/add-answer/{code}");
+
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void whenPlayerAddAnswerAtTheFirstTime_thenReturnStatusOk(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .build();
+
+        Response response = RestAssured.given().pathParam("code", "e3bb8a9d-704e-430e-acae-1fb0a9695205")
+                                .header("Content-Type", "application/json")
+                                .body(answerContent)
+                                .when()
+                                .put("gameboards/add-answer/{code}");
+
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void whenPlayerAddAnswer_thenReturnGameBoardNotFound(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .build();
+
+        RestAssured.given().pathParam("code", "game-not-found")
+            .header("Content-Type", "application/json")
+            .body(answerContent)
+            .when()
+            .put("gameboards/add-answer/{code}")
+            .then()
+            .statusCode(400)
+            .header("MSG_CODE", CoreMatchers.is("GAME_BOARD_NOT_FOUND"));
+    }
+
+    @Test
+    public void whenPlayerAddAnswer_thenReturnListAnswerOverLimittation(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .build();
+
+        RestAssured.given().pathParam("code", "asd6gfga-f296-sdf3-0fn2-asf86gc1crt2")
+            .header("Content-Type", "application/json")
+            .body(answerContent)
+            .when()
+            .put("gameboards/add-answer/{code}")
+            .then()
+            .statusCode(400)
+            .header("MSG_CODE", CoreMatchers.is("LIST_ANSWER_OVER_LIMITTATION"));
+    }
+
+    @Test
+    public void whenPlayerUpdateAnswer_thenReturnStatusOk(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .add("id", 1)
+                                .build();
+        
+        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+                    .header("Content-Type", "application/json")
+                    .body(answerContent)
+                    .when()
+                    .put("gameboards/update-answer-content/{code}")
+                    .then()
+                    .statusCode(200);
+    }
+
+    @Test
+    public void whenPlayerUpdateAnswerAtTheFirstTime_thenReturnStatusOk(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .add("id", 1)
+                                .build();
+        
+        RestAssured.given().pathParam("code", "asd6gfga-f296-sdf3-0fn2-asf86gc1crt2")
+                    .header("Content-Type", "application/json")
+                    .body(answerContent)
+                    .when()
+                    .put("gameboards/update-answer-content/{code}")
+                    .then()
+                    .statusCode(200);
+    }
+
+    @Test
+    public void whenPlayerUpdateAnswer_thenReturnGameBoardNotFound(){
+        JsonObject answerContent = Json.createObjectBuilder()
+                                .add("content", Json.createObjectBuilder()
+                                        .add("content", "Abc")
+                                        .add("contentAsDescription", "")
+                                        .add("contentAsImage", "abc.png")
+                                        .build()
+                                    )
+                                .add("id", 1)
+                                .build();
+
+        RestAssured.given().pathParam("code", "game-board-not-found")
+            .header("Content-Type", "application/json")
+            .body(answerContent)
+            .when()
+            .put("gameboards/update-answer-content/{code}")
+            .then()
+            .statusCode(400)
+            .header("MSG_CODE", CoreMatchers.is("GAME_BOARD_NOT_FOUND"));                        
+    }
+
+    @Test
+    public void whenPlayerDeleteAnswer_thenReturnStatusOk(){
+        RestAssured.given().pathParam("code", "b4661d5e-f296-4cf6-887d-cfa0f97d1f36")
+            .header("Content-Type", "application/json")
+            .queryParam("answerId", 20)
+            .when()
+            .delete("gameboards/delete-answer/{code}")
+            .then()
+            .statusCode(200);
     }
 }

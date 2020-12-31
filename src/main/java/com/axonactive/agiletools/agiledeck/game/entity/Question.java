@@ -1,19 +1,11 @@
 package com.axonactive.agiletools.agiledeck.game.entity;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
+import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -21,7 +13,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_questions")
 @NamedQueries({
-    @NamedQuery(name = Question.GET_ALL_BY_GAME_ID, query = "SELECT q FROM Question q WHERE q.game.id = :gameId")
+    @NamedQuery(
+            name = Question.GET_ALL_BY_GAME_ID,
+            query = "SELECT q FROM Question q WHERE q.game.id = :gameId")
 })
 public class Question {
 
@@ -36,6 +30,10 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
+
+    @ManyToOne
+    @JoinColumn(name = "game_board_id")
+    private GameBoard gameBoard;
 
     @Embedded
     private QuestionContent content;

@@ -17,6 +17,7 @@ import com.axonactive.agiletools.agiledeck.game.control.GameService;
 import com.axonactive.agiletools.agiledeck.game.entity.Answer;
 import com.axonactive.agiletools.agiledeck.game.entity.Game;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.AnsweredQuestion;
+import com.axonactive.agiletools.agiledeck.gameboard.entity.CustomAnswer;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoard;
 import com.axonactive.agiletools.agiledeck.gameboard.entity.GameBoardMsgCodes;
 
@@ -36,16 +37,20 @@ public class GameBoardService {
     @Inject
     AnsweredQuestionService answeredQuestionService;
 
+    @Inject
+    CustomAnswerService customAnswerService;
+
     public AnsweredQuestion join(String code) {
         GameBoard gameBoard = this.getByCode(code);
         this.validate(gameBoard);
 
         AnsweredQuestion currentAnswerQuestion = answeredQuestionService.findCurrentPLaying(gameBoard.getId());
-
+        
         if(Objects.isNull(currentAnswerQuestion)){
             List<Answer> defaultAnswerOptions = this.answerService.getByGame(gameBoard.getGame().getId());
             currentAnswerQuestion =  AnsweredQuestion.createWithoutQuestion(gameBoard, defaultAnswerOptions);
         }
+        
         return currentAnswerQuestion;
     }
     
@@ -83,5 +88,29 @@ public class GameBoardService {
     private String generateGameBoardCode() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();   
-    }   
+    }
+    
+    public void validateLengthListAnswerOfGameBoard(GameBoard gameBoard){
+
+        List<CustomAnswer> customAnswers = customAnswerService.getByGameBoadId(gameBoard);
+        if(customAnswers.isEmpty()){
+            Game game = gameBoard.getGame();
+            List<Answer> answers = answerService.getByGame(game.getId());
+            if(answers.size() >= 15){
+                throw new AgileDeckException(GameBoardMsgCodes.LIST_ANSWER_OVER_LIMITTATION);
+            }
+        }
+
+        if(customAnswers.size() >= 15){
+            throw new AgileDeckException(GameBoardMsgCodes.LIST_ANSWER_OVER_LIMITTATION);
+        }
+        
+    }
+
+    public boolean validateGameBoardInCustomAnswer(GameBoard gameBoard){
+
+        List<CustomAnswer> customAnswers = customAnswerService.getByGameBoadId(gameBoard);
+        return !customAnswers.isEmpty();
+    }
+
 }

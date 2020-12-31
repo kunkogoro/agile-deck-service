@@ -177,7 +177,7 @@ try{
                 withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIAL_ID}", passwordVariable: 'password', usernameVariable: 'username')]) {
                     sshCommand remote: remote, command:  """docker login ${DOCKER_REGISTRY_URL} -u ${username} -p ${password}"""
                     sshCommand remote: remote, command:  """docker pull ${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${currentPomVersion.replace("-SNAPSHOT","")}"""
-                    sshCommand remote: remote, command:  """docker run -i -d --rm -p ${PUBLISH_PORT}:8080 --name ${CONTAINER_NAME} \
+                    sshCommand remote: remote, command:  """docker run -i -d --restart unless-stopped -p ${PUBLISH_PORT}:8080 --name ${CONTAINER_NAME} \
                             -e quarkus.http.cors.origins=${CORS_ORIGINS} \
                             -e quarkus.datasource.username=${DB_USER} \
                             -e quarkus.datasource.password=${DB_PASS} \
